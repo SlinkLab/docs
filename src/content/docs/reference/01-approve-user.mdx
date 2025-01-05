@@ -1,0 +1,31 @@
+---
+title: Approve User
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+By default, the application requires user approval before they can upload images. You can disable this feature by setting the `USER_APPROVAL_REQUIRED` environment variable to `false`.
+
+If the user approval is enabled, you will have to activate the users manually with CLI command:
+
+```bash
+docker exec -it slink slink user:activate --email=<user-email>
+```
+
+or
+
+```bash
+docker exec -it slink slink user:activate --uuid=<user-id>
+```
+
+Newly registered users will be seeing the following message:
+
+![awaiting-approval](../../screens/ff1faa4a-f764-4dc4-a6b2-3e835fbf26b1.png)
+
+After the user is approved, they will be able to log in and upload images.
+
+<Aside type="tip">
+  Users can be also managed from the admin user management page.
+</Aside>
+
+![admin-users](../../screens/5584dd77-dcd1-4937-bb51-82bb7b064dde.png)

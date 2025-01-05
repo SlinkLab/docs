@@ -1,0 +1,65 @@
+---
+title: Slink
+description: A self-hosted image sharing service
+template: splash
+hero:
+  title: |
+    Welcome to
+    <span
+      class="font-black text-transparent
+        bg-clip-text bg-gradient-to-b
+        from-accent-700 to-accent-400
+        dark:from-accent-500 dark:to-accent-200"
+    >
+      Slink
+    </span>
+  tagline: A Self-hosted image sharing service
+  image:
+    file: ../../assets/slink.png
+  actions:
+    - text: Get started
+      link: /getting-started/01-introduction
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/andrii-kryvoviaz/slink
+      icon: external
+      variant: minimal
+---
+
+import { CardGrid } from '@astrojs/starlight/components';
+import Card from '../../components/Card.astro';
+
+## Features Overview
+
+<CardGrid>
+  <Card title="Image Upload" icon="lets-icons:upload-duotone-line">
+    Upload images in formats like PNG, JPG, WEBP, and more.
+  </Card>
+  <Card title="Upload History" icon="material-symbols-light:history-rounded">
+    View and manage your complete upload history.
+  </Card>
+  <Card title="Share Links" icon="lets-icons:box-refresh-alt-right-light">
+    Share images with customizable links and sizes.
+  </Card>
+  <Card title="Explore Images" icon="solar:screen-share-bold-duotone">
+    Browse public uploads from other users.
+  </Card>
+  <Card title="Authentication" icon="lets-icons:sign-in-squre-duotone">
+    Secure sign-up and login for platform access.
+  </Card>
+  <Card title="User Approval" icon="lets-icons:done-round-duotone">
+    Approve users before granting upload permissions.
+  </Card>
+  <Card title="Dashboard" icon="lets-icons:speed-light">
+    Analyze data with advanced admin statistics.
+  </Card>
+  <Card title="Dark Mode" icon="lets-icons:moon-alt-duotone">
+    Switch effortlessly between Dark and Light themes.
+  </Card>
+  <Card title="Storage Providers" icon="lets-icons:database-duotone">
+    Integrate with local, SMB, or AWS S3 storage solutions.
+  </Card>
+  <Card title="Settings" icon="solar:settings-line-duotone">
+    Configure users, storage, and platform preferences.
+  </Card>
+</CardGrid>

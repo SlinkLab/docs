@@ -1,0 +1,18 @@
+---
+title: Overriding Server Configuration
+---
+
+If you need to override the PHP configuration, you can do so by mounting a custom `php.ini` file to the `/usr/local/etc/php/conf.d/` directory in the container.
+
+Here is an example of how you can override the `upload_max_filesize` and `post_max_size` settings:
+
+```yaml
+slink:
+  # Your existing configuration
+  volumes:
+    # Your existing volumes
+
+    # Overriding this file will allow to overcome the default 50M upload limit
+    # Change the values according to your needs for both upload_max_filesize and post_max_size
+    - ./custom-php.ini:/usr/local/etc/php/conf.d/uploads.ini
+```

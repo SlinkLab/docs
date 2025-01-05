@@ -1,0 +1,54 @@
+---
+title: Quick Start
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+## Prerequisites
+
+Before you begin, make sure you have [Docker](https://www.docker.com/) installed on your system.
+
+## Installation
+
+<Steps>
+
+1. Create a new directory for Slink and navigate to it:
+
+   ```bash
+   mkdir slink-app && cd slink-app
+   ```
+
+2. Run the following docker command to start the Slink application:
+
+   ```bash
+   docker run -d \
+    --name slink \
+    -p 3000:3000 \
+    -v ./slink/var/data:/app/var/data \
+    -v ./slink/images:/app/slink/images \
+    -e ORIGIN=https://your-domain.com \
+    -e USER_APPROVAL_REQUIRED=false \
+    anirdev/slink:latest
+   ```
+
+3. Open your browser and navigate to [https://your-domain.com:3000/profile/signup](https://your-domain.com:3000/profile/signup) to create a new account.
+
+4. (Optional) Grant yourself admin access by running the following command:
+
+   ```bash
+   docker exec -it slink slink user:grant:role --email=<user-email> ROLE_ADMIN
+   ```
+
+5. Login to the Slink application and start uploading images.
+
+</Steps>
+
+<Aside type="note">
+  The above command is a basic example. You may need to adjust the environment
+  variables based on your requirements.
+</Aside>
+
+<Aside type="caution">
+  The example command disables [user approval](/reference/01-approve-user). It's
+  recommended to enable user approval in production environments.
+</Aside>

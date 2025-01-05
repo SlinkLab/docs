@@ -1,0 +1,52 @@
+---
+title: Non-Root Container User
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+By default, the application runs as the `root` user inside the container. However, it's recommended to run the application as a non-root user for security reasons.
+While Slink cannot enforce this, additional steps are required to run the application as a non-root user:
+
+<Steps>
+
+1. Create persistent directories on the host machine:
+
+   ```bash
+   mkdir -p /path/to/slink/images
+   mkdir -p /path/to/slink/data
+   ```
+
+2. Change ownership of the directories to correspond to container user:
+
+   ```bash
+   chown -R 1000:1000 /path/to/slink
+   ```
+
+3. Update the `docker-compose.yml` file to run the application as a non-root user:
+
+   ```yaml
+   services:
+     slink:
+       image: anirdev/slink:latest
+       user: slink
+       # Your other configurations
+   ```
+
+4. Then you can proceed with the [installation guide](/installation/01-docker-compose).
+
+</Steps>
+
+<Aside type="note">
+  Slink doesn't controll the end user infrastructure, therefore cannot enforce
+  running the application as a non-root user. The above steps are
+  recommendations to improve the security of the application.
+</Aside>
+
+<Aside type="tip">
+  The `1000:1000` user and group IDs correspond to the `slink` user inside the container. You can find the user and group IDs by running the following command inside the container:
+
+```bash
+docker exec -it slink id
+```
+
+</Aside>

@@ -1,0 +1,22 @@
+---
+title: Security
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Slink supports user authentication and user approval to prevent unauthorized access to the application. However, it's recommended to use a reverse proxy like [Nginx](https://www.nginx.com/) or [Traefik](https://traefik.io/traefik/)
+to add additional security features like SSL, rate limiting, etc.
+
+<Aside type="caution" title="Important">
+  Be aware that as of now, the application does not have any built-in rate
+  limiting or brute force protection.
+</Aside>
+
+<Aside type="tip">
+  If you don't want to expose the entire application to the public, you can only
+  expose the `/image` route via the reverse proxy.
+</Aside>
+
+## Non-Root Container User
+
+By default, the application runs as the `root` user inside the container. However, it's recommended to run the application as a [non-root user](/reference/04-non-root-container-user) for security reasons.

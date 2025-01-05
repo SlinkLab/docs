@@ -1,0 +1,16 @@
+---
+title: Storage Provider Reference
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Slink supports multiple storage providers for storing images. By default, the application uses the local file system to store images. However, you can configure the application to use a different storage provider by setting the `STORAGE_PROVIDER` [environment variable](/configuration/01-environment-variables).
+
+<Aside type="note">
+  The following storage providers are supported: `local`, `smb` and `s3`.
+</Aside>
+
+<Aside type="caution">
+  To persist locally saved images, you need to mount the `/app/slink/images`
+  directory to the host filesystem.
+</Aside>
