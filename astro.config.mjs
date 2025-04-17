@@ -1,12 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import tailwind from '@astrojs/tailwind';
 import icon from 'astro-icon';
+
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.slinkapp.io',
+
   integrations: [
     starlight({
       title: 'Slink Docs',
@@ -15,9 +17,13 @@ export default defineConfig({
         src: './src/assets/slink.png',
         replacesTitle: true,
       },
-      social: {
-        github: 'https://github.com/andrii-kryvoviaz/slink',
-      },
+      social: [
+        {
+          icon: 'github',
+          label: 'GitHub',
+          href: 'https://github.com/andrii-kryvoviaz/slink',
+        },
+      ],
       sidebar: [
         {
           label: 'Getting Started',
@@ -46,7 +52,10 @@ export default defineConfig({
       ],
       customCss: ['./src/tailwind.css'],
     }),
-    tailwind({ applyBaseStyles: false }),
     icon(),
   ],
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });
