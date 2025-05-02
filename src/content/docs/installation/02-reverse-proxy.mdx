@@ -1,0 +1,146 @@
+---
+title: Reverse Proxy
+description: Setting up a reverse proxy for the application.
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+This guide will help you set up a reverse proxy for the application.
+A reverse proxy is a server that sits in front of your application and forwards client requests to it.
+
+<Aside type="caution" title="Important">
+  Make sure to replace `https://your-domain.com` with your actual domain name
+  during the setup.
+</Aside>
+
+## Traefik
+
+<Steps>
+1. Create a new docker network for e.g. `proxy`:
+   ```bash
+   docker network create proxy
+   ```
+2. Adjust your `docker-compose.yml` file to include the Traefik service:
+   ```yaml ins={2-11,22-35,37-39}
+   services:
+     traefik:
+       image: traefik:latest
+       container_name: traefik
+       ports:
+         - "80:80"
+         - "8080:8080" # Traefik dashboard
+       networks:
+         - proxy
+       volumes:
+         - "/var/run/docker.sock:/var/run/docker.sock"
+
+     slink:
+       image: anirdev/slink:latest
+        container_name: slink
+        restart: always
+        environment:
+          - ORIGIN=https://your-domain.com
+        volumes:
+          - ./data/slink/var/data:/app/var/data
+          - ./data/slink/images:/app/slink/images
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.slink.entrypoints=http"
+          - "traefik.http.routers.slink.rule=Host(`your-domain.com`)"
+          - "traefik.http.middlewares.slink-https-redirect.redirectscheme.scheme=https"
+          - "traefik.http.routers.slink.middlewares=slink-https-redirect"
+          - "traefik.http.routers.slink-secure.entrypoints=https"
+          - "traefik.http.routers.slink-secure.rule=Host(`your-domain.com`)"
+          - "traefik.http.routers.slink-secure.tls=true"
+          - "traefik.http.routers.slink-secure.service=slink"
+          - "traefik.http.services.slink.loadbalancer.server.port=3000"
+          - "traefik.docker.network=proxy"
+        networks:
+          - proxy
+
+    networks:
+      proxy:
+        external: true
+    ```
+
+3. Restart your Docker containers.
+4. Open your browser and navigate to `http://your-domain.com` to access the Slink application.
+
+</Steps>
+
+<Aside type="tip">
+  This is just an example configuration. You can customize it to your needs.
+  <a
+    href="https://doc.traefik.io/traefik/"
+    target="_blank"
+    rel="noopener,noreferrer"
+  >
+    Traefik documentation
+  </a>
+</Aside>
+
+## Nginx Proxy Manager
+
+<Steps>
+1. Create a new docker network for e.g. `proxy`:
+   ```bash
+   docker network create proxy
+   ```
+2. Adjust your `docker-compose.yml` file to include the Nginx Proxy Manager service:
+   ```yaml ins={2-10,21-22,24-26}
+    services:
+      nginx-proxy-manager:
+        image: jc21/nginx-proxy-manager:latest
+        container_name: nginx-proxy-manager
+        restart: always
+        ports:
+          - "80:80"
+          - "81:81"
+        networks:
+          - proxy
+  
+      slink:
+        image: anirdev/slink:latest
+          container_name: slink
+          restart: always
+          environment:
+            - ORIGIN=https://your-domain.com
+          volumes:
+            - ./data/slink/var/data:/app/var/data
+            - ./data/slink/images:/app/slink/images
+          networks:
+            - proxy
+  
+      networks:
+        proxy:
+          external: true
+      ```
+
+3. Restart your Docker containers.
+4. Open your browser and navigate to `http://your-domain.com:81` to access the Nginx Proxy Manager dashboard.
+5. Create a new proxy host with the following settings:
+
+   - Domain Names: `your-domain.com`
+   - Scheme: `http`
+   - Forward Hostname / IP: `slink`
+   - Forward Port: `3000`
+   - Block Common Exploits: `true`
+   - Websockets Support: `true`
+   - SSL: `Request a new SSL certificate`
+   - Force SSL: `true`
+
+6. Click on the `Save` button to create the proxy host.
+7. Open your browser and navigate to `https://your-domain.com` to access the Slink application.
+
+</Steps>
+
+<Aside type="note">
+  For more information on how to set up Nginx Proxy Manager, check out:
+  <a
+    href="https://nginxproxymanager.com/"
+    target="_blank"
+    rel="noopener,noreferrer"
+  >
+    Nginx Proxy Manager documentation
+  </a>
+</Aside>
