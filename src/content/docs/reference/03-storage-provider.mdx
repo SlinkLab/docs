@@ -11,7 +11,92 @@ Slink supports multiple storage providers for storing images. By default, the ap
   The following storage providers are supported: `local`, `smb` and `s3`.
 </Aside>
 
+## Local Storage Provider
+
+The local storage provider stores images on the local filesystem. This is the default provider and requires no additional configuration beyond specifying the storage directory.
+
 <Aside type="caution">
-  To persist locally saved images, you need to mount the `/app/slink/images`
+  To persist locally saved images when using Docker, you need to mount the `/app/slink/images`
   directory to the host filesystem.
 </Aside>
+
+**Configuration:**
+- `STORAGE_PROVIDER=local`
+- Images are stored in `/app/slink/images`
+- Cache files are stored in `/app/slink/cache`
+
+## SMB (Samba) Storage Provider
+
+The SMB storage provider allows you to store images on a network share using the SMB/CIFS protocol. This is useful for centralized storage in enterprise environments.
+
+**Required Configuration:**
+- `STORAGE_PROVIDER=smb`
+- `SMB_HOST` - The hostname or IP address of your SMB server
+- `SMB_SHARE` - The name of the SMB share to use
+- `SMB_USERNAME` - Username for authentication
+- `SMB_PASSWORD` - Password for authentication
+
+**Optional Configuration:**
+- `SMB_WORKGROUP` - The SMB workgroup (defaults to 'workgroup')
+
+**Example Docker Compose configuration:**
+```yaml
+environment:
+  STORAGE_PROVIDER: smb
+  SMB_HOST: 192.168.1.100
+  SMB_SHARE: slink-storage
+  SMB_USERNAME: slink-user
+  SMB_PASSWORD: your-secure-password
+  SMB_WORKGROUP: workgroup
+```
+
+<Aside type="note">
+  The SMB provider automatically creates the required directory structure (`slink/images` and `slink/cache`) on the remote share.
+</Aside>
+
+## Amazon S3 Storage Provider
+
+The Amazon S3 storage provider stores images in an AWS S3 bucket. This is ideal for cloud deployments and provides scalable object storage.
+
+**Required Configuration:**
+- `STORAGE_PROVIDER=s3`
+- `AMAZON_S3_REGION` - AWS region where your bucket is located (e.g., `us-east-1`)
+- `AMAZON_S3_BUCKET` - Name of your S3 bucket
+- `AMAZON_S3_ACCESS_KEY_ID` - AWS access key ID
+- `AMAZON_S3_SECRET_ACCESS_KEY` - AWS secret access key
+
+**Example Docker Compose configuration:**
+```yaml
+environment:
+  STORAGE_PROVIDER: s3
+  AMAZON_S3_REGION: us-east-1
+  AMAZON_S3_BUCKET: my-slink-bucket
+  AMAZON_S3_ACCESS_KEY_ID: EXAMPLEKEYID
+  AMAZON_S3_SECRET_ACCESS_KEY: exampleSecretKey
+```
+
+<Aside type="tip">
+  For security best practices, consider using IAM roles instead of access keys when running on AWS infrastructure, or use AWS Secrets Manager for credential management.
+</Aside>
+
+<Aside type="note">
+  The S3 provider stores images directly in the bucket root with the following structure:
+  - Original images: `{filename}`
+  - Cached/transformed images: `cache/{transformed-filename}`
+</Aside>
+
+## Storage Provider Architecture
+
+Slink uses a proxy pattern to abstract storage operations. The `StorageProxy` class automatically routes operations to the configured storage provider based on the `STORAGE_PROVIDER` environment variable.
+
+**Supported Operations:**
+- Upload files with automatic directory creation
+- Read and write file content
+- Delete files
+- Check file existence
+- Image transformation and caching
+
+**Directory Structure:**
+All storage providers maintain a consistent directory structure:
+- `slink/images/` - Original uploaded images
+- `slink/cache/` - Transformed/cached images

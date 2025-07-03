@@ -48,6 +48,10 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
          # Maximum image size allowed to be uploaded (no more than 50M)
          - IMAGE_MAX_SIZE=15M
 
+         # Image processing settings
+         - IMAGE_STRIP_EXIF_METADATA=true
+         - IMAGE_COMPRESSION_QUALITY=80
+
          # Storage provider to use (may require additional configuration variables for different providers, see below)
          - STORAGE_PROVIDER=local
        volumes:
@@ -78,16 +82,69 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
 
 </Steps>
 
-<Aside type="note">
-  You can customize the `docker-compose.yml` file to suit your needs. For
-  example, you can change the `IMAGE_MAX_SIZE` to allow larger or smaller images
-  to be uploaded. Please refer to the
-  [configuration](/configuration/01-environment-variables) section for more
-  details.
-</Aside>
+## Advanced Configuration Examples
 
-<Aside type="tip">
-  If you are using Traefik, you don't need to expose the application on port
-  3000. You can use Traefik to route the traffic to the application by adding
-  the corresponding labels to the service.
+### SMB/Network Storage Configuration
+
+If you want to store images on a network share using SMB/CIFS:
+
+```yaml
+services:
+  slink:
+    image: anirdev/slink:latest
+    container_name: slink
+    environment:
+      - TZ=UTC
+      - ORIGIN=https://your-domain.com
+      
+      # SMB Storage Configuration
+      - STORAGE_PROVIDER=smb
+      - SMB_HOST=192.168.1.100
+      - SMB_SHARE=slink-storage
+      - SMB_USERNAME=slink-user
+      - SMB_PASSWORD=secure-password
+      - SMB_WORKGROUP=workgroup
+      
+      # Other settings...
+      - USER_APPROVAL_REQUIRED=true
+      - IMAGE_MAX_SIZE=15M
+    volumes:
+      # Only need to persist the database when using SMB storage
+      - ./slink/var/data:/app/var/data
+    ports:
+      - '3000:3000'
+```
+
+### Amazon S3 Storage Configuration
+
+For cloud deployments using AWS S3:
+
+```yaml
+services:
+  slink:
+    image: anirdev/slink:latest
+    container_name: slink
+    environment:
+      - TZ=UTC
+      - ORIGIN=https://your-domain.com
+      
+      # S3 Storage Configuration
+      - STORAGE_PROVIDER=s3
+      - AMAZON_S3_REGION=us-east-1
+      - AMAZON_S3_BUCKET=my-slink-bucket
+      - AMAZON_S3_ACCESS_KEY_ID=EXAMPLEKEYID
+      - AMAZON_S3_SECRET_ACCESS_KEY=exampleSecretKey
+      
+      # Other settings...
+      - USER_APPROVAL_REQUIRED=true
+      - IMAGE_MAX_SIZE=15M
+    volumes:
+      # Only need to persist the database when using S3 storage
+      - ./slink/var/data:/app/var/data
+    ports:
+      - '3000:3000'
+```
+
+<Aside type="danger">
+  Never commit AWS credentials to version control. Consider using AWS IAM roles, AWS Secrets Manager, or Docker secrets for production deployments.
 </Aside>

@@ -28,7 +28,10 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) installed
     -v ./slink/var/data:/app/var/data \
     -v ./slink/images:/app/slink/images \
     -e ORIGIN=https://your-domain.com \
+    -e TZ=UTC \
     -e USER_APPROVAL_REQUIRED=false \
+    -e IMAGE_MAX_SIZE=15M \
+    -e STORAGE_PROVIDER=local \
     anirdev/slink:latest
    ```
 

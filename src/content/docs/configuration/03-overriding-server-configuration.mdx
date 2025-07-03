@@ -3,17 +3,76 @@ title: Overriding Server Configuration
 description: How to override server configuration for Slink.
 ---
 
-If you need to override the PHP configuration, you can do so by mounting a custom `php.ini` file to the `/usr/local/etc/php/conf.d/` directory in the container.
+import { Aside } from '@astrojs/starlight/components';
 
-Here is an example of how you can override the `upload_max_filesize` and `post_max_size` settings:
+Slink runs on a containerized environment with pre-configured PHP and web server settings. However, you may need to customize these settings for your specific deployment requirements.
+
+## PHP Configuration Overrides
+
+If you need to override PHP configuration, you can mount custom configuration files to the `/usr/local/etc/php/conf.d/` directory in the container.
+
+### Common PHP Overrides
+
+#### File Upload Limits
+
+To increase file upload limits beyond the default values:
+
+**Create a custom PHP configuration file (`custom-php.ini`):**
+
+```ini
+; File upload settings
+upload_max_filesize = 100M
+post_max_size = 100M
+max_file_uploads = 20
+
+; Memory and execution limits
+memory_limit = 512M
+max_execution_time = 300
+max_input_time = 300
+
+; File handling
+file_uploads = On
+```
+
+**Mount it in your Docker Compose configuration:**
 
 ```yaml
-slink:
-  # Your existing configuration
-  volumes:
-    # Your existing volumes
-
-    # Overriding this file will allow to overcome the default 50M upload limit
-    # Change the values according to your needs for both upload_max_filesize and post_max_size
-    - ./custom-php.ini:/usr/local/etc/php/conf.d/uploads.ini
+services:
+  slink:
+    image: anirdev/slink:latest
+    volumes:
+      # Your existing volumes
+      - ./slink/var/data:/app/var/data
+      - ./slink/images:/app/slink/images
+      
+      # Custom PHP configuration
+      - ./custom-php.ini:/usr/local/etc/php/conf.d/uploads.ini
+    # ... rest of your configuration
 ```
+
+<Aside type="caution">
+  Ensure that your `IMAGE_MAX_SIZE` environment variable doesn't exceed the PHP `upload_max_filesize` and `post_max_size` limits.
+</Aside>
+
+## Web Server Configuration
+
+The default container uses a built-in web server. For advanced web server configurations or reverse proxy setups, see the [Reverse Proxy](/installation/02-reverse-proxy) guide.
+
+## Configuration Validation
+
+After applying custom configurations, verify they're working correctly:
+
+```bash
+# Check PHP configuration
+docker exec -it slink php -i | grep upload_max_filesize
+
+# Check if your application is responding
+curl -I http://localhost:3000/api/health
+
+# View application logs
+docker logs slink
+```
+
+<Aside type="tip">
+  Always test configuration changes in a development environment before applying them to production.
+</Aside>
