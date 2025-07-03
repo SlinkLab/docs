@@ -1,17 +1,340 @@
-@layer base, starlight, theme, components, utilities;
-
+@import "tailwindcss";
 @import '@astrojs/starlight-tailwind';
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css' layer(utilities);
 
-@theme {
-  /*
+/*
 Configure your Tailwind theme that will be used by Starlight.
 https://starlight.astro.build/guides/css-and-tailwind/#styling-starlight-with-tailwind
 */
-}
 
 /*
 Add additional Tailwind styles to this file:
 https://tailwindcss.com/docs/adding-custom-styles#using-custom-css
 */
+
+:root {
+  /* Layout & Spacing */
+  --theme-spacing-xs: 0.5rem;
+  --theme-spacing-sm: 1rem;
+  --theme-spacing-md: 1.5rem;
+  --theme-spacing-lg: 2rem;
+  --theme-spacing-xl: 3rem;
+  --theme-spacing-xxl: 4rem;
+  --theme-border-radius: 12px;
+  --theme-backdrop-blur: blur(16px);
+  --theme-backdrop-blur-sm: blur(8px);
+  
+  /* Card specific */
+  --theme-card-border-radius: 16px;
+  --theme-card-padding: 1.75rem;
+  --theme-card-padding-mobile: 1.25rem;
+  --theme-card-backdrop-blur: blur(10px);
+  --theme-card-hover-offset: -2px;
+  --theme-card-header-gap: 0.75rem;
+  
+  /* Icon */
+  --theme-icon-padding: 0.375rem;
+  --theme-icon-padding-mobile: 0.375rem;
+  --theme-icon-border-radius: 8px;
+  
+  /* Typography */
+  --theme-title-font-size: 1.125rem;
+  --theme-title-font-size-mobile: 1rem;
+  --theme-title-line-height: 1.4;
+  --theme-body-font-size: 0.9rem;
+  --theme-body-line-height: 1.6;
+  
+  /* Animation & Transitions */
+  --theme-transition-fast: 0.3s ease;
+  --theme-transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --theme-transition-shimmer: 0.6s ease;
+  --theme-transform-hover-button: translateY(-2px);
+  --theme-transform-hover-minimal: translateY(-1px);
+  --theme-transform-hover-icon: translateX(2px);
+  --theme-transform-hover-card: translateY(-2px);
+  
+  /* Typography */
+  --theme-font-weight-normal: 600;
+  --theme-font-weight-medium: 500;
+  --theme-font-weight-bold: 700;
+  --theme-font-weight-extra-bold: 800;
+  --theme-line-height-tight: 1.1;
+  --theme-line-height-relaxed: 1.7;
+  
+  /* Light theme colors */
+  --sl-color-text-accent: #000;
+  --theme-bg-primary: #ffffff;
+  --theme-bg-secondary: #f8fafc;
+  --theme-bg-nav: #ffffff;
+  --theme-bg-sidebar: #ffffff;
+  --theme-bg-code: rgba(0, 0, 0, 0.05);
+  --theme-bg-pre: rgba(0, 0, 0, 0.08);
+  --theme-border: rgba(0, 0, 0, 0.1);
+  --theme-border-nav: rgba(0, 0, 0, 0.08);
+  --theme-border-hover: rgba(0, 0, 0, 0.15);
+  --theme-text-primary: #374151;
+  --theme-text-secondary: #6b7280;
+  --theme-text-white: #ffffff;
+  --theme-text-accent: #2563eb;
+  --theme-shadow: rgba(0, 0, 0, 0.1);
+  --theme-shadow-hover: rgba(0, 0, 0, 0.15);
+  --theme-shadow-button: 0 12px 30px rgba(59, 56, 240, 0.6);
+  --theme-shadow-minimal: 0 8px 20px var(--theme-shadow-hover);
+  --theme-button-bg: rgba(0, 0, 0, 0.05);
+  --theme-button-bg-hover: rgba(0, 0, 0, 0.1);
+  --theme-button-border: rgba(255, 255, 255, 0.25);
+  --theme-shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  --theme-gradient-primary-start: #3b38f0;
+  --theme-gradient-primary-end: #2e1065;
+  --theme-gradient-hover-start: #4c48ff;
+  --theme-gradient-hover-end: #3730a3;
+  --theme-gradient-title-start: #374151;
+  --theme-gradient-title-mid: #6b7280;
+  --theme-gradient-title-end: #2563eb;
+  --theme-gradient-highlight-start: #2563eb;
+  --theme-gradient-highlight-end: #1d4ed8;
+}
+
+:root[data-theme='dark'] {
+  /* Dark theme colors */
+  --sl-color-bg: #0a0a0a;
+  --sl-color-bg-nav: #101010;
+  --sl-color-bg-sidebar: #0f0f0f;
+  --sl-color-text-accent: #ffffff;
+  --theme-bg-primary: #0a0a0a;
+  --theme-bg-secondary: #111111;
+  --theme-bg-nav: #101010;
+  --theme-bg-sidebar: #0f0f0f;
+  --theme-bg-code: rgba(0, 0, 0, 0.3);
+  --theme-bg-pre: rgba(0, 0, 0, 0.4);
+  --theme-border: rgba(255, 255, 255, 0.1);
+  --theme-border-nav: rgba(255, 255, 255, 0.1);
+  --theme-border-hover: rgba(255, 255, 255, 0.15);
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #e5e5e5;
+  --theme-text-white: #ffffff;
+  --theme-text-accent: #60a5fa;
+  --theme-shadow: rgba(0, 0, 0, 0.5);
+  --theme-shadow-hover: rgba(0, 0, 0, 0.3);
+  --theme-shadow-button: 0 12px 30px rgba(59, 56, 240, 0.6);
+  --theme-shadow-minimal: 0 8px 20px var(--theme-shadow-hover);
+  --theme-button-bg: rgba(255, 255, 255, 0.08);
+  --theme-button-bg-hover: rgba(255, 255, 255, 0.15);
+  --theme-button-border: rgba(255, 255, 255, 0.25);
+  --theme-shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  --theme-gradient-primary-start: #3b38f0;
+  --theme-gradient-primary-end: #2e1065;
+  --theme-gradient-hover-start: #4c48ff;
+  --theme-gradient-hover-end: #3730a3;
+  --theme-gradient-title-start: #ffffff;
+  --theme-gradient-title-mid: #e5e5e5;
+  --theme-gradient-title-end: #60a5fa;
+  --theme-gradient-highlight-start: #60a5fa;
+  --theme-gradient-highlight-end: #2563eb;
+}
+
+body {
+  position: relative;
+  background: var(--theme-bg-primary);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: grid-move 20s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+:root[data-theme='dark'] body::before {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+@keyframes grid-move {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: high), (forced-colors: active) {
+  body::before {
+    display: none;
+  }
+}
+
+.social-icons a svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.pagination-links {
+  margin-top: 3rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.pagination-links a {
+  --pagination-border-color: rgba(0, 0, 0, 0.08);
+  --pagination-border-hover: rgba(0, 0, 0, 0.12);
+  --pagination-bg: rgba(255, 255, 255, 0.95);
+  --pagination-bg-hover: rgba(255, 255, 255, 1);
+  --pagination-text: #374151;
+  --pagination-text-hover: #1f2937;
+  --pagination-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --pagination-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+  
+  position: relative !important;
+  background: var(--pagination-bg) !important;
+  border: 1px solid var(--pagination-border-color) !important;
+  border-radius: 12px !important;
+  padding: 1rem 1.25rem !important;
+  color: var(--pagination-text) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: var(--pagination-shadow) !important;
+  backdrop-filter: blur(10px) !important;
+  overflow: hidden !important;
+}
+
+.pagination-links a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease-out;
+  border-radius: inherit;
+}
+
+.pagination-links a:hover::before {
+  transform: translateX(100%);
+}
+
+.pagination-links a:hover {
+  background: var(--pagination-bg-hover) !important;
+  border-color: var(--pagination-border-hover) !important;
+  color: var(--pagination-text-hover) !important;
+  box-shadow: var(--pagination-shadow-hover) !important;
+}
+
+.pagination-links a:active {
+  transition: all 0.1s ease !important;
+}
+
+.pagination-links a:focus-visible {
+  outline: 2px solid var(--theme-text-accent) !important;
+  outline-offset: 2px !important;
+}
+
+.pagination-links a svg {
+  width: 1.125rem !important;
+  height: 1.125rem !important;
+  transition: all 0.25s ease !important;
+  opacity: 0.75 !important;
+}
+
+.pagination-links a:hover svg {
+  opacity: 1 !important;
+}
+
+.pagination-links a[rel="prev"] svg {
+  transform: translateX(0) !important;
+}
+
+.pagination-links a[rel="next"] svg {
+  transform: translateX(0) !important;
+}
+
+.pagination-links a[rel="prev"]:hover svg {
+  transform: translateX(-3px) !important;
+}
+
+.pagination-links a[rel="next"]:hover svg {
+  transform: translateX(3px) !important;
+}
+
+.pagination-links a span {
+  font-weight: 600 !important;
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+:root[data-theme='dark'] .pagination-links a {
+  --pagination-border-color: rgba(255, 255, 255, 0.1);
+  --pagination-border-hover: rgba(255, 255, 255, 0.15);
+  --pagination-bg: rgba(15, 15, 15, 0.95);
+  --pagination-bg-hover: rgba(31, 31, 31, 1);
+  --pagination-text: #e5e7eb;
+  --pagination-text-hover: #ffffff;
+  --pagination-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --pagination-shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme='dark'] .pagination-links a::before {
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
+}
+
+@media (max-width: 768px) {
+  .pagination-links {
+    margin-top: 2rem !important;
+  }
+  
+  .pagination-links a {
+    padding: 0.875rem 1rem !important;
+    font-size: 0.8125rem !important;
+  }
+  
+  .pagination-links a svg {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagination-links a,
+  .pagination-links a svg,
+  .pagination-links a::before {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .pagination-links a {
+    border-width: 2px !important;
+    font-weight: 700 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .pagination-links a {
+    border: 2px solid ButtonBorder !important;
+    background: ButtonFace !important;
+    color: ButtonText !important;
+  }
+  
+  .pagination-links a:hover {
+    background: Highlight !important;
+    color: HighlightText !important;
+  }
+}
+
+footer {
+  display: none !important;
+}
+

@@ -1,0 +1,88 @@
+---
+import { Icon } from 'astro-icon/components';
+import { cva } from 'class-variance-authority';
+import { twMerge } from 'tailwind-merge';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  icon?: string;
+  class?: string;
+  external?: boolean;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  icon,
+  class: customClass = '',
+  external = false,
+} = Astro.props;
+
+const buttonVariants = cva(
+  'group relative inline-flex items-center gap-2 no-underline font-medium transition-all overflow-hidden justify-center not-content',
+  {
+    variants: {
+      variant: {
+        primary: [
+          'bg-gradient-to-r from-purple-600 to-blue-600 text-white!',
+          'border border-transparent bg-clip-padding',
+          'before:absolute before:inset-0 before:p-[1px] before:bg-gradient-to-r before:from-purple-600 before:to-blue-600 before:rounded-[inherit] before:-z-10',
+          'hover:from-purple-700 hover:to-blue-700 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25',
+          'hover:before:from-purple-700 hover:before:to-blue-700',
+          'after:absolute after:inset-0 after:-translate-x-full after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent',
+          'after:transition-transform after:duration-500 hover:after:translate-x-full',
+          'text-shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50'
+        ],
+        secondary: [
+          'border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50',
+          'text-gray-700 dark:text-gray-100',
+          'hover:border-gray-400 dark:hover:border-gray-600',
+          'hover:bg-gray-50/50 dark:hover:bg-gray-700/50 hover:scale-[1.02]',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500/50'
+        ],
+        ghost: [
+          'bg-transparent text-gray-600 dark:text-gray-400',
+          'hover:bg-gray-100/50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-100',
+          'focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500/50'
+        ]
+      },
+      size: {
+        sm: 'px-4 py-2 text-sm rounded-md duration-200',
+        md: 'px-6 py-3 text-base rounded-lg duration-300',
+        lg: 'px-8 py-4 text-lg rounded-xl duration-300'
+      }
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md'
+    }
+  }
+);
+
+const classes = twMerge(buttonVariants({ variant, size }), customClass);
+---
+
+{href ? (
+  <a href={href} class={classes} {...(external && { target: "_blank" })}>
+    {icon && <Icon name={icon} size="1.2em" />}
+    <slot />
+    {variant === 'primary' && (
+      <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1L15 8L8 15M15 8H1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    )}
+  </a>
+) : (
+  <button type="button" class={classes}>
+    {icon && <Icon name={icon} size="1.2em" />}
+    <slot />
+    {variant === 'primary' && (
+      <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1L15 8L8 15M15 8H1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    )}
+  </button>
+)}

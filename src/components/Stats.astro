@@ -1,0 +1,144 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Stat {
+  number: string;
+  label: string;
+  icon: "github" | "seti:lock" | "seti:db" | "seti:json";
+}
+
+const stats: Stat[] = [
+  { number: "100%", label: "Open Source", icon: "github" },
+  { number: "Self-hosted", label: "Privacy First", icon: "seti:lock" },
+  { number: "Multiple", label: "Storage Options", icon: "seti:db" },
+  { number: "Modern", label: "Tech Stack", icon: "seti:json" }
+];
+---
+
+<section class="stats-section">
+  <div class="stats-grid">
+    {stats.map((stat) => (
+      <div class="stat-item">
+        <div class="stat-icon">
+          <Icon name={stat.icon} size="2rem" />
+        </div>
+        <div class="stat-number">{stat.number}</div>
+        <div class="stat-label">{stat.label}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    margin: 4rem 0;
+    padding: 3rem 0;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .stat-item {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.08) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.12) 100%);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .stat-icon {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .stat-icon :global(svg) {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: white;
+    background: linear-gradient(135deg, var(--sl-color-accent-400, #60a5fa) 0%, var(--sl-color-accent-600, #2563eb) 100%);
+    border-radius: 12px;
+    padding: 0.625rem;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--sl-color-accent-400, #60a5fa);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  
+  @supports (background-clip: text) {
+    .stat-number {
+      background: linear-gradient(135deg, var(--sl-color-accent-400, #60a5fa) 0%, var(--sl-color-accent-600, #2563eb) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+  
+  .stat-label {
+    font-size: 0.95rem;
+    color: var(--sl-color-gray-2, #9ca3af);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.75px;
+    line-height: 1.4;
+  }
+  
+  :global([data-theme='light']) .stat-label {
+    color: var(--sl-color-gray-4, #6b7280);
+  }
+  
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      max-width: 600px;
+    }
+    
+    .stat-item {
+      padding: 2rem 1rem;
+    }
+    
+    .stat-number {
+      font-size: 1.75rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+    }
+    
+    .stat-icon :global(svg) {
+      width: 2rem;
+      height: 2rem;
+      padding: 0.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    
+    .stat-item {
+      padding: 1.75rem 1rem;
+    }
+  }
+</style>

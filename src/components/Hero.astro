@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import Button from './Button.astro';
+import slinkImage from '../assets/slink.png';
+import { Icon } from 'astro-icon/components';
+---
+
+<section class="relative flex items-center justify-center">
+  <div class="pt-8 pb-20">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      
+      <div class="text-center lg:text-left flex flex-col gap-12">
+        <div class="flex justify-center lg:justify-start">
+          <div class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700">
+            <span class="text-sm font-medium text-indigo-700 dark:text-indigo-300">🚀 Self-hosted & Open Source</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-8">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
+            <span class="text-gray-900 dark:text-white">Image Sharing</span>
+            <span class="block bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              Made Simple
+            </span>
+          </h1>
+          
+          <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            A powerful, self-hosted image hosting platform designed for teams, developers, and enthusiasts who value privacy and control.
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <Button
+            href="/getting-started/01-introduction"
+            variant="primary"
+            size="lg"
+            class="px-8 py-3 text-base"
+          >
+            Get Started
+          </Button>
+          <Button
+            href="https://github.com/andrii-kryvoviaz/slink"
+            variant="secondary"
+            size="lg"
+            external={true}
+            class="px-8 py-3 text-base"
+          >
+            <Icon name="mdi:github" class="w-5 h-5 mr-2" />
+            View on GitHub
+          </Button>
+        </div>
+
+        <div class="flex flex-wrap gap-8 justify-center lg:justify-start text-sm text-gray-600 dark:text-gray-400">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Docker Ready</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Instant Sharing</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Multi-User Support</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex justify-center lg:justify-end">
+        <div class="relative">
+          <div class="relative overflow-hidden p-2">
+            <div class="overflow-hidden rounded-lg">
+              <Image
+                src={slinkImage}
+                alt="Slink - Self-hosted image sharing service interface"
+                class="w-full h-auto object-cover"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+

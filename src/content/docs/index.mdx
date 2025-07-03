@@ -1,65 +1,67 @@
 ---
-title: Slink
-description: Slink is a self-hosted image sharing service for friends, teams, and developers. Learn how to install, configure, and use it.
+title: Slink - Self-hosted Image Sharing Service
+description: Slink is a self-hosted image sharing service for teams and developers. Features secure uploads, multiple storage providers, user management, and complete data control. Deploy in minutes with Docker.
 template: splash
 hero:
-  title: |
-    Welcome to
-    <span
-      class="font-black text-transparent
-        bg-clip-text bg-gradient-to-b
-        from-accent-700 to-accent-400
-        dark:from-accent-500 dark:to-accent-200"
-    >
-      Slink
-    </span>
-  tagline: A Self-hosted image sharing service
-  image:
-    file: ../../assets/slink.png
-  actions:
-    - text: Get started
-      link: /getting-started/01-introduction
-      icon: right-arrow
-    - text: View on GitHub
-      link: https://github.com/andrii-kryvoviaz/slink
-      icon: external
-      variant: minimal
+  title: Slink
+  tagline: Self-hosted image sharing platform
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
 import Card from '../../components/Card.astro';
+import Stats from '../../components/Stats.astro';
+import CallToAction from '../../components/CallToAction.astro';
 
-## Features Overview
 
-<CardGrid>
-  <Card title="Image Upload" icon="lets-icons:upload-duotone-line">
-    Upload images in formats like PNG, JPG, WEBP, and more.
-  </Card>
-  <Card title="Upload History" icon="material-symbols-light:history-rounded">
-    View and manage your complete upload history.
-  </Card>
-  <Card title="Share Links" icon="lets-icons:box-refresh-alt-right-light">
-    Share images with customizable links and sizes.
-  </Card>
-  <Card title="Explore Images" icon="solar:screen-share-bold-duotone">
-    Browse public uploads from other users.
-  </Card>
-  <Card title="Authentication" icon="lets-icons:sign-in-squre-duotone">
-    Secure sign-up and login for platform access.
-  </Card>
-  <Card title="User Approval" icon="lets-icons:done-round-duotone">
-    Approve users before granting upload permissions.
-  </Card>
-  <Card title="Dashboard" icon="lets-icons:speed-light">
-    Analyze data with advanced admin statistics.
-  </Card>
-  <Card title="Dark Mode" icon="lets-icons:moon-alt-duotone">
-    Switch effortlessly between Dark and Light themes.
-  </Card>
-  <Card title="Storage Providers" icon="lets-icons:database-duotone">
-    Integrate with local, SMB, or AWS S3 storage solutions.
-  </Card>
-  <Card title="Settings" icon="solar:settings-line-duotone">
-    Configure users, storage, and platform preferences.
-  </Card>
-</CardGrid>
+## Why Choose Slink?
+
+Slink is a self-hosted image sharing platform that allows you to maintain control over your data. Upload, share, and manage images through your own instance without relying on third-party services.
+
+<div class="mt-12!">
+  <CardGrid stagger>
+    <Card title="Multiple Image Formats" icon="material-symbols-light:cloud-upload">
+      Supports PNG, JPG, WEBP, SVG, BMP, ICO, GIF, AVIF, HEIC, and TIFF with automatic processing.
+    </Card>
+    <Card title="Upload History" icon="material-symbols-light:history">
+      View and search through your uploaded images with filtering and organization options.
+    </Card>
+    <Card title="Shareable Links" icon="material-symbols-light:share">
+      Create links to shared images with configurable size parameters.
+    </Card>
+    <Card title="Public Gallery" icon="material-symbols-light:photo-library">
+      Browse images shared publicly by other users on your instance.
+    </Card>
+    <Card title="User Authentication" icon="material-symbols-light:security">
+      Register and login system with role-based access and optional user approval.
+    </Card>
+    <Card title="User Management" icon="material-symbols-light:admin-panel-settings">
+      Administrative interface for managing users and platform permissions.
+    </Card>
+    <Card title="Analytics & Insights" icon="material-symbols-light:dashboard">
+      Monitor usage statistics, and user activity with comprehensive admin dashboards.
+    </Card>
+    <Card title="Theme Support" icon="material-symbols-light:dark-mode">
+      Switch between dark and light interface themes.
+    </Card>
+    <Card title="Storage Options" icon="material-symbols-light:storage">
+      Configure local storage, SMB shares, or S3-compatible storage backends.
+    </Card>
+    <Card title="Advanced Configuration" icon="material-symbols-light:settings">
+      Fine-tune every aspect of your installation with comprehensive settings and environment variables.
+    </Card>
+  </CardGrid>
+</div>
+
+<CallToAction
+  title="Ready to Get Started?"
+  description="Follow the installation guide to set up your own Slink instance."
+  primaryAction={{
+    text: "Installation Guide",
+    href: "/installation/01-docker-compose",
+  }}
+  secondaryAction={{
+    text: "Source Code",
+    href: "https://github.com/andrii-kryvoviaz/slink",
+    icon: "mdi:github",
+  }}
+/>

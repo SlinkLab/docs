@@ -4,61 +4,24 @@ import { Icon } from 'astro-icon/components';
 interface Props {
 	icon?: string;
 	title: string;
+	gradient?: string;
 }
 
-const { icon, title } = Astro.props;
+const { icon, title, gradient } = Astro.props;
 ---
 
-<article class="card sl-flex">
-	<p class="title sl-flex">
-		{icon && <Icon name={icon} class="icon" size="1.333em" />}
-		<span set:html={title} />
-	</p>
-	<div class="body"><slot /></div>
+<article class="group relative bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-8 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/5 dark:hover:shadow-black/20 hover:-translate-y-2 hover:border-gray-300/80 dark:hover:border-gray-700/80">
+	<div class="flex flex-col gap-6">
+		<div class="flex items-center gap-4">
+			{icon && (
+				<div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-md flex items-center justify-center shadow-lg shadow-purple-500/25">
+					<Icon name={icon} class="w-4 h-4 text-white" />
+				</div>
+			)}
+			<span class="text-2xl font-light text-gray-900 dark:text-white leading-tight" set:html={title} />
+		</div>
+		<div class="text-gray-600 dark:text-gray-400 leading-relaxed font-extralight">
+			<slot />
+		</div>
+	</div>
 </article>
-
-<style>
-	.card {
-		--sl-card-border: var(--sl-color-purple);
-		--sl-card-bg: var(--sl-color-purple-low);
-		border: 1px solid var(--sl-color-gray-5);
-		background-color: var(--sl-color-black);
-		padding: clamp(1rem, calc(0.125rem + 3vw), 2.5rem);
-		flex-direction: column;
-		gap: clamp(0.5rem, calc(0.125rem + 1vw), 1rem);
-	}
-	.card:nth-child(4n + 1) {
-		--sl-card-border: var(--sl-color-orange);
-		--sl-card-bg: var(--sl-color-orange-low);
-	}
-	.card:nth-child(4n + 3) {
-		--sl-card-border: var(--sl-color-green);
-		--sl-card-bg: var(--sl-color-green-low);
-	}
-	.card:nth-child(4n + 4) {
-		--sl-card-border: var(--sl-color-red);
-		--sl-card-bg: var(--sl-color-red-low);
-	}
-	.card:nth-child(4n + 5) {
-		--sl-card-border: var(--sl-color-blue);
-		--sl-card-bg: var(--sl-color-blue-low);
-	}
-	.title {
-		font-weight: 600;
-		font-size: var(--sl-text-h4);
-		color: var(--sl-color-white);
-		line-height: var(--sl-line-height-headings);
-		gap: 1rem;
-		align-items: center;
-	}
-	.card .icon {
-		border: 1px solid var(--sl-card-border);
-		background-color: var(--sl-card-bg);
-		padding: 0.2em;
-		border-radius: 0.25rem;
-	}
-	.card .body {
-		margin: 0;
-		font-size: clamp(var(--sl-text-sm), calc(0.5rem + 1vw), var(--sl-text-body));
-	}
-</style>

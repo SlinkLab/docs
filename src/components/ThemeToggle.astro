@@ -1,0 +1,261 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+  variant?: 'default' | 'minimal' | 'floating' | 'glass' | 'modern';
+  size?: 'sm' | 'md' | 'lg';
+  showTooltip?: boolean;
+  tooltipText?: string;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  variant = 'modern',
+  size = 'md',
+  class: customClass = '',
+  ariaLabel,
+} = Astro.props;
+
+const sizeClasses = {
+  sm: 'h-8 w-8',
+  md: 'h-10 w-10',
+  lg: 'h-12 w-12',
+};
+
+const variantClasses = {
+  default: 'bg-white/80 dark:bg-gray-900/80 border border-gray-200/60 dark:border-gray-700/60 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-white dark:hover:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-lg hover:shadow-gray-200/40 dark:hover:shadow-gray-900/40',
+  minimal: 'bg-transparent hover:bg-gray-100/60 dark:hover:bg-gray-800/60 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200',
+  floating: 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-200/30 dark:hover:shadow-gray-900/30 hover:-translate-y-0.5',
+  glass: 'bg-white/10 dark:bg-black/10 backdrop-blur-md border border-white/20 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:bg-white/20 dark:hover:bg-black/20 hover:border-white/30 dark:hover:border-white/20',
+  modern: 'bg-gradient-to-br from-white/90 to-gray-50/90 dark:from-gray-800/90 dark:to-gray-900/90 border border-gray-200/80 dark:border-gray-700/80 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white shadow-sm hover:shadow-md hover:from-white dark:hover:from-gray-700 dark:hover:to-gray-800 backdrop-blur-sm',
+};
+
+const iconSizeClasses = {
+  sm: 'h-4 w-4',
+  md: 'h-5 w-5',
+  lg: 'h-6 w-6',
+};
+
+const baseClasses = 'group relative inline-flex items-center justify-center cursor-pointer rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 ease-out hover:scale-105 active:scale-95';
+
+const buttonClasses = [
+  baseClasses,
+  sizeClasses[size],
+  variantClasses[variant],
+  customClass,
+].join(' ');
+
+const iconClasses = [
+  'transition-all duration-500 ease-out',
+  iconSizeClasses[size],
+].join(' ');
+
+const defaultAriaLabel = ariaLabel || 'Toggle between light and dark theme';
+---
+
+<div class={'relative inline-flex items-center'}>
+  <button
+    type="button"
+    class={buttonClasses}
+    aria-label={defaultAriaLabel}
+    data-theme-toggle
+    role="switch"
+    aria-checked="false"
+  >
+    <svg 
+      class={`${iconClasses} dark:opacity-0 dark:rotate-90 dark:scale-75`}
+      fill="none" 
+      viewBox="0 0 24 24" 
+      stroke="currentColor" 
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/>
+      <line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/>
+      <line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+    
+    <svg 
+      class={`${iconClasses} absolute opacity-0 rotate-90 scale-75 dark:opacity-100 dark:rotate-0 dark:scale-100`}
+      fill="none" 
+      viewBox="0 0 24 24" 
+      stroke="currentColor" 
+      stroke-width="2"
+      aria-hidden="true"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+function initThemeToggle() {
+  const themeToggle = document.querySelector('[data-theme-toggle]') as HTMLButtonElement;
+  const tooltipText = document.querySelector('[data-tooltip-text]') as HTMLElement;
+  
+  if (!themeToggle) return;
+
+  function getTheme(): string {
+    return localStorage.getItem('starlight-theme') || 'auto';
+  }
+
+  function setTheme(theme: string) {
+    localStorage.setItem('starlight-theme', theme);
+    updateTheme();
+    updateButton();
+  }
+
+  function updateTheme() {
+    const theme = getTheme();
+    const root = document.documentElement;
+    
+    if (theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.setAttribute('data-theme', 'light');
+    }
+  }
+
+  function updateButton() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeToggle.setAttribute('aria-checked', isDark.toString());
+    
+    if (tooltipText) {
+      tooltipText.textContent = isDark ? 'Switch to light theme' : 'Switch to dark theme';
+    }
+  }
+
+  function toggleTheme() {
+    const currentTheme = getTheme();
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    
+    if ('vibrate' in navigator) {
+      navigator.vibrate(50);
+    }
+    
+    if (currentTheme === 'auto') {
+      setTheme(isDark ? 'light' : 'dark');
+    } else {
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    }
+  }
+
+  themeToggle.addEventListener('click', toggleTheme);
+
+  themeToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleTheme();
+    }
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    updateTheme();
+    updateButton();
+  });
+
+  updateTheme();
+  updateButton();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initThemeToggle);
+} else {
+  initThemeToggle();
+}
+
+document.addEventListener('astro:page-load', initThemeToggle);
+</script>
+
+<style>
+[data-theme-toggle] {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme-toggle] svg {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+[data-theme-toggle]:hover svg {
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+[data-theme-toggle]:focus-visible {
+  outline: 2px solid var(--theme-text-accent);
+  outline-offset: 2px;
+}
+
+[data-theme-toggle].modern {
+  position: relative;
+}
+
+[data-theme-toggle].modern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease-out;
+  border-radius: inherit;
+}
+
+[data-theme-toggle].modern:hover::before {
+  transform: translateX(100%);
+}
+
+[data-theme-toggle].glass {
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme-toggle].glass:hover {
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme-toggle].floating:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme-toggle] svg,
+  [data-theme-toggle],
+  [data-theme-toggle]::before {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  [data-theme-toggle] {
+    border: 2px solid currentColor !important;
+  }
+}
+
+.group/tooltip:hover [data-tooltip-text] {
+  animation: tooltip-appear 0.2s ease-out;
+}
+
+@keyframes tooltip-appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
