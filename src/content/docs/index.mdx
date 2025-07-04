@@ -1,17 +1,33 @@
 ---
-title: Slink - Self-hosted Image Sharing Service
-description: Slink is a self-hosted image sharing service for teams and developers. Features secure uploads, multiple storage providers, user management, and complete data control. Deploy in minutes with Docker.
+title: Slink Documentation
+description: Self-hosted image sharing platform documentation. Installation, configuration, and deployment guides.
 template: splash
 hero:
   title: Slink
   tagline: Self-hosted image sharing platform
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink documentation, slink self-hosted image sharing, slink docker deployment, slink open source, slink installation guide, slink configuration, image hosting platform, file sharing solution, media sharing server
+  - tag: meta
+    attrs:
+      property: og:type
+      content: website
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/
 ---
 
 import { CardGrid } from '@astrojs/starlight/components';
-import Card from '../../components/Card.astro';
-import Stats from '../../components/Stats.astro';
-import CallToAction from '../../components/CallToAction.astro';
-
+import Card from '@components/Card.astro';
+import Stats from '@components/Stats.astro';
+import CallToAction from '@components/CallToAction.astro';
 
 ## Why Choose Slink?
 
@@ -38,7 +54,7 @@ Slink is a self-hosted image sharing platform that allows you to maintain contro
       Administrative interface for managing users and platform permissions.
     </Card>
     <Card title="Analytics & Insights" icon="material-symbols-light:dashboard">
-      Monitor usage statistics, and user activity with comprehensive admin dashboards.
+      Monitor usage statistics, and user activity with admin dashboards.
     </Card>
     <Card title="Theme Support" icon="material-symbols-light:dark-mode">
       Switch between dark and light interface themes.
@@ -46,8 +62,8 @@ Slink is a self-hosted image sharing platform that allows you to maintain contro
     <Card title="Storage Options" icon="material-symbols-light:storage">
       Configure local storage, SMB shares, or S3-compatible storage backends.
     </Card>
-    <Card title="Advanced Configuration" icon="material-symbols-light:settings">
-      Fine-tune every aspect of your installation with comprehensive settings and environment variables.
+    <Card title="Configuration" icon="material-symbols-light:settings">
+      Fine-tune every aspect of your installation with settings and environment variables.
     </Card>
   </CardGrid>
 </div>

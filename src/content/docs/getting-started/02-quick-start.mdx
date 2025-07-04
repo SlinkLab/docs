@@ -1,9 +1,71 @@
 ---
-title: Quick Start
-description: Quick start guide for Slink, a self-hosted image sharing platform.
+title: Quick Start Guide
+description: Quick deployment guide for Slink using Docker. Basic setup instructions to get Slink running locally.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink quick start, slink docker deployment, slink installation guide, slink setup instructions, self-hosted image sharing, docker image hosting, slink local setup, quick deployment, container setup
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/getting-started/02-quick-start/
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: |
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Quick Start Guide for Slink",
+        "description": "Quick deployment guide for Slink using Docker. Basic setup instructions to get Slink running locally.",
+        "url": "https://docs.slinkapp.io/getting-started/02-quick-start/",
+        "image": "https://docs.slinkapp.io/slink.png",
+        "totalTime": "PT5M",
+        "supply": [
+          {
+            "@type": "HowToSupply",
+            "name": "Docker"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Create directory and navigate to it",
+            "text": "Create a new directory for Slink and navigate to it",
+            "instruction": "mkdir slink-app && cd slink-app"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Run Slink container",
+            "text": "Run the Docker command to start the Slink application",
+            "instruction": "docker run -d --name slink -p 3000:3000 -v ./slink/var/data:/app/var/data -v ./slink/images:/app/slink/images -e ORIGIN=https://your-domain.com -e TZ=UTC anirdev/slink:latest"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Create user account",
+            "text": "Open your browser and navigate to the signup page to create a new account"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Activate account (if needed)",
+            "text": "If user approval is required, activate your user account using the CLI command"
+          }
+        ]
+      }
 ---
 
 import { Steps, Aside } from '@astrojs/starlight/components';
+
+
 
 ## Prerequisites
 

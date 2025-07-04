@@ -1,9 +1,28 @@
 ---
-title: Overriding Server Configuration
-description: How to override server configuration for Slink.
+title: Server Configuration Override
+description: Override PHP and web server configurations in Slink Docker containers. Upload limits, memory settings, and execution time configuration.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink server configuration, slink php settings, slink docker override, slink upload limits, slink memory settings, php configuration, server tuning, performance optimization
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/configuration/03-overriding-server-configuration/
 ---
 
 import { Aside } from '@astrojs/starlight/components';
+
+
 
 Slink runs on a containerized environment with pre-configured PHP and web server settings. However, you may need to customize these settings for your specific deployment requirements.
 

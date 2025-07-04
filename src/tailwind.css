@@ -335,6 +335,13 @@ body::before {
 }
 
 footer {
-  display: none !important;
+  margin: 0 !important;
 }
 
+.meta.sl-flex {
+  margin: 0 !important;
+}
+
+.pagination-links {
+  margin-top: 0 !important;
+}

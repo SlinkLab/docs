@@ -1,9 +1,28 @@
 ---
 title: Storage Provider Reference
-description: Storage provider reference for Slink.
+description: Storage provider configuration reference for Slink. Local storage, SMB/CIFS network shares, and Amazon S3 setup.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink storage providers, slink local storage, slink smb storage, slink s3 storage, slink storage configuration, cloud storage, network storage, storage options, file storage
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/03-storage-provider/
 ---
 
 import { Aside } from '@astrojs/starlight/components';
+
+
 
 Slink supports multiple storage providers for storing images. By default, the application uses the local file system to store images. However, you can configure the application to use a different storage provider by setting the `STORAGE_PROVIDER` [environment variable](/configuration/01-environment-variables).
 

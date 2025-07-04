@@ -1,9 +1,28 @@
 ---
-title: Approve User
-description: Approve users before they can upload images.
+title: User Approval Process
+description: User approval management in Slink. Activate users manually via CLI commands and configure approval settings.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink user approval, slink cli commands, slink user management, slink user activation, docker exec commands, user administration, account approval, cli tools
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/01-approve-user/
 ---
 
 import { Aside } from '@astrojs/starlight/components';
+
+
 
 By default, the application requires user approval before they can upload images. You can disable this feature by setting the `USER_APPROVAL_REQUIRED` environment variable to `false`.
 

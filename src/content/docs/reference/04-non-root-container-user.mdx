@@ -1,9 +1,76 @@
 ---
-title: Non-Root Container User
-description: Running the application as a non-root user for security reasons.
+title: Non-Root Container User - Secure Slink Deployment
+description: Learn how to run Slink as a non-root user for enhanced security. Step-by-step guide to configure user permissions, file ownership, and secure container deployment practices.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink, non-root container, container security, docker security, user permissions, file ownership, secure deployment, container best practices
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/04-non-root-container-user/
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: |
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Run Slink as Non-Root Container User",
+        "description": "Learn how to run Slink as a non-root user for enhanced security. Step-by-step guide to configure user permissions, file ownership, and secure container deployment practices.",
+        "url": "https://docs.slinkapp.io/reference/04-non-root-container-user/",
+        "image": "https://docs.slinkapp.io/slink.png",
+        "totalTime": "PT10M",
+        "supply": [
+          {
+            "@type": "HowToSupply",
+            "name": "Docker"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "Host system with user management capabilities"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Create persistent directories",
+            "text": "Create persistent directories on the host machine for Slink data and images",
+            "instruction": "mkdir -p /path/to/slink/images && mkdir -p /path/to/slink/data"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Set directory ownership",
+            "text": "Change ownership of the directories to correspond to container user",
+            "instruction": "chown -R 1000:1000 /path/to/slink"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Update Docker configuration",
+            "text": "Update the docker-compose.yml file to run the application as a non-root user",
+            "instruction": "Add 'user: slink' to your Docker service configuration"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Deploy with security configuration",
+            "text": "Proceed with the installation guide using the secure non-root configuration"
+          }
+        ]
+      }
 ---
 
 import { Aside, Steps } from '@astrojs/starlight/components';
+
+
 
 By default, the application runs as the `root` user inside the container. However, it's recommended to run the application as a non-root user for security reasons.
 While Slink cannot enforce this, additional steps are required to run the application as a non-root user:

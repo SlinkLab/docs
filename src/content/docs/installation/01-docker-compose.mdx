@@ -1,6 +1,80 @@
 ---
-title: Docker Compose
-description: Install Slink using Docker Compose.
+title: Docker Compose Installation
+description: Install Slink using Docker Compose. Step-by-step instructions for container deployment with configuration examples for local, SMB, and S3 storage.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink installation, docker compose, slink docker setup, self-hosted image sharing, container deployment, slink storage configuration, local storage, smb storage, s3 storage, docker image hosting
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/installation/01-docker-compose/
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: |
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Install Slink using Docker Compose",
+        "description": "Step-by-step instructions to install Slink using Docker Compose with configuration examples for local, SMB, and S3 storage.",
+        "url": "https://docs.slinkapp.io/installation/01-docker-compose/",
+        "image": "https://docs.slinkapp.io/slink.png",
+        "totalTime": "PT10M",
+        "supply": [
+          {
+            "@type": "HowToSupply",
+            "name": "Docker"
+          },
+          {
+            "@type": "HowToSupply", 
+            "name": "Docker Compose"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Create directory and navigate to it",
+            "text": "Create a new directory for Slink and navigate to it",
+            "instruction": "mkdir slink-app && cd slink-app"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Create docker-compose.yml file",
+            "text": "Create a docker-compose.yml file with the Slink service configuration"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Start the application",
+            "text": "Run docker-compose up -d to start the Slink application",
+            "instruction": "docker-compose up -d"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Activate user account (optional)",
+            "text": "If user approval is required, activate your user account using the CLI command"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Grant admin access (optional)",
+            "text": "Grant yourself admin access by running the user role assignment CLI command"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Create account and login",
+            "text": "Navigate to the signup page in your browser to create a new account and start using Slink"
+          }
+        ]
+      }
 ---
 
 import { Steps, Aside } from '@astrojs/starlight/components';

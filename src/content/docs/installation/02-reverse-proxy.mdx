@@ -1,9 +1,82 @@
 ---
-title: Reverse Proxy
-description: Setting up a reverse proxy for the application.
+title: Reverse Proxy Setup
+description: Configure reverse proxy for Slink with Traefik and Nginx Proxy Manager. Includes SSL setup and domain configuration.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink reverse proxy, traefik slink setup, nginx proxy manager, slink ssl setup, slink domain configuration, slink https, traefik labels, nginx reverse proxy, ssl certificates, docker proxy
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/installation/02-reverse-proxy/
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: |
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Configure Reverse Proxy for Slink",
+        "description": "Configure reverse proxy for Slink with Traefik and Nginx Proxy Manager. Includes SSL setup and domain configuration.",
+        "url": "https://docs.slinkapp.io/installation/02-reverse-proxy/",
+        "image": "https://docs.slinkapp.io/slink.png",
+        "totalTime": "PT20M",
+        "supply": [
+          {
+            "@type": "HowToSupply",
+            "name": "Reverse Proxy (Traefik or Nginx Proxy Manager)"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "Domain name"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "SSL certificate"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Choose reverse proxy solution",
+            "text": "Select either Traefik or Nginx Proxy Manager for your reverse proxy setup"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Configure proxy settings",
+            "text": "Set up your chosen reverse proxy with the appropriate configuration for Slink"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Configure SSL/TLS",
+            "text": "Set up SSL certificates for secure HTTPS connections"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Update Slink configuration",
+            "text": "Configure Slink's ORIGIN environment variable to match your domain"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Test the setup",
+            "text": "Verify that your reverse proxy is correctly forwarding requests to Slink"
+          }
+        ]
+      }
 ---
 
 import { Steps, Aside } from '@astrojs/starlight/components';
+
+
 
 This guide will help you set up a reverse proxy for the application.
 A reverse proxy is a server that sits in front of your application and forwards client requests to it.

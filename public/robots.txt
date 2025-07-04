@@ -2,4 +2,15 @@
 User-agent: *
 Allow: /
 
+Disallow: /search
+Disallow: /*?*
+Disallow: /_astro/
+
+User-agent: Googlebot
+Allow: /
+Disallow: /search
+Disallow: /_astro/
+
+Crawl-delay: 1
+
 Sitemap: https://docs.slinkapp.io/sitemap-index.xml
