@@ -70,15 +70,21 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
     docker-compose up -d
    ```
 
-4. (Optional) Grant yourself admin access by running the following command:
+4. (Optional) If you have `USER_APPROVAL_REQUIRED=true`, activate your user account:
+
+   ```bash
+   docker exec -it slink slink user:activate --email=<user-email>
+   ```
+
+5. (Optional) Grant yourself admin access by running the following command:
 
    ```bash
    docker exec -it slink slink user:grant:role --email=<user-email> ROLE_ADMIN
    ```
 
-5. Open your browser and navigate to [https://your-domain.com:3000/profile/signup](https://your-domain.com:3000/profile/signup) to create a new account.
+6. Open your browser and navigate to [https://your-domain.com:3000/profile/signup](https://your-domain.com:3000/profile/signup) to create a new account.
 
-6. Login to the Slink application and start uploading images.
+7. Login to the Slink application and start uploading images.
 
 </Steps>
 
