@@ -1,0 +1,116 @@
+---
+title: ShareX Integration
+description: Complete guide to integrating ShareX with Slink for automatic screenshot uploads. Download configuration files and set up seamless image sharing.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink sharex integration, sharex configuration, automatic screenshot upload, slink sharex config, image automation, screenshot sharing, external uploader
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/06-sharex-integration/
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+[ShareX](https://getsharex.com/) is a powerful screenshot and file sharing tool for Windows. With Slink's built-in ShareX integration, you can automatically upload screenshots and images directly to your Slink instance.
+
+## Quick Setup
+
+<Steps>
+
+1. **Create an API Key**
+   
+   Navigate to your Slink profile and create a new API key in the "API Keys" section. Give it a descriptive name like "ShareX Upload".
+
+2. **Download Configuration**
+   
+   After creating the API key, click "Download ShareX Config" to get a pre-configured `.sxcu` file.
+
+3. **Import to ShareX**
+   
+   Double-click the downloaded `.sxcu` file to automatically import it into ShareX, or manually import via `Destinations → Custom uploaders → Import → From file`.
+
+4. **Set as Default**
+   
+   In ShareX, go to `Destinations → Image uploader` and select "Slink" as your default uploader.
+
+</Steps>
+
+That's it! ShareX will now automatically upload all screenshots to your Slink instance.
+
+## Manual Configuration
+
+If you prefer to set up ShareX manually or need to customize the configuration:
+
+<Steps>
+
+1. **Open ShareX Settings**
+   
+   Launch ShareX and navigate to `Destinations → Custom uploaders`.
+
+2. **Create New Uploader**
+   
+   Click `New` to create a new custom uploader configuration.
+
+3. **Configure Basic Settings**
+   
+   - **Name**: `Slink`
+   - **Destination type**: `Image uploader`
+   - **Method**: `POST`
+   - **Request URL**: `https://your-slink-instance.com/api/external/upload`
+
+4. **Set Authentication**
+   
+   In the Headers section, add:
+   - **Name**: `Authorization`
+   - **Value**: `Bearer your_api_key_here`
+
+5. **Configure Upload Settings**
+   
+   - **Body**: Select `Form data (multipart/form-data)`
+   - **File form name**: `image`
+
+6. **Set Response Parsing**
+   
+   - **URL**: `$json:url$`
+   - **Thumbnail URL**: `$json:url$`
+   - **Deletion URL**: `$json:deleteUrl$`
+
+</Steps>
+
+## Configuration Options
+
+### Upload Settings
+
+**Request URL Format:**
+```
+https://your-slink-instance.com/api/external/upload
+```
+
+**Required Headers:**
+```
+Authorization: Bearer sk_your_api_key_here
+```
+
+**Form Data:**
+- **Field Name**: `image`
+- **Field Type**: File
+
+## Using ShareX with Slink
+
+### Basic Workflow
+
+1. **Take Screenshot**: Use any ShareX capture method (region, window, fullscreen)
+2. **Automatic Upload**: ShareX automatically uploads to your Slink instance
+3. **Get Link**: The image URL is copied to your clipboard
+4. **Share**: Paste the link anywhere to share your image

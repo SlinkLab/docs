@@ -1,0 +1,126 @@
+---
+title: Guest Upload
+description: Configure and use guest upload functionality in Slink. Allow unauthenticated users to upload images without creating accounts while maintaining control over content.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink guest upload, anonymous upload, unauthenticated upload, guest access, public upload, slink configuration, user registration optional
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/07-guest-upload/
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+Guest upload functionality allows users to upload images to your Slink instance without creating an account or logging in. This feature is useful for public galleries, temporary sharing, or reducing barriers to content contribution.
+
+## Enabling Guest Upload
+
+<Aside type="caution" title="Admin Access Required">
+  Only users with admin privileges can configure guest upload settings.
+</Aside>
+
+<Steps>
+
+1. **Access Admin Settings**
+   
+   Navigate to `/admin/settings` on your Slink instance.
+
+2. **Find User Settings Section**
+   
+   Scroll down to the "User Settings" section.
+
+3. **Enable Guest Upload**
+   
+   Toggle the "Guest Upload" setting to enable anonymous uploads.
+
+4. **Save Configuration**
+   
+   Click "Save Settings" to apply the changes.
+
+</Steps>
+
+## How Guest Upload Works
+
+### For Visitors
+
+When guest upload is enabled:
+
+1. **No Registration Required**: Users can visit the upload page without creating an account
+2. **Direct Upload**: Images can be uploaded immediately via drag-and-drop or file selection
+3. **Public Images**: All guest uploads are automatically set to public visibility
+4. **Limited Management**: Guest users cannot edit or delete their uploads after submission
+
+### Upload Process
+
+**Guest Upload Flow:**
+1. User visits `/upload` page
+2. System detects no authentication
+3. Guest upload banner appears with information
+4. User uploads image normally
+5. Image is processed and made public
+6. User is redirected to explore page to view their upload
+
+### Technical Details
+
+**API Endpoint:**
+- Guest uploads use the `/api/guest/upload` endpoint
+- No authentication required
+- Same file validation and processing as authenticated uploads
+
+**Image Handling:**
+- All guest uploads are automatically public
+- Images follow the same naming and storage conventions
+- No user association is stored with the image
+
+## Configuration Options
+
+### Environment Variables
+
+Configure guest upload via environment variables:
+
+```bash
+# Enable guest uploads
+ALLOW_GUEST_UPLOADS=true
+
+# Optional: Allow unauthenticated viewing
+ALLOW_UNAUTHENTICATED_ACCESS=true
+```
+
+## Security Considerations
+
+### Content Moderation
+
+<Aside type="caution" title="Content Control">
+  Guest uploads cannot be managed by the uploader. Consider implementing content moderation strategies for public instances.
+</Aside>
+
+**Admin Capabilities:**
+- View all uploaded images including guest uploads
+- Change visibility of public images to private
+- Delete inappropriate or unwanted content
+- Monitor upload patterns and usage
+
+**Recommendations:**
+- Regular content review for public instances
+- Clear terms of service for acceptable content
+- Consider file size limits to prevent abuse
+- Monitor storage usage and costs
+
+### Abuse Prevention
+
+**Built-in Protections:**
+- File type validation prevents executable uploads
+- Size limits prevent storage abuse
+- Rate limiting (if configured at reverse proxy level)
+

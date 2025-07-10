@@ -1,0 +1,125 @@
+---
+title: API Key Management
+description: Create and manage API keys for third-party integrations and external tools like ShareX. Learn how to generate, use, and revoke API keys in Slink.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink api keys, slink sharex integration, slink api authentication, api key management, external tools, programmatic access, upload automation, third-party integration
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/05-api-key-management/
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+API keys provide a secure way to authenticate with Slink's API for external integrations and automated uploads. They're perfect for tools like ShareX or custom scripts that need to upload images programmatically.
+
+## Creating API Keys
+
+<Steps>
+
+1. **Navigate to Your Profile**
+   
+   Go to your user profile page and click on the "API Keys" tab.
+
+2. **Create New API Key**
+   
+   Click the "Create API Key" button to open the creation dialog.
+
+3. **Configure Your Key**
+   
+   - **Name**: Give your API key a descriptive name (e.g., "ShareX Upload Key", "Automation Script")
+   - **Expiry Date** (Optional): Set an expiration date for enhanced security, or leave empty for a permanent key
+
+4. **Save and Store Securely**
+   
+   Once created, copy and store your API key immediately. It will only be shown once and cannot be recovered if lost.
+
+</Steps>
+
+<Aside type="caution" title="Security Warning">
+  API keys provide full access to upload images on your behalf. Store them securely and never share them publicly. If a key is compromised, revoke it immediately.
+</Aside>
+
+## Using API Keys
+
+API keys are used in the `Authorization` header with the `Bearer` prefix:
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer sk_your_api_key_here" \
+  -F "image=@/path/to/your/image.jpg" \
+  https://your-slink-instance.com/api/external/upload
+```
+
+### API Endpoints
+
+**Upload Image:**
+- **Endpoint**: `POST /api/external/upload`
+- **Authentication**: Required (API Key)
+- **Body**: Multipart form data with `image` field
+- **Response**: JSON with image URL and metadata
+
+**ShareX Integration:**
+- **Endpoint**: `GET /api/user/sharex-config?baseUrl=<url>&apiKey=<key>`
+- **Authentication**: Required (User login)
+- **Response**: ShareX configuration file (.sxcu)
+
+## ShareX Integration
+
+Slink provides built-in ShareX integration for seamless screenshot and image uploads.
+
+### Automatic Configuration
+
+1. **Create an API Key** (see steps above)
+2. **Download ShareX Config**
+   
+   After creating a new API key, click "Download ShareX Config" to get a pre-configured `.sxcu` file.
+
+3. **Import to ShareX**
+   
+   Double-click the downloaded `.sxcu` file or import it manually in ShareX under:
+   `Destinations → Custom uploaders → Import → From file`
+
+### Manual ShareX Configuration
+
+If you prefer manual setup:
+
+1. Open ShareX and go to `Destinations → Custom uploaders`
+2. Click `New` to create a new uploader
+3. Configure the following settings:
+   - **Name**: Slink
+   - **Method**: POST
+   - **Request URL**: `https://your-slink-instance.com/api/external/upload`
+   - **Headers**: `Authorization: Bearer your_api_key_here`
+   - **Body**: `Form data (multipart/form-data)`
+   - **File form name**: `image`
+   - **URL**: `$json:url$`
+
+## Security Best Practices
+
+### Key Management
+- **Use descriptive names** to identify where each key is used
+- **Set expiration dates** for keys used in temporary or testing scenarios
+- **Rotate keys regularly** for enhanced security
+- **Revoke unused keys** to minimize attack surface
+
+### Access Control
+- **One key per application** - Don't share keys between different tools or scripts
+- **Monitor usage** - Check the "Last Used" field to identify inactive keys
+- **Environment variables** - Store API keys in environment variables, not in code
+
+### Key Storage
+- **Never commit to version control** - Add API keys to your `.gitignore`
+- **Use secure storage** - Consider using password managers or secure vaults
+- **Limit access** - Only share keys with team members who need them

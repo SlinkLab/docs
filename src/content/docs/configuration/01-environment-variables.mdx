@@ -36,6 +36,7 @@ Simply set the environment variables when starting the Docker container or in yo
 | `ORIGIN`                            | The hostname of your application. This is required for cookies to work properly.                                                           | `http://localhost:3000` |
 | `PORT`                              | The port on which the application will listen.                                                                                             | `3000`                  |
 | `USER_APPROVAL_REQUIRED`            | Whether to require user approval before they can upload images. Available options are `true` and `false`                                   | `true`                  |
+| `USER_ALLOW_GUEST_UPLOADS`          | Whether to allow unauthenticated users to upload images without creating accounts. Available options are `true` and `false`                | `false`                 |
 | `USER_ALLOW_UNAUTHENTICATED_ACCESS` | Whether to allow unauthenticated users to access public routes. Available options are `true` and `false`                                   | `true`                  |
 | `USER_PASSWORD_MIN_LENGTH`          | Minimum password length required for users.                                                                                                | `6`                     |
 | `USER_PASSWORD_REQUIREMENTS`        | Bitmask of password requirements. Sum of the following options: `1` (numbers), `2` (lowercase), `4` (uppercase), `8` (special characters). | `15`                    |
