@@ -90,6 +90,10 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
   Also, ensure that the `TZ` environment variable is set to your timezone.
 </Aside>
 
+<Aside type="tip" title="Security Recommendation">
+  For enhanced security, it's recommended to run the container as a non-root user. See the [Non-Root Container User](/reference/04-non-root-container-user) guide for detailed instructions. Uncomment the `user:` line in the configuration below to enable this.
+</Aside>
+
 <Steps>
 
 1. Create a new directory for Slink and navigate to it:
@@ -105,6 +109,9 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
      slink:
        image: anirdev/slink:latest
        container_name: slink
+       # This container runs as root user by default. Uncomment the "user: slink" line below to run as non-root user.
+       # See https://docs.slinkapp.io/reference/04-non-root-container-user/ for additional details.
+       # user: slink
        environment:
          # Your timezone
          - TZ=UTC
