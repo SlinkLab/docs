@@ -26,6 +26,10 @@ Guest upload functionality allows users to upload images to your Slink instance 
 
 ## Enabling Guest Upload
 
+<Aside type="danger" title="Use with Extreme Caution">
+  Guest uploads allow anonymous users to upload content without any accountability. Other people may upload illegal, inappropriate, or harmful content to your server. This feature is recommended only for private networks or trusted environments. For public Slink instances, consider the legal and moderation risks before enabling this feature.
+</Aside>
+
 <Aside type="caution" title="Admin Access Required">
   Only users with admin privileges can configure guest upload settings.
 </Aside>
@@ -116,11 +120,3 @@ ALLOW_UNAUTHENTICATED_ACCESS=true
 - Clear terms of service for acceptable content
 - Consider file size limits to prevent abuse
 - Monitor storage usage and costs
-
-### Abuse Prevention
-
-**Built-in Protections:**
-- File type validation prevents executable uploads
-- Size limits prevent storage abuse
-- Rate limiting (if configured at reverse proxy level)
-
