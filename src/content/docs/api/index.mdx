@@ -1,0 +1,56 @@
+---
+title: General
+description: Complete API reference for Slink image hosting service
+---
+
+# Slink API Reference
+
+The Slink API provides a RESTful interface for managing images, users, and application settings.
+
+## Base URL
+
+```
+https://your-domain.com/api
+```
+
+## Authentication
+
+Slink supports two authentication methods:
+
+### JWT Authentication
+- **Access Token**: Short-lived token (1 hour TTL) for API access
+- **Refresh Token**: Long-lived token for obtaining new token pair
+- **Token Rotation**: Automatic token refresh mechanism
+
+### API Key Authentication  
+- **API Keys**: Long-lived authentication tokens
+- **User-generated**: Created and managed through user profile
+- **Bearer token**: Sent via `Authorization: Bearer sk_...` header
+
+## Content Type
+
+All API requests and responses use JSON:
+
+```
+Content-Type: application/json
+```
+
+## Error Handling
+
+HTTP status codes indicate the result of API requests:
+
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized  
+- `403` - Forbidden
+- `404` - Not Found
+- `422` - Validation Error
+- `500` - Internal Server Error
+
+## API Sections
+
+- [Authentication](/api/authentication) - Login, logout, token management
+- [Images](/api/images) - Upload, retrieve, update, and delete images
+- [Users](/api/users) - User management and profile operations
+- [Settings](/api/settings) - Application configuration

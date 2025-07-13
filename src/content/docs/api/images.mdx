@@ -1,0 +1,431 @@
+---
+title: Images
+description: Image upload, retrieval, and management endpoints
+---
+
+# Images API
+
+The Images API provides endpoints for uploading, retrieving, transforming, and managing images. Supports both authenticated and guest uploads.
+
+## Authentication Types
+
+**JWT Authentication:** Used for main API endpoints (`/api/upload`, `/api/image/`, etc.)
+- Header: `Authorization: Bearer <jwt_access_token>`
+
+**API Key Authentication:** Used for external endpoints (`/api/external/upload`, etc.) 
+- Header: `Authorization: Bearer sk_1234567890abcdef...`
+- API keys start with `sk_` prefix
+
+**Guest Access:** Available for some endpoints when enabled
+- No authentication required
+
+## Upload Images
+
+### Authenticated Upload
+
+**Endpoint:** `POST /api/upload` or `PUT /api/upload`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: multipart/form-data
+```
+
+**Request:**
+- **Form Data:**
+  - `image` (file) - The image file to upload
+
+**Response:**
+```json
+HTTP 201 Created
+
+{
+  "id": "image-uuid"
+}
+```
+
+### Guest Upload
+
+**Endpoint:** `POST /api/guest/upload` or `PUT /api/guest/upload`
+
+**Authentication:** None required (if guest uploads are enabled)
+
+**Headers:**
+```
+Content-Type: multipart/form-data
+```
+
+**Request:**
+- **Form Data:**
+  - `image` (file) - The image file to upload
+
+**Response:**
+```json
+HTTP 201 Created
+
+{
+  "id": "image-uuid"
+}
+```
+
+### External Upload (API Key)
+
+**Endpoint:** `POST /api/external/upload` or `PUT /api/external/upload`
+
+**Authentication:** API Key required
+
+**Headers:**
+```
+Authorization: Bearer sk_1234567890abcdef...
+Content-Type: multipart/form-data
+```
+
+**Request:**
+- **Form Data:**
+  - `image` (file) - The image file to upload
+
+**Response:**
+```json
+HTTP 201 Created
+
+{
+  "id": "image-uuid",
+  "url": "/api/image/image-uuid.jpg",
+  "thumbnailUrl": "/api/image/image-uuid_thumbnail.jpg"
+}
+```
+
+## Retrieve Images
+
+### Get Image
+
+**Endpoint:** `GET /image/{id}.{ext}`
+
+**Authentication:** None required
+
+**Parameters:**
+- `id` - Image UUID
+- `ext` - File extension (jpg, png, webp, etc.)
+
+**Query Parameters:**
+- `w` - Width (optional)
+- `h` - Height (optional)
+- `crop` - Enable cropping: `true` or `false` (optional, default: false)
+
+**Examples:**
+```
+GET /image/123e4567-e89b-12d3-a456-426614174000.jpg
+GET /image/123e4567-e89b-12d3-a456-426614174000.jpg?w=800&h=600
+GET /image/123e4567-e89b-12d3-a456-426614174000.webp?w=300&crop=true
+```
+
+**Response:**
+- Returns the image file directly
+- Content-Type: image/jpeg, image/png, image/webp, etc.
+
+### Get Image Details
+
+**Endpoint:** `GET /api/image/{id}/detail`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Response:**
+```json
+{
+  "id": "image-uuid",
+  "fileName": "image-uuid.png",
+  "description": "",
+  "isPublic": false,
+  "createdAt": "2025-07-11T22:03:06.000000+03:00",
+  "updatedAt": null,
+  "views": 4,
+  "size": 301804,
+  "mimeType": "image/png",
+  "width": 3600,
+  "height": 2100,
+  "supportsResize": true,
+  "url": "/image/image-uuid.png"
+}
+```
+
+### Get Image List
+
+**Endpoint:** `GET /api/images/{page}`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Parameters:**
+- `page` - Page number (required, starts from 1)
+
+**Query Parameters:**
+- `limit` - Images per page (default: 10)
+- `orderBy` - Sort field (default: "attributes.updatedAt")
+- `searchTerm` - Search term (optional)
+- `searchBy` - Search field (optional)
+- `cursor` - Pagination cursor (optional)
+
+**Response:**
+```json
+{
+  "meta": {
+    "size": 10,
+    "page": 1,
+    "total": 100,
+    "nextCursor": "cursor-string",
+    "prevCursor": "cursor-string"
+  },
+  "data": [
+    {
+      "id": "image-uuid",
+      "owner": {
+        "id": "user-uuid",
+        "email": "user@example.com",
+        "displayName": "John Doe"
+      },
+      "attributes": {
+        "fileName": "example.jpg",
+        "description": "Image description",
+        "isPublic": true,
+        "createdAt": {
+          "formattedDate": "Jan 15, 2024",
+          "timestamp": 1705312200
+        },
+        "views": 42
+      },
+      "metadata": {
+        "size": 1024000,
+        "mimeType": "image/jpeg",
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ]
+}
+```
+
+### Get Images by IDs
+
+**Endpoint:** `GET /api/images`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Query Parameters:**
+- `uuid[]` - Array of image UUIDs (can be repeated)
+
+**Example:**
+```
+GET /api/images?uuid[]=uuid1&uuid[]=uuid2&uuid[]=uuid3
+```
+
+**Response:**
+```json
+[
+  {
+    "id": "image-uuid",
+    "owner": {
+      "id": "user-uuid",
+      "email": "user@example.com",
+      "displayName": "John Doe"
+    },
+    "attributes": {
+      "fileName": "example.jpg",
+      "description": "Image description",
+      "isPublic": true,
+      "createdAt": {
+        "formattedDate": "Jan 15, 2024",
+        "timestamp": 1705312200
+      },
+      "views": 42
+    },
+    "metadata": {
+      "size": 1024000,
+      "mimeType": "image/jpeg",
+      "width": 1920,
+      "height": 1080
+    }
+  }
+]
+```
+
+### Get Image History
+
+**Endpoint:** `GET /api/images/history/{page}`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Parameters:**
+- `page` - Page number (required, starts from 1)
+
+**Response:**
+```json
+{
+  "meta": {
+    "size": 12,
+    "page": 1,
+    "total": 104
+  },
+  "data": [
+    {
+      "id": "image-uuid",
+      "attributes": {
+        "fileName": "image-uuid.png",
+        "description": "",
+        "isPublic": false,
+        "createdAt": {
+          "formattedDate": "2025-07-11 22:03:06",
+          "timestamp": 1752260586
+        },
+        "views": 4
+      },
+      "metadata": {
+        "size": 301804,
+        "mimeType": "image/png",
+        "width": 3600,
+        "height": 2100
+      },
+      "owner": {
+        "id": "user-uuid",
+        "email": "user@example.com",
+        "username": "username",
+        "displayName": "User Name"
+      }
+    }
+  ]
+}
+```
+
+## Update Images
+
+### Update Image
+
+**Endpoint:** `PATCH /api/image/{id}`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "description": "Updated description",
+  "isPublic": false
+}
+```
+
+**Response:**
+```
+HTTP 204 No Content
+```
+
+## Delete Images
+
+### Delete Image
+
+**Endpoint:** `DELETE /api/image/{id}`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "preserveOnDisk": false
+}
+```
+
+**Response:**
+```
+HTTP 204 No Content
+```
+
+## Image Transformations
+
+Images can be dynamically transformed using query parameters:
+
+### Resize Parameters
+
+- `w` - Width in pixels
+- `h` - Height in pixels  
+- `crop` - Enable cropping: `true` or `false` (default: false)
+
+### Examples
+
+```
+# Resize to 800x600
+/image/uuid.jpg?w=800&h=600
+
+# Resize with cropping enabled
+/image/uuid.jpg?w=400&h=400&crop=true
+
+# Just resize width, maintain aspect ratio
+/image/uuid.jpg?w=800
+```
+
+## Error Responses
+
+### Upload Errors
+
+**File Size Error (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "image",
+        "message": "The file is too large (2.14 MB). Allowed maximum size is 1 MB."
+      }
+    ]
+  }
+}
+```
+
+### File Type Errors
+
+**Unsupported File Type (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "image",
+        "message": "The mime type of the file is invalid (\"application/pdf\"). Allowed mime types are \"image/jpeg\", \"image/png\", \"image/webp\", \"image/gif\"."
+      }
+    ]
+  }
+}
+```

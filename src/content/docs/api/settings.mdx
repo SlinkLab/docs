@@ -1,0 +1,183 @@
+---
+title: Settings
+description: Application settings and configuration endpoints
+---
+
+# Settings API
+
+Application settings and configuration management endpoints.
+
+## Public Settings
+
+### Get Public Settings
+
+**Endpoint:** `GET /api/settings/public`
+
+**Authentication:** None required
+
+**Response:**
+```json
+{
+  "user": {
+    "allowRegistration": true
+  },
+  "access": {
+    "allowGuestUploads": true,
+    "allowUnauthenticatedAccess": false
+  }
+}
+```
+
+## Global Settings (Admin only)
+
+### Get Global Settings
+
+**Endpoint:** `GET /api/settings/global`
+
+**Authentication:** JWT Token with Admin role required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Response:**
+```json
+{
+  "storage": {
+    "provider": "local",
+    "adapter": {
+      "local": {
+        "dir": "/app/storage"
+      },
+      "smb": {
+        "host": "",
+        "share": "",
+        "workgroup": "",
+        "username": "",
+        "password": ""
+      },
+      "s3": {
+        "region": "",
+        "bucket": "",
+        "key": "",
+        "secret": ""
+      }
+    }
+  },
+  "user": {
+    "allowRegistration": true,
+    "approvalRequired": false,
+    "password": {
+      "minLength": 8,
+      "requirements": 3
+    }
+  },
+  "image": {
+    "maxSize": "10MB",
+    "stripExifMetadata": true,
+    "allowOnlyPublicImages": false
+  },
+  "access": {
+    "allowGuestUploads": true,
+    "allowUnauthenticatedAccess": false
+  }
+}
+```
+
+### Update Settings
+
+**Endpoint:** `POST /api/settings`
+
+**Authentication:** JWT Token with Admin role required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "category": "user",
+  "settings": {
+    "allowRegistration": false,
+    "approvalRequired": true,
+    "password": {
+      "minLength": 12,
+      "requirements": 4
+    }
+  }
+}
+```
+
+**Valid Categories:**
+- `user` - User registration and password settings
+- `image` - Image upload and processing settings
+- `storage` - Storage provider and configuration
+- `access` - Guest access and authentication settings
+
+**Response:**
+```
+HTTP 204 No Content
+```
+
+## Setting Categories
+
+### User Settings
+- `allowRegistration` (boolean) - Enable user registration
+- `approvalRequired` (boolean) - Require admin approval for new users
+- `password.minLength` (number) - Minimum password length
+- `password.requirements` (number) - Number of character type requirements
+
+### Image Settings
+- `maxSize` (string) - Maximum file size (e.g., "10MB")
+- `stripExifMetadata` (boolean) - Remove EXIF data from uploads
+- `allowOnlyPublicImages` (boolean) - Force all images to be public
+
+### Storage Settings
+- `provider` (string) - Storage provider: `local`, `smb`, or `s3`
+- `adapter.local.dir` (string) - Local storage directory
+- `adapter.smb.*` (object) - SMB/CIFS configuration
+- `adapter.s3.*` (object) - AWS S3 configuration
+
+### Access Settings
+- `allowGuestUploads` (boolean) - Allow uploads without authentication
+- `allowUnauthenticatedAccess` (boolean) - Allow access without authentication
+
+## Error Responses
+
+### Validation Errors
+
+**Invalid Category (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "category",
+        "message": "The value you selected is not a valid choice."
+      }
+    ]
+  }
+}
+```
+
+**Invalid Settings (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "settings",
+        "message": "This value should not be blank."
+      }
+    ]
+  }
+}
+```

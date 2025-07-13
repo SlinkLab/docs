@@ -1,0 +1,238 @@
+---
+title: Authentication
+description: Authentication methods and JWT token management
+---
+
+# Authentication
+
+Slink provides two authentication methods: JWT tokens and API keys. Both methods provide secure access to the API with different use cases.
+
+## JWT Authentication
+
+JWT (JSON Web Token) authentication is recommended for web applications and provides automatic token rotation.
+
+### Login
+
+**Endpoint:** `POST /api/auth/login`
+
+**Request:**
+```json
+{
+  "username": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+  "refresh_token": "def50200a1b2c3d4e5f6..."
+}
+```
+
+### Token Refresh
+
+**Endpoint:** `POST /api/auth/refresh`
+
+**Request:**
+```json
+{
+  "refresh_token": "def50200a1b2c3d4e5f6..."
+}
+```
+
+**Response:**
+```json
+{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...",
+  "refresh_token": "def50200a1b2c3d4e5f6..."
+}
+```
+
+### JWT Token Rotation
+
+Slink implements automatic JWT token rotation for enhanced security:
+
+1. **Access tokens** have a 1-hour TTL (Time To Live)
+2. **Refresh tokens** are single-use and generate new token pairs
+3. **Automatic rotation** occurs when using refresh tokens
+4. **Old tokens** are invalidated upon refresh
+
+**Token Rotation Flow:**
+
+1. Client receives initial token pair from login
+2. Client uses access token for API requests
+3. When access token expires, client uses refresh token
+4. Server validates refresh token and issues new token pair
+5. Old refresh token is invalidated
+6. Client stores new tokens and repeats the cycle
+
+### Logout
+
+**Endpoint:** `POST /api/auth/logout`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request:**
+```json
+{
+  "refresh_token": "def50200a1b2c3d4e5f6..."
+}
+```
+
+### Using JWT Tokens
+
+Include the access token in the Authorization header:
+
+```
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9...
+```
+
+## API Key Authentication
+
+API keys are ideal for server-to-server communication and applications where token rotation is not practical.
+
+### Creating API Keys
+
+**Endpoint:** `POST /api/user/api-keys`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Request:**
+```json
+{
+  "name": "My Application Key",
+  "expiresAt": "2024-12-31T23:59:59Z"
+}
+```
+
+**Note:** The `expiresAt` field is optional. If not provided, the API key will not expire.
+
+**Response:**
+```json
+{
+  "key": "sk_1234567890abcdef...",
+  "keyId": "api-key-uuid",
+  "name": "My Application Key"
+}
+```
+
+### Listing API Keys
+
+**Endpoint:** `GET /api/user/api-keys`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response:**
+```json
+{
+  "data": [
+    {
+      "id": "api-key-uuid",
+      "name": "My Application Key",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "lastUsedAt": "2024-01-20T14:22:00Z",
+      "expiresAt": null,
+      "isExpired": false
+    }
+  ]
+}
+```
+
+### Revoking API Keys
+
+**Endpoint:** `DELETE /api/user/api-keys/{keyId}`
+
+**Headers:**
+```
+Authorization: Bearer <access_token>
+```
+
+**Response:**
+```
+HTTP 204 No Content
+```
+
+### Using API Keys
+
+API keys are sent using the same Authorization header with Bearer authentication, but with a special `sk_` prefix:
+
+```
+Authorization: Bearer sk_1234567890abcdef...
+```
+
+**Note:** API key endpoints are separate from JWT endpoints and are typically under `/api/external/` routes.
+
+## User Registration
+
+### Sign Up
+
+**Endpoint:** `POST /api/auth/signup`
+
+**Request:**
+```json
+{
+  "username": "johndoe",
+  "email": "user@example.com",
+  "password": "password123",
+  "confirm": "password123"
+}
+```
+
+**Error Response (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "email",
+        "message": "This value should not be blank."
+      },
+      {
+        "property": "password",
+        "message": "Password must be at least 7 characters long."
+      },
+      {
+        "property": "confirm",
+        "message": "This value should not be blank."
+      },
+      {
+        "property": "username",
+        "message": "This value should not be blank."
+      }
+    ]
+  }
+}
+```
+
+**Note:** Depending on server configuration, user approval may be required before account activation.
+
+## Security Considerations
+
+### Best Practices
+
+1. **Store tokens securely** - Use secure storage mechanisms
+2. **Implement token refresh** - Handle token expiration gracefully  
+3. **Use HTTPS only** - Never send tokens over unencrypted connections
+4. **Rotate API keys** - Regularly rotate long-lived API keys
+5. **Monitor usage** - Track API key usage and detect anomalies
+
+### Token Security
+
+- Access tokens are stateless and cannot be revoked before expiration
+- Refresh tokens can be invalidated server-side
+- API keys can be revoked immediately
+- All tokens are validated on each request
+

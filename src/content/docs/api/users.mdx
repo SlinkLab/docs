@@ -1,0 +1,377 @@
+---
+title: Users
+description: User management and profile endpoints
+---
+
+# Users API
+
+The Users API provides endpoints for user profile management, password changes, user administration, and status checking.
+
+## Authentication Types
+
+**JWT Authentication:** Used for authenticated user endpoints
+- Header: `Authorization: Bearer <jwt_access_token>`
+
+**Admin Access:** Some endpoints require admin role
+- Available to users with admin privileges
+
+**Public Access:** User status endpoints are publicly accessible
+- No authentication required
+
+## Current User
+
+### Get Current User
+
+**Endpoint:** `GET /api/user`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Response:**
+```json
+{
+  "id": "user-uuid",
+  "displayName": "John Doe",
+  "username": "johndoe",
+  "email": "john@example.com"
+}
+```
+
+### Update User Profile
+
+**Endpoint:** `PATCH /api/user/profile`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "display_name": "John Smith"
+}
+```
+
+**Validation Rules:**
+- Length: 3-30 characters
+- Allowed characters: letters, numbers, underscores, hyphens, spaces, periods
+- Cannot contain consecutive special characters
+- Cannot be "anonymous" (case insensitive)
+
+**Response:**
+```
+HTTP 204 No Content
+```
+
+### Change Password
+
+**Endpoint:** `POST /api/user/change-password`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "old_password": "currentpassword123",
+  "password": "newpassword456",
+  "confirm": "newpassword456"
+}
+```
+
+**Validation Rules:**
+- `old_password`: Must match current password
+- `password`: Must meet medium strength requirements
+- `confirm`: Must match `password` field
+
+**Response:**
+```
+HTTP 204 No Content
+```
+
+## ShareX Configuration
+
+### Get ShareX Config
+
+**Endpoint:** `GET /api/user/sharex-config`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Query Parameters:**
+- `baseUrl` - Base URL for ShareX configuration (optional)
+- `apiKey` - API key to include in configuration (optional)
+
+**Example:**
+```
+GET /api/user/sharex-config?baseUrl=https://slink.example.com&apiKey=sk_1234567890abcdef
+```
+
+## User Status
+
+### Check User Status
+
+**Endpoint:** `GET /api/public/user/{id}/status`
+
+**Authentication:** None required (public endpoint)
+
+**Parameters:**
+- `id` - User UUID
+
+**Response:**
+```json
+{
+  "status": "active"
+}
+```
+
+**Possible Status Values:**
+- `active` - User is active and can use the system
+- `inactive` - User is deactivated
+- `suspended` - User is suspended
+- `banned` - User is banned
+- `deleted` - User is marked as deleted
+
+## User Administration
+
+The following endpoints require admin privileges.
+
+### Get User List
+
+**Endpoint:** `GET /api/users/{page}`
+
+**Authentication:** JWT Token required (Admin role)
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Parameters:**
+- `page` - Page number (required, starts from 1)
+
+**Query Parameters:**
+- `limit` - Users per page (default: 10)
+- `orderBy` - Sort field (default: "updatedAt")
+- `search` - Search term (optional)
+
+**Example:**
+```
+GET /api/users/1?limit=20&orderBy=createdAt&search=john
+```
+
+**Response:**
+```json
+{
+  "meta": {
+    "size": 10,
+    "page": 1,
+    "total": 50,
+    "nextCursor": "cursor-string",
+    "prevCursor": "cursor-string"
+  },
+  "data": [
+    {
+      "id": "user-uuid",
+      "email": "john@example.com",
+      "username": "johndoe",
+      "displayName": "John Doe",
+      "createdAt": {
+        "formattedDate": "2024-12-25 14:11:12",
+        "timestamp": 1735128672
+      },
+      "updatedAt": null,
+      "status": "active",
+      "roles": ["ROLE_USER"]
+    }
+  ]
+}
+```
+
+### Change User Status
+
+**Endpoint:** `PATCH /api/user/status`
+
+**Authentication:** JWT Token required (Admin role)
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "id": "user-uuid",
+  "status": "active"
+}
+```
+
+**Valid Status Values:**
+- `active` - Activate user account
+- `inactive` - Deactivate user account
+- `suspended` - Suspend user account
+- `banned` - Ban user account
+- `deleted` - Mark user account as deleted
+
+**Response:**
+```json
+{
+  "data": {
+    "id": "user-uuid",
+    "email": "john@example.com",
+    "username": "johndoe",
+    "displayName": "John Doe",
+    "createdAt": {
+      "formattedDate": "2024-12-25 14:11:12",
+      "timestamp": 1735128672
+    },
+    "updatedAt": null,
+    "status": "active",
+    "roles": [
+      "ROLE_USER"
+    ]
+  }
+}
+```
+
+### Grant User Role
+
+**Endpoint:** `POST /api/user/role`
+
+**Authentication:** JWT Token required (Admin role)
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "id": "user-uuid",
+  "role": "ROLE_ADMIN"
+}
+```
+
+**Valid Roles:**
+- `ROLE_USER` - Standard user role
+- `ROLE_ADMIN` - Administrator role
+
+**Response:**
+```json
+{
+  "data": {
+    "id": "user-uuid",
+    "email": "john@example.com",
+    "username": "johndoe",
+    "displayName": "John Doe",
+    "createdAt": {
+      "formattedDate": "2024-12-25 14:11:12",
+      "timestamp": 1735128672
+    },
+    "updatedAt": null,
+    "status": "active",
+    "roles": [
+      "ROLE_USER",
+      "ROLE_ADMIN"
+    ]
+  }
+}
+```
+
+### Revoke User Role
+
+**Endpoint:** `DELETE /api/user/role`
+
+**Authentication:** JWT Token required (Admin role)
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+Content-Type: application/json
+```
+
+**Request:**
+```json
+{
+  "id": "user-uuid",
+  "role": "ROLE_ADMIN"
+}
+```
+
+**Response:**
+```json
+{
+  "data": {
+    "id": "user-uuid",
+    "email": "john@example.com",
+    "username": "johndoe",
+    "displayName": "John Doe",
+    "createdAt": {
+      "formattedDate": "2024-12-25 14:11:12",
+      "timestamp": 1735128672
+    },
+    "updatedAt": null,
+    "status": "active",
+    "roles": [
+      "ROLE_USER"
+    ]
+  }
+}
+```
+
+## Error Responses
+
+### Validation Errors
+
+**Password Change Validation Error (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "password",
+        "message": "The password strength is too low. Please use a stronger password."
+      }
+    ]
+  }
+}
+```
+
+**Profile Update Validation Error (HTTP 422):**
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "display_name",
+        "message": "Display name can only contain letters, numbers, underscores, hyphens, spaces, and periods."
+      }
+    ]
+  }
+}
+```
