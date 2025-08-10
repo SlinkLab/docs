@@ -94,6 +94,10 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
   For enhanced security, it's recommended to run the container as a non-root user. See the [Non-Root Container User](/reference/04-non-root-container-user) guide for detailed instructions. Uncomment the `user:` line in the configuration below to enable this.
 </Aside>
 
+<Aside type="tip" title="SSL/HTTPS Recommendation">
+  For production deployments, it's highly recommended to enable SSL by setting `REQUIRE_SSL=true` in your environment variables. This setting affects authentication and ensures secure communication.
+</Aside>
+
 <Steps>
 
 1. Create a new directory for Slink and navigate to it:
