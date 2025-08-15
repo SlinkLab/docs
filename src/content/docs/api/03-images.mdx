@@ -108,15 +108,15 @@ HTTP 201 Created
 - `ext` - File extension (jpg, png, webp, etc.)
 
 **Query Parameters:**
-- `w` - Width (optional)
-- `h` - Height (optional)
+- `width` - Width (optional)
+- `height` - Height (optional)
 - `crop` - Enable cropping: `true` or `false` (optional, default: false)
 
 **Examples:**
 ```
 GET /image/123e4567-e89b-12d3-a456-426614174000.jpg
-GET /image/123e4567-e89b-12d3-a456-426614174000.jpg?w=800&h=600
-GET /image/123e4567-e89b-12d3-a456-426614174000.webp?w=300&crop=true
+GET /image/123e4567-e89b-12d3-a456-426614174000.jpg?width=800&height=600
+GET /image/123e4567-e89b-12d3-a456-426614174000.webp?width=300&crop=true
 ```
 
 **Response:**
@@ -373,21 +373,21 @@ Images can be dynamically transformed using query parameters:
 
 ### Resize Parameters
 
-- `w` - Width in pixels
-- `h` - Height in pixels  
+- `width` - Width in pixels
+- `height` - Height in pixels  
 - `crop` - Enable cropping: `true` or `false` (default: false)
 
 ### Examples
 
 ```
 # Resize to 800x600
-/image/uuid.jpg?w=800&h=600
+/image/uuid.jpg?width=800&height=600
 
 # Resize with cropping enabled
-/image/uuid.jpg?w=400&h=400&crop=true
+/image/uuid.jpg?width=400&height=400&crop=true
 
 # Just resize width, maintain aspect ratio
-/image/uuid.jpg?w=800
+/image/uuid.jpg?width=800
 ```
 
 ## Error Responses
