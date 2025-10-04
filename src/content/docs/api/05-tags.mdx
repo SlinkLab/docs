@@ -1,0 +1,311 @@
+---
+title: Tags
+description: Tag management and image tagging endpoints
+---
+
+The Tags API provides endpoints for creating, managing, and applying tags to images. Tags can be organized hierarchically with parent-child relationships. All endpoints require JWT authentication.
+
+## Tag Management
+
+### Get All Tags
+
+**Endpoint:** `GET /api/tags`
+
+**Query Parameters:**
+- `searchTerm` (string, optional) - Filter tags by name (max 255 characters)
+- `parentId` (string, optional) - Filter by parent tag UUID for nested tags
+- `rootOnly` (boolean, optional) - Return only root-level tags (no parent)
+- `includeChildren` (boolean, optional) - Include child tags in results
+- `limit` (integer, optional) - Number of results per page (1-100, default: 50)
+- `page` (integer, optional) - Page number (default: 1)
+- `orderBy` (string, optional) - Sort field: `name`, `path`, `createdAt`, `updatedAt` (default: `name`)
+- `order` (string, optional) - Sort direction: `asc`, `desc` (default: `asc`)
+
+**Response:**
+```json
+HTTP 200 OK
+
+{
+  "meta": {
+    "size": 10,
+    "page": 1,
+    "total": 6
+  },
+  "data": [
+    {
+      "id": "52257a45-5799-4755-8407-29fd16dbb634",
+      "name": "Nature",
+      "path": "#Nature",
+      "children": [
+        {
+          "id": "0c1d58ad-713e-4f36-a733-099ced68829b",
+          "name": "Mountains",
+          "path": "#Nature/Mountains",
+          "children": [],
+          "createdAt": {
+            "formattedDate": "2025-10-04 23:03:03",
+            "timestamp": 1759608183
+          },
+          "updatedAt": {
+            "formattedDate": "2025-10-04 23:03:03",
+            "timestamp": 1759608183
+          },
+          "isRoot": false,
+          "depth": 2,
+          "imageCount": 0
+        }
+      ],
+      "createdAt": {
+        "formattedDate": "2025-10-04 20:24:58",
+        "timestamp": 1759598698
+      },
+      "updatedAt": {
+        "formattedDate": "2025-10-04 20:24:58",
+        "timestamp": 1759598698
+      },
+      "isRoot": true,
+      "depth": 1,
+      "imageCount": 1
+    }
+  ]
+}
+```
+
+**Response Fields:**
+- `id` - Tag UUID
+- `name` - Tag name
+- `path` - Full hierarchical path (e.g., `#Nature/Mountains`)
+- `children` - Array of child tags (when `includeChildren` is true)
+- `createdAt` - Creation timestamp with formatted date
+- `updatedAt` - Last update timestamp with formatted date
+- `isRoot` - Whether tag is at root level (no parent)
+- `depth` - Hierarchical depth level (1 for root, 2+ for nested)
+- `imageCount` - Number of images tagged with this tag
+
+### Get Tag by ID
+
+**Endpoint:** `GET /api/tags/{id}`
+
+**Parameters:**
+- `id` (string) - Tag UUID
+
+**Response:**
+```json
+HTTP 200 OK
+
+{
+  "id": "52257a45-5799-4755-8407-29fd16dbb634",
+  "name": "Nature",
+  "path": "#Nature",
+  "children": [],
+  "createdAt": {
+    "formattedDate": "2025-10-04 20:24:58",
+    "timestamp": 1759598698
+  },
+  "updatedAt": {
+    "formattedDate": "2025-10-04 20:24:58",
+    "timestamp": 1759598698
+  },
+  "isRoot": true,
+  "depth": 1,
+  "imageCount": 1
+}
+```
+
+### Create Tag
+
+**Endpoint:** `POST /api/tags`
+
+**Request Body:**
+```json
+{
+  "name": "Landscapes",
+  "parentId": "parent-tag-uuid"
+}
+```
+
+**Parameters:**
+- `name` (string, required) - Tag name (1-50 characters, alphanumeric with hyphens and underscores only)
+- `parentId` (string, optional) - Parent tag UUID for nested tags
+
+**Response:**
+```json
+HTTP 201 Created
+Location: /api/tags/new-tag-uuid
+
+{
+  "id": "new-tag-uuid"
+}
+```
+
+### Delete Tag
+
+**Endpoint:** `DELETE /api/tags/{id}`
+
+**Parameters:**
+- `id` (string) - Tag UUID to delete
+
+**Response:**
+```json
+HTTP 204 No Content
+```
+
+Deleting a tag removes it from all associated images. Nested child tags may be handled based on cascade rules.
+
+## Image Tagging
+
+### Get Image Tags
+
+**Endpoint:** `GET /api/images/{imageId}/tags`
+
+**Parameters:**
+- `imageId` (string) - Image UUID
+
+**Response:**
+```json
+HTTP 200 OK
+
+{
+  "data": [
+    {
+      "id": "52257a45-5799-4755-8407-29fd16dbb634",
+      "name": "Nature",
+      "path": "#Nature",
+      "children": [],
+      "createdAt": {
+        "formattedDate": "2025-10-04 20:24:58",
+        "timestamp": 1759598698
+      },
+      "updatedAt": {
+        "formattedDate": "2025-10-04 20:24:58",
+        "timestamp": 1759598698
+      },
+      "isRoot": true,
+      "depth": 1,
+      "imageCount": 1
+    },
+    {
+      "id": "0c1d58ad-713e-4f36-a733-099ced68829b",
+      "name": "Mountains",
+      "path": "#Nature/Mountains",
+      "children": [],
+      "createdAt": {
+        "formattedDate": "2025-10-04 23:03:03",
+        "timestamp": 1759608183
+      },
+      "updatedAt": {
+        "formattedDate": "2025-10-04 23:03:03",
+        "timestamp": 1759608183
+      },
+      "isRoot": false,
+      "depth": 2,
+      "imageCount": 0
+    }
+  ]
+}
+```
+
+### Tag Image
+
+**Endpoint:** `POST /api/images/{imageId}/tags/{tagId}`
+
+**Parameters:**
+- `imageId` (string) - Image UUID to tag
+- `tagId` (string) - Tag UUID to apply
+
+**Response:**
+```json
+HTTP 204 No Content
+```
+
+User must own the image to tag it. Tag must exist and belong to the user. Duplicate tagging is idempotent.
+
+### Untag Image
+
+**Endpoint:** `DELETE /api/images/{imageId}/tags/{tagId}`
+
+**Parameters:**
+- `imageId` (string) - Image UUID
+- `tagId` (string) - Tag UUID to remove
+
+**Response:**
+```json
+HTTP 204 No Content
+```
+
+Removes the association between image and tag without deleting either. User must own the image.
+
+## Nested Tags
+
+Tags can be organized hierarchically with parent-child relationships.
+
+**Example Hierarchy:**
+```
+Nature (parent)
+├── Landscapes
+│   ├── Mountains
+│   └── Beaches
+└── Wildlife
+    ├── Birds
+    └── Mammals
+```
+
+**Creating Nested Tags:**
+
+1. Create parent tag:
+```json
+POST /api/tags
+{
+  "name": "Nature"
+}
+```
+
+2. Create child tag with parent reference:
+```json
+POST /api/tags
+{
+  "name": "Mountains",
+  "parentId": "nature-tag-uuid"
+}
+```
+
+**Filtering by Parent:**
+```
+GET /api/tags?parentId=nature-tag-uuid
+```
+
+## Error Responses
+
+### Validation Error (HTTP 422)
+
+```json
+{
+  "error": {
+    "title": "Symfony.Component.HttpKernel.Exception.HttpException",
+    "message": "Validation Error",
+    "violations": [
+      {
+        "property": "name",
+        "message": "This value should not be blank."
+      }
+    ]
+  }
+}
+```
+
+### Unauthorized (HTTP 401)
+
+Returned when no valid authentication is provided.
+
+```json
+{
+  "error": {
+    "message": "Authentication failed"
+  }
+}
+```
+
+### Not Found (HTTP 404)
+
+Returned when the requested tag does not exist.
+
