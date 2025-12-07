@@ -45,6 +45,7 @@ Simply set the environment variables when starting the Docker container or in yo
 | `IMAGE_ALLOW_ONLY_PUBLIC_IMAGES`    | When enabled, all images are automatically set to public and visibility cannot be changed. Available options are `true` and `false`       | `false`                 |
 | `IMAGE_COMPRESSION_QUALITY`         | JPEG compression quality for uploaded images (1-100, where 100 is highest quality).                                                      | `80`                    |
 | `IMAGE_ENABLE_DEDUPLICATION`        | Enable automatic detection and handling of duplicate images during upload. Available options are `true` and `false`                       | `true`                  |
+| `SHARE_ENABLE_URL_SHORTENING`       | Enable URL shortening feature for shared images. When enabled, short URLs will be generated for easier sharing. Available options are `true` and `false` | `true`                  |
 | `STORAGE_PROVIDER`                  | Storage provider to use. Available options are `local`, `smb`, `s3`                                                                        | `local`                 |
 | `SMB_HOST`                          | SMB host to connect to. Required if Samba provider is used.                                                                                | `null`                  |
 | `SMB_SHARE`                         | SMB share to use. Required if Samba provider is used.                                                                                      | `null`                  |
