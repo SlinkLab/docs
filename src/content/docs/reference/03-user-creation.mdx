@@ -1,0 +1,197 @@
+---
+title: User Creation via CLI
+description: Create user accounts using the Slink CLI command. Learn how to manually create users with various options including password, display name, and immediate activation.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink user creation, slink cli commands, slink user management, docker exec commands, user administration, user account creation, cli tools
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/03-user-creation/
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+The `user:create` command allows you to manually create user accounts via the command line interface. This is useful for administrative purposes or automated setup scenarios.
+
+## Basic Usage
+
+### Simple User Creation
+
+To create a new user with interactive password prompt:
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username>
+```
+
+The command will prompt you to enter a password interactively.
+
+**Example:**
+```bash
+docker exec -it slink slink user:create --email=john@example.com --username=johnsmith
+```
+
+### User Creation with Display Name
+
+You can optionally provide a custom display name:
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username> --display-name="<display-name>"
+```
+
+**Example:**
+```bash
+docker exec -it slink slink user:create --email=john@example.com --username=johnsmith --display-name="John Smith"
+```
+
+If no display name is provided, the username will be used as the display name.
+
+## Command Options
+
+### Email Option (required)
+
+Specify the user's email address:
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username>
+```
+
+### Username Option (required)
+
+Specify the username:
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username>
+```
+
+### Display Name Option
+
+Provide a custom display name (optional):
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username> --display-name="<display-name>"
+```
+
+### Password Option
+
+Provide the password directly without interactive prompt (short form: `-p`):
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username> --password="<password>"
+```
+
+**Example:**
+```bash
+docker exec -it slink slink user:create --email=john@example.com --username=johnsmith --password="SecurePass123!"
+```
+
+<Aside type="caution">
+  When using the `--password` option, be aware that the password will be visible in command history and process listings. For sensitive environments, prefer the interactive password prompt.
+</Aside>
+
+### Activate Option
+
+Immediately activate the user account upon creation (short form: `-a`):
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username> --activate
+```
+
+**Example:**
+```bash
+docker exec -it slink slink user:create --email=john@example.com --username=johnsmith --activate
+```
+
+<Aside type="tip">
+  By default, users are created in an inactive state (pending approval) if `USER_APPROVAL_REQUIRED=true`. Use the `--activate` flag to create active users immediately.
+</Aside>
+
+## Combining Options
+
+You can combine multiple options together:
+
+```bash
+docker exec -it slink slink user:create --email=<email> --username=<username> --display-name="<display-name>" --password="<password>" --activate
+```
+
+**Example:**
+```bash
+docker exec -it slink slink user:create --email=john@example.com --username=johnsmith --display-name="John Smith" --password="SecurePass123!" --activate
+```
+
+## Practical Examples
+
+### Create an inactive user for later activation
+
+```bash
+docker exec -it slink slink user:create --email=alice@example.com --username=alice
+# When prompted, enter a secure password
+```
+
+User will be created in inactive status and can be activated later using the [`user:activate`](/reference/01-approve-user/) command.
+
+### Create an active admin user
+
+```bash
+docker exec -it slink slink user:create --email=admin@example.com --username=admin --display-name="System Administrator" --password="AdminPass123!" --activate
+```
+
+Then grant admin role:
+
+```bash
+docker exec -it slink slink user:grant:role --email=admin@example.com ROLE_ADMIN
+```
+
+## Related Commands
+
+- [`user:activate`](/reference/01-approve-user/) - Activate a pending user account
+- [`user:grant:role`](/reference/02-manage-user-permissions/) - Grant roles to users
+- [`user:revoke:role`](/reference/02-manage-user-permissions/) - Revoke roles from users
+
+## Error Handling
+
+### Email already exists
+
+If you try to create a user with an email that already exists:
+
+```
+Error: User with this email already exists.
+```
+
+### Username already exists
+
+If the username is already taken:
+
+```
+Error: User with this username already exists.
+```
+
+### Invalid password
+
+If the password doesn't meet complexity requirements:
+
+```
+Error: Password must contain uppercase, lowercase, numbers, and special characters.
+```
+
+### Invalid email format
+
+If the email format is invalid:
+
+```
+Error: This value is not a valid email address.
+```
+
+<Aside type="note">
+  User accounts created via CLI are subject to the same validation rules as accounts created through the web interface.
+</Aside>
