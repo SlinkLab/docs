@@ -35,6 +35,7 @@ Simply set the environment variables when starting the Docker container or in yo
 | `TZ`                                | Timezone to use for the application.                                                                                                       | `UTC`                   |
 | `ORIGIN`                            | The hostname of your application. This is required for cookies to work properly.                                                           | `http://localhost:3000` |
 | `PORT`                              | The port on which the application will listen.                                                                                             | `3000`                  |
+| `USER_ALLOW_REGISTRATION`           | Whether to allow new users to register. When disabled, only existing users can log in. Available options are `true` and `false`           | `true`                  |
 | `USER_APPROVAL_REQUIRED`            | Whether to require user approval before they can upload images. Available options are `true` and `false`                                   | `true`                  |
 | `USER_ALLOW_GUEST_UPLOADS`          | Whether to allow unauthenticated users to upload images without creating accounts. Available options are `true` and `false`                | `false`                 |
 | `USER_ALLOW_UNAUTHENTICATED_ACCESS` | Whether to allow unauthenticated users to access public routes. Available options are `true` and `false`                                   | `true`                  |
@@ -57,3 +58,6 @@ Simply set the environment variables when starting the Docker container or in yo
 | `AMAZON_S3_ACCESS_KEY_ID`           | AWS access key ID to use for S3 storage. Required if an Amazon S3 provider is used.                                                        | `null`                  |
 | `AMAZON_S3_SECRET_ACCESS_KEY`       | AWS secret access key to use for S3 storage. Required if an Amazon S3 provider is used.                                                    | `null`                  |
 | `REQUIRE_SSL`                       | Whether to require SSL/HTTPS connections. When enabled, affects authentication. Available options are `true` and `false` | `false`                 |
+| `ADMIN_USERNAME`                    | Username for the first admin user. Only used if `ADMIN_EMAIL` is set during initial startup. See [First User Setup](/getting-started/03-first-user-setup). | `admin`                 |
+| `ADMIN_EMAIL`                       | Email address for the first admin user. When set on first startup, an admin user will be automatically created. See [First User Setup](/getting-started/03-first-user-setup). | `null`                  |
+| `ADMIN_PASSWORD`                    | Password for the first admin user. Required if `ADMIN_EMAIL` is set. See [First User Setup](/getting-started/03-first-user-setup). | `null`                  |
