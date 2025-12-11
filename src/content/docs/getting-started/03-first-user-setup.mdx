@@ -1,0 +1,117 @@
+---
+title: First User Setup
+description: Guide for setting up the first admin user in Slink. Learn about automatic admin creation via environment variables and manual user activation methods.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink first user, slink admin setup, slink user activation, slink admin creation, first admin user, automatic admin setup, slink initial configuration
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/getting-started/03-first-user-setup/
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+After installing Slink, you need to create your first admin user. There are two approaches: automatic creation via environment variables (recommended for new installations) or manual setup using CLI commands.
+
+## Automatic Admin User Creation
+
+<Aside type="tip">
+  The easiest way to set up your first admin user is to configure it during initial deployment using environment variables.
+</Aside>
+
+When deploying Slink for the first time, you can preconfigure the first admin user using environment variables. This eliminates the need to manually activate users or assign admin roles via CLI commands after installation.
+
+### How It Works
+
+On the first container startup, if the `ADMIN_EMAIL` environment variable is set, Slink will automatically:
+1. Create a new user account with the specified credentials
+2. Assign the admin role to the user
+3. Activate the account (bypassing approval requirements)
+
+### Configuration
+
+Set the following environment variables in your Docker Compose file or Docker run command:
+
+```yaml
+environment:
+  - ADMIN_USERNAME=administrator
+  - ADMIN_EMAIL=admin@yourdomain.com
+  - ADMIN_PASSWORD=YourSecurePassword123
+```
+
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `ADMIN_EMAIL` | Email address for the admin user. This triggers automatic admin creation. | `null` | Yes |
+| `ADMIN_USERNAME` | Username for the admin user. | `admin` | No |
+| `ADMIN_PASSWORD` | Password for the admin user. | `null` | Yes |
+
+### Complete Docker Compose Example
+
+```yaml
+services:
+  slink:
+    image: anirdev/slink:latest
+    container_name: slink
+    environment:
+      - TZ=UTC
+      - ORIGIN=https://your-domain.com
+      
+      # Admin user configuration (remove after first startup)
+      - ADMIN_USERNAME=admin
+      - ADMIN_EMAIL=admin@yourdomain.com
+      - ADMIN_PASSWORD=YourSecurePassword123
+      
+      # Other settings...
+      - USER_APPROVAL_REQUIRED=true
+      - IMAGE_MAX_SIZE=15M
+    volumes:
+      - ./slink/var/data:/app/var/data
+      - ./slink/images:/app/slink/images
+    ports:
+      - '3000:3000'
+```
+
+<Aside type="caution">
+  After the initial setup is complete, it's recommended to remove the admin credentials from your environment configuration for security purposes.
+</Aside>
+
+## Manual User Setup
+
+If you prefer to set up your first user manually, or if you didn't configure the admin environment variables during installation, follow these steps:
+
+### Step 1: Create a User Account
+
+1. Open your browser and navigate to the signup page: `https://your-domain.com/profile/signup`
+2. Fill in the registration form with your details
+3. Submit the form to create your account
+
+### Step 2: Activate Your Account
+
+If you have `USER_APPROVAL_REQUIRED=true` in your configuration, your account needs to be activated before you can log in:
+
+```bash
+docker exec -it slink slink user:activate --email=<your-email>
+```
+
+### Step 3: Grant Admin Role
+
+Grant yourself admin privileges:
+
+```bash
+docker exec -it slink slink user:grant:role --email=<your-email> ROLE_ADMIN
+```
+
+### Step 4: Log In
+
+Navigate to the login page and use your credentials to access the application as an admin user.

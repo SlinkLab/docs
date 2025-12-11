@@ -130,6 +130,11 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
          - USER_PASSWORD_MIN_LENGTH=8
          - USER_PASSWORD_REQUIREMENTS=15 # bitmask of requirements
 
+         # Automatically create first admin user (optional - remove after initial setup)
+         # - ADMIN_USERNAME=admin
+         # - ADMIN_EMAIL=admin@your-domain.com
+         # - ADMIN_PASSWORD=YourSecurePassword123
+
          # Maximum image size allowed to be uploaded (no more than 50M)
          - IMAGE_MAX_SIZE=15M
 
@@ -155,21 +160,15 @@ Before you begin, make sure you have [Docker](https://www.docker.com/) and [Dock
     docker-compose up -d
    ```
 
-4. (Optional) If you have `USER_APPROVAL_REQUIRED=true`, activate your user account:
+4. Set up your first admin user following the [First User Setup](/getting-started/03-first-user-setup) guide.
 
-   ```bash
-   docker exec -it slink slink user:activate --email=<user-email>
-   ```
+   <Aside type="tip">
+     You can configure the admin user automatically during initial deployment by uncommenting and setting the `ADMIN_EMAIL` environment variable in step 2.
+   </Aside>
 
-5. (Optional) Grant yourself admin access by running the following command:
+5. Open your browser and navigate to [https://your-domain.com:3000/profile/signup](https://your-domain.com:3000/profile/signup) to create a new account (or login if you used automatic admin creation).
 
-   ```bash
-   docker exec -it slink slink user:grant:role --email=<user-email> ROLE_ADMIN
-   ```
-
-6. Open your browser and navigate to [https://your-domain.com:3000/profile/signup](https://your-domain.com:3000/profile/signup) to create a new account.
-
-7. Login to the Slink application and start uploading images.
+6. Login to the Slink application and start uploading images.
 
 </Steps>
 
