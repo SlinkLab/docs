@@ -1,0 +1,109 @@
+---
+title: PikaPods
+description: Deploy Slink on PikaPods with one click. Quick and easy managed hosting for your self-hosted image sharing platform.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink pikapods, pikapods installation, managed slink hosting, one-click slink deployment, slink hosting, easy slink setup, pikapods slink
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/installation/03-pikapods/
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: |
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "Deploy Slink on PikaPods",
+        "description": "One-click deployment of Slink on PikaPods managed hosting platform.",
+        "url": "https://docs.slinkapp.io/installation/03-pikapods/",
+        "image": "https://docs.slinkapp.io/slink.png",
+        "totalTime": "PT5M",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Click the Run on PikaPods button",
+            "text": "Click the button to start the deployment process on PikaPods"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Configure environment variables",
+            "text": "Set up your admin user credentials and other configuration options"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Complete deployment",
+            "text": "Wait for PikaPods to provision your Slink instance and start using it"
+          }
+        ]
+      }
+---
+
+import { Steps, Aside } from '@astrojs/starlight/components';
+
+[PikaPods](https://www.pikapods.com/) is a managed hosting platform that makes it easy to run open-source applications with minimal setup. Deploy Slink on PikaPods with just one click and let them handle the infrastructure.
+
+## Quick Deployment
+
+Click the button below to deploy Slink on PikaPods:
+
+[![Run on PikaPods](https://www.pikapods.com/static/run-button.svg)](https://www.pikapods.com/pods?run=slink)
+
+## Configuration
+
+<Aside type="caution" title="Important">
+  When deploying on PikaPods, you should configure the admin user environment
+  variables to automatically create your first admin account. This is the
+  easiest way to get started with your Slink instance.
+</Aside>
+
+### Admin User Setup
+
+During deployment, configure the following environment variables to automatically create your admin user:
+
+- `ADMIN_EMAIL` - Email address for the admin account (e.g., `admin@example.com`)
+- `ADMIN_PASSWORD` - Password for the admin account (must meet password requirements)
+- `ADMIN_USERNAME` - Username for the admin account (optional, defaults to `admin`)
+
+<Aside type="tip">
+  For a complete list of available environment variables and configuration
+  options, see the [Environment
+  Variables](/configuration/01-environment-variables/) reference page.
+</Aside>
+
+## After Deployment
+
+<Steps>
+
+1. Once deployment is complete, PikaPods will provide you with a URL to access your Slink instance.
+
+2. Navigate to your instance URL and log in with the admin credentials you configured.
+
+3. Start uploading and sharing images!
+
+4. Customize your instance settings through the admin panel or by updating environment variables in the PikaPods dashboard.
+
+</Steps>
+
+## Benefits of PikaPods
+
+- **Managed Infrastructure**: No need to worry about server maintenance or updates
+- **Automatic Backups**: Your data is automatically backed up
+- **Easy Scaling**: Scale resources up or down as needed
+- **SSL Certificates**: Automatic HTTPS with Let's Encrypt
+- **Quick Updates**: Stay up to date with the latest Slink releases
+
+## Support
+
+For issues related to PikaPods hosting, contact [PikaPods support](https://www.pikapods.com/help). For Slink-specific questions, refer to the rest of this documentation or visit the [Slink GitHub repository](https://github.com/andrii-kryvoviaz/slink).
