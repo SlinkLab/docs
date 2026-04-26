@@ -1,27 +1,22 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Badge } from '@astrojs/starlight/components';
 
 interface Props {
-	icon?: string;
 	title: string;
-	gradient?: string;
+	badge?: string;
 }
 
-const { icon, title, gradient } = Astro.props;
+const { title, badge } = Astro.props;
 ---
 
-<article class="group relative bg-white dark:bg-gray-900 border border-gray-200/60 dark:border-gray-800/60 rounded-2xl p-8 transition-all duration-300 hover:shadow-xl hover:shadow-gray-900/5 dark:hover:shadow-black/20 hover:-translate-y-2 hover:border-gray-300/80 dark:hover:border-gray-700/80">
-	<div class="flex flex-col gap-6">
-		<div class="flex items-center gap-4">
-			{icon && (
-				<div class="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-md flex items-center justify-center shadow-lg shadow-purple-500/25">
-					<Icon name={icon} class="w-4 h-4 text-white" />
-				</div>
-			)}
-			<span class="text-2xl font-light text-gray-900 dark:text-white leading-tight" set:html={title} />
-		</div>
-		<div class="text-gray-600 dark:text-gray-400 leading-relaxed font-extralight">
-			<slot />
-		</div>
+<article class="flex flex-col gap-2 p-5 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 transition-colors duration-150 hover:border-gray-300 dark:hover:border-gray-700">
+	<div class="flex items-start justify-between gap-3">
+		<h3 class="text-base! font-semibold! text-gray-900 dark:text-white leading-snug m-0! flex-1" set:html={title} />
+		{badge && (
+			<Badge text={badge} variant="success" size="small" class="flex-shrink-0 mt-0.5" />
+		)}
+	</div>
+	<div class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+		<slot />
 	</div>
 </article>

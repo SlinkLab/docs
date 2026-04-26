@@ -314,6 +314,42 @@ Authorization: Bearer <jwt_access_token>
 }
 ```
 
+### Create or Get Share for an Image
+
+Returns a share for the given image (with optional transformation parameters). If a share already exists for that exact target, the existing one is returned; otherwise a new one is created.
+
+**Endpoint:** `GET /api/image/{id}/share`
+
+**Authentication:** JWT Token required
+
+**Headers:**
+```
+Authorization: Bearer <jwt_access_token>
+```
+
+**Query Parameters:**
+- `width` - Width in pixels (optional)
+- `height` - Height in pixels (optional)
+- `crop` - Enable cropping: `true` or `false` (optional, default: false)
+- `format` - Output format extension, e.g. `jpg`, `webp` (optional)
+- `filter` - Named filter to apply (optional)
+
+**Response (HTTP 200 if reused, HTTP 201 if newly created):**
+```json
+{
+  "shareId": "share-uuid",
+  "shareUrl": "https://your-domain.com/i/abc123",
+  "type": "image",
+  "created": false,
+  "expiresAt": null,
+  "requiresPassword": false
+}
+```
+
+Newly created image shares are **unpublished by default** at the API level. Use [`PUT /api/share/{id}/publish`](/api/06-shares#publish-share) to make the link reachable.
+
+In the Slink UI, the **Copy Link** action on an image performs both steps in sequence (create-or-fetch the share, then publish it), so a share is effectively considered published the moment its link is copied from the UI.
+
 ## Update Images
 
 ### Update Image
@@ -421,7 +457,7 @@ Images can be dynamically transformed using query parameters:
     "violations": [
       {
         "property": "image",
-        "message": "The mime type of the file is invalid (\"application/pdf\"). Allowed mime types are \"image/jpeg\", \"image/png\", \"image/webp\", \"image/gif\"."
+        "message": "The mime type of the file is invalid (\"application/pdf\"). Allowed mime types are \"image/bmp\", \"image/png\", \"image/jpeg\", \"image/gif\", \"image/webp\", \"image/svg+xml\", \"image/x-icon\", \"image/avif\", \"image/heic\", \"image/tiff\"."
       }
     ]
   }

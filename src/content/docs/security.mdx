@@ -34,9 +34,27 @@ to add additional security features like SSL, rate limiting, etc.
 
 <Aside type="tip">
   If you don't want to expose the entire application to the public, you can only
-  expose the `/image` route via the reverse proxy.
+  expose the `/image` route via the reverse proxy. Note that images served via
+  this route are still gated by their share's access rules (published state,
+  password, expiration), not URL obscurity alone.
 </Aside>
+
+## Share Access Control
+
+Slink uses a privacy-first share model: every share is **fully private by default** and only becomes accessible to whoever holds its link. There is no global "public by URL" mode; access is granted per share.
+
+Each share supports the following access controls, configurable from the [Share Management](/reference/08-share-management) page:
+
+- **Publication state** — A share must be explicitly published to be reachable. Unpublished shares return a 404 to anyone holding the link.
+- **Password protection** — Optionally require a password to view the shared image. Passwords are hashed at rest, and unlocking issues a short-lived cookie.
+- **Expiration** — Set an expiration timestamp; the share auto-revokes once it passes.
+
+Legacy shares from earlier releases are migrated automatically. Shares that carry custom transformation parameters (size, crop, format) must be migrated manually.
 
 ## Non-Root Container User
 
 By default, the application runs as the `root` user inside the container. However, it's recommended to run the application as a [non-root user](/reference/04-non-root-container-user) for security reasons.
+
+## Hardened Runtime
+
+The production image strips all Linux capabilities from the FrankenPHP binary at build time (`setcap -r`). Combined with running as a non-root user, this minimizes what the process can do if it is ever compromised. No additional compose configuration is required.

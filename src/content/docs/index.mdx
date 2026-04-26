@@ -33,46 +33,25 @@ import CallToAction from '@components/CallToAction.astro';
 
 Slink is a self-hosted image sharing platform that allows you to maintain control over your data. Upload, share, and manage images through your own instance without relying on third-party services.
 
-<div class="mt-12!">
-  <CardGrid stagger>
-    <Card title="Multiple Image Formats" icon="material-symbols-light:cloud-upload">
-      Supports PNG, JPG, WEBP, SVG, BMP, ICO, GIF, AVIF, HEIC, and TIFF with automatic processing.
+<div class="mt-8!">
+  <CardGrid>
+    <Card title="Privacy-First Shares" badge="New">
+      Shares are private by default. Add a password or expiration per share. <a href="/getting-started/01-introduction/#sharing">More&nbsp;→</a>
     </Card>
-    <Card title="Multi-File Upload" icon="material-symbols-light:upload-file">
-      Upload multiple images simultaneously with progress tracking for each file.
+    <Card title="Multi-Language UI" badge="New">
+      Available in English, German, Spanish, French, Italian, Japanese, Polish, Ukrainian, and Chinese. <a href="/reference/09-localization/">More&nbsp;→</a>
     </Card>
-    <Card title="Upload History" icon="material-symbols-light:history">
-      View and search through your uploaded images with filtering and organization options.
+    <Card title="Self-Hosted Storage">
+      Bring your own backend: local, SMB, or AWS S3. <a href="/reference/03-storage-provider/">More&nbsp;→</a>
     </Card>
-    <Card title="Hierarchical Tags" icon="material-symbols-light:label">
-      Organize images using nested tags for improved search and categorization.
+    <Card title="SSO & Authentication">
+      Email/password plus Google, Authentik, Keycloak, Authelia, Pocket ID, and custom OIDC.
     </Card>
-    <Card title="Image Deduplication" icon="material-symbols-light:content-copy">
-      Automatic detection of duplicate uploads to prevent storage waste.
+    <Card title="Public API & Automation">
+      REST API, personal API keys, and ShareX integration for screenshot uploads. <a href="/api/">More&nbsp;→</a>
     </Card>
-    <Card title="Shareable Links" icon="material-symbols-light:share">
-      Create links to shared images with configurable size parameters.
-    </Card>
-    <Card title="Public Gallery" icon="material-symbols-light:photo-library">
-      Browse images shared publicly by other users on your instance.
-    </Card>
-    <Card title="User Authentication" icon="material-symbols-light:security">
-      Register and login system with role-based access and optional user approval.
-    </Card>
-    <Card title="User Management" icon="material-symbols-light:admin-panel-settings">
-      Administrative interface for managing users and platform permissions.
-    </Card>
-    <Card title="Analytics & Insights" icon="material-symbols-light:dashboard">
-      Monitor usage statistics, and user activity with admin dashboards.
-    </Card>
-    <Card title="Theme Support" icon="material-symbols-light:dark-mode">
-      Switch between dark and light interface themes.
-    </Card>
-    <Card title="Storage Options" icon="material-symbols-light:storage">
-      Configure local storage, SMB shares, or S3-compatible storage backends.
-    </Card>
-    <Card title="Configuration" icon="material-symbols-light:settings">
-      Fine-tune every aspect of your installation with settings and environment variables.
+    <Card title="Admin & Moderation">
+      User management, image moderation, storage analytics, and platform settings. <a href="/configuration/02-admin-settings-page/">More&nbsp;→</a>
     </Card>
   </CardGrid>
 </div>

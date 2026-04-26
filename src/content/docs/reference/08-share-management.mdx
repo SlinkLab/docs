@@ -1,0 +1,70 @@
+---
+title: Share Management
+description: List, edit, publish, password-protect, and expire your Slink shares from a dedicated management page.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink shares, share management, password protected share, expiring share, private share, share publishing
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/08-share-management/
+---
+
+import { Aside, Steps } from '@astrojs/starlight/components';
+
+Slink uses a privacy-first share model: every share is **fully private by default** and only becomes accessible to whoever holds the link. The Share Management page is where you list, publish, and configure access controls for all of your shares.
+
+<Aside type="note">
+  This replaces the older "always accessible by link" behavior. Existing legacy
+  shares are migrated automatically; shares created with custom transformation
+  parameters (size, crop, format) must be migrated manually.
+</Aside>
+
+## Opening the Share Management Page
+
+Navigate to `/shares` while logged in. The page lists every share you own across both images and collections, with filters for type, expiration, and password protection.
+
+## Per-Share Controls
+
+Each row exposes inline controls that map directly to the [Shares API](/api/06-shares):
+
+- **Publish / Unpublish** — Toggles whether the link is reachable. Unpublished shares return 404 to anyone who tries the URL.
+- **Password** — Sets, updates, or clears a password on the share. Hashed at rest; unlocking issues a short-lived cookie so the viewer is not re-prompted on every request.
+- **Expiration** — Sets or clears an expiration timestamp. Once it passes, the share auto-revokes.
+
+## Creating a Share for an Image
+
+From an image's detail page, use the **Copy Link** action to create and copy a share. The share is considered **published the moment its link is copied** from the UI: Slink creates (or reuses) the underlying share record and immediately publishes it in a single step before placing the URL on your clipboard.
+
+If you create a share programmatically via the [API](/api/03-images#create-or-get-share-for-an-image), it starts **unpublished** so you can set a password or expiration before exposing the link, then publish it explicitly via [`PUT /api/share/{id}/publish`](/api/06-shares#publish-share).
+
+Collection shares behave slightly differently: they are auto-published on creation, since most collection-share workflows expect the link to work immediately.
+
+## Filtering and Searching
+
+The page supports filtering by:
+
+- **Type** — Image or Collection
+- **Expiration** — Has expiry, Expired, No expiry
+- **Password protection** — Password protected, No password
+
+Free-text search matches against the underlying shareable's name.
+
+## Migrating Legacy Shares
+
+The release that introduced this model ships an automatic migration that:
+
+- Converts existing legacy share records to the new `Share` aggregate.
+- Creates missing share records for images that were already publicly accessible by link, so existing URLs keep working.
+
+Shares carrying **custom transformation parameters** (`width`, `height`, `crop`, `format`, `filter`) are not auto-migrated and need to be re-created from the image detail page if you want the variant link preserved.

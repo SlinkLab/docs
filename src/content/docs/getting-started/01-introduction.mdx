@@ -20,7 +20,8 @@ head:
       href: https://docs.slinkapp.io/getting-started/01-introduction/
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import { Aside, CardGrid } from '@astrojs/starlight/components';
+import Card from '@components/Card.astro';
 
 ![Slink Screenshot](../../screens/9e8b1f68-43f1-4488-99d1-7fdcd8642a65.png)
 
@@ -65,35 +66,122 @@ Slink solves the problem of sharing images with friends, family, and colleagues 
 
 ## Features
 
+### Sharing
+
+<CardGrid>
+  <Card title="Privacy-First Shares" badge="New">
+    Shares are private by default and reachable only via the generated link. <a href="/reference/08-share-management/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Password-Protected Shares" badge="New">
+    Optional password gate per share. <a href="/reference/08-share-management/#per-share-controls">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Expiring Shares" badge="New">
+    Set an expiration date so a share auto-revokes after a chosen time. <a href="/reference/08-share-management/#per-share-controls">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Share Management" badge="New">
+    Dedicated page to list, edit, publish, or revoke your shares. <a href="/reference/08-share-management/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="URL Shortening">
+    Shorten image URLs for easier sharing.
+  </Card>
+  <Card title="Collections">
+    Group images and share an entire collection via a single link.
+  </Card>
+  <Card title="Explore">
+    Browse images other users have made publicly visible.
+  </Card>
+</CardGrid>
+
+### Uploading
+
 <Aside>
   \*HEIC and TIFF images are converted to JPG format before being saved for
   better compatibility.
 </Aside>
 
-- **Image Upload**: Upload images in formats like PNG, JPG, WEBP, SVG, BMP, ICO, GIF, AVIF, HEIC*, and TIFF*.
-- **Multiple Image Upload**: Allow users to upload multiple images at once.
-- **Image Compression**: Compress images to reduce the file size and improve performance.
-- **Share Links**: Share images with customizable links and sizes.
-- **URL Shortening**: Shorten image URLs for easier sharing.
-- **Upload History**: View and manage your complete upload history.
-- **Explore Images**: Browse public uploads from other users.
-- **Collections**: Create collections of images and share them with others.
-- **Tags**: Allow users to tag their images for better organization and search.
-- **Comments**: Leave comments on public images for discussion and feedback.
-- **Bookmarking**: Bookmark public images for easy access later.
-- **Notifications**: Receive notifications for user interactions with your images.
-- **Authentication**: Secure sign-up and login for platform access.
-- **SSO/OIDC**: Single Sign-On with support for Google, Authentik, Keycloak, Authelia, Pocket ID, and custom OIDC providers.
-- **User Approval**: Approve users before granting upload permissions.
-- **Guest Upload**: Allow unauthenticated users to upload images without creating accounts.
-- **API Key Management**: Generate and manage personal API keys for external integrations.
-- **Public API**: Access the platform programmatically with API keys.
-- **ShareX Integration**: Seamless integration with ShareX for automatic screenshot uploads.
-- **Storage Providers**: Integrate with local, SMB, or AWS S3 storage solutions.
-- **Admin Image Management**: Full administrative control over image visibility and content moderation.
-- **Dashboard**: Analyze data with admin statistics.
-- **Settings Configuration**: Manage users, storage, and other settings.
-- **Dark Mode**: Switch effortlessly between Dark and Light themes.
+<CardGrid>
+  <Card title="Image Upload">
+    Supports PNG, JPG, WEBP, SVG, BMP, ICO, GIF, AVIF, HEIC*, and TIFF*.
+  </Card>
+  <Card title="Multi-File Upload">
+    Parallel uploads with progress tracking and per-file error handling.
+  </Card>
+  <Card title="Image Compression">
+    Compress images on upload to reduce file size.
+  </Card>
+  <Card title="Deduplication on Upload">
+    Detects duplicate images at upload time and notifies the user.
+  </Card>
+  <Card title="Guest Upload">
+    Allow unauthenticated users to upload without creating an account. <a href="/reference/07-guest-upload/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="ShareX Integration">
+    Automatic screenshot uploads via ShareX. <a href="/reference/06-sharex-integration/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Public API & API Keys">
+    Programmatic access for custom integrations and automation. <a href="/api/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+</CardGrid>
+
+### Organization
+
+<CardGrid>
+  <Card title="Nested Tags">
+    Hierarchical tag management with search and a dedicated management page.
+  </Card>
+  <Card title="Upload History">
+    Overview of all your uploads with list and grid views.
+  </Card>
+  <Card title="Bookmarks">
+    Save public images for easy access later.
+  </Card>
+  <Card title="Comments">
+    Leave comments on public images for discussion and feedback.
+  </Card>
+  <Card title="Notifications">
+    Receive notifications for interactions with your images.
+  </Card>
+</CardGrid>
+
+### Personalization
+
+<CardGrid>
+  <Card title="Multi-Language UI" badge="New">
+    Interface available in English, German, Spanish, French, Italian, Japanese, Polish, Ukrainian, and Chinese. <a href="/reference/09-localization/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Dark Mode">
+    Light and dark themes.
+  </Card>
+</CardGrid>
+
+### Self-Hosting & Administration
+
+<CardGrid>
+  <Card title="Storage Providers">
+    Support for local, SMB, and AWS S3 backends. <a href="/reference/03-storage-provider/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Storage Usage Tracking">
+    Monitor and display storage consumption metrics.
+  </Card>
+  <Card title="Authentication">
+    Email/password sign-up and login.
+  </Card>
+  <Card title="SSO / OIDC">
+    Single Sign-On with Google, Authentik, Keycloak, Authelia, Pocket ID, and custom OIDC providers.
+  </Card>
+  <Card title="User Approval">
+    Require admin approval before new users can upload. <a href="/reference/01-approve-user/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+  <Card title="Image Moderation">
+    Full administrative control over image visibility and content.
+  </Card>
+  <Card title="Admin Dashboard">
+    Statistics and analytics for admin users.
+  </Card>
+  <Card title="Settings Management">
+    Manage users, storage, and other platform settings. <a href="/configuration/02-admin-settings-page/">Learn&nbsp;more&nbsp;→</a>
+  </Card>
+</CardGrid>
 
 ---
 
@@ -104,11 +192,9 @@ Slink solves the problem of sharing images with friends, family, and colleagues 
   feedback and priorities.
 </Aside>
 
-- **Password Protection**: Allow users to protect their images with a password.
 - **CDN Support**: Support for _CDN_ _providers_ to reduce the load on the self-hosted server.
 - **Storage Providers**: Extend the support for additional storage providers.
 - **Password Recovery**: Password recovery for users who forgot their password.
 - **Email Notifications**: Email notifications for user approval, password reset, etc.
-- **(Optional) Database Support**: Support for additional databases like _MySQL_, _PostgreSQL_, etc.
 - **(Optional) GPU acceleration**: Use GPU acceleration for image processing to improve performance.
 - **(Experimental) Short Video Support**: Allow users to upload short videos and perform basic editing.

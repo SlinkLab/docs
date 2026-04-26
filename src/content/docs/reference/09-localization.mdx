@@ -1,0 +1,51 @@
+---
+title: Localization
+description: Change the Slink interface language. Slink ships with translations for nine languages and falls back to English by default.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink localization, slink language, multilingual, i18n, translations, change language
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/reference/09-localization/
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Slink's interface is fully localized. English is the source language; eight additional translations ship in the box.
+
+## Supported Languages
+
+| Code | Language    |
+| ---- | ----------- |
+| `en` | English (source) |
+| `de` | Deutsch     |
+| `es` | Español     |
+| `fr` | Français    |
+| `it` | Italiano    |
+| `ja` | 日本語      |
+| `pl` | Polski      |
+| `uk` | Українська  |
+| `zh` | 中文        |
+
+## Changing Your Language
+
+Go to your **Preferences** page (`/preferences`) and pick a language under **Display Language**. The change applies immediately and is persisted with your account, so it follows you across devices and browsers.
+
+Anonymous visitors fall back to English unless their session cookie already carries a previously selected locale.
+
+<Aside type="note">
+  Most of the translations in this release are AI-generated, so wording may
+  feel off in places. Contributions to improve any language are very welcome —
+  see the [Contributing](/contributing) guide.
+</Aside>
