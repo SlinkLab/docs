@@ -17,7 +17,7 @@ head:
   - tag: link
     attrs:
       rel: canonical
-      href: https://docs.slinkapp.io/reference/03-user-creation/
+      href: https://docs.slinkapp.io/user-management/01-user-creation/
 ---
 
 import { Aside } from '@astrojs/starlight/components';
@@ -138,7 +138,7 @@ docker exec -it slink slink user:create --email=alice@example.com --username=ali
 # When prompted, enter a secure password
 ```
 
-User will be created in inactive status and can be activated later using the [`user:activate`](/reference/01-approve-user/) command.
+User will be created in inactive status and can be activated later using the [`user:activate`](/user-management/02-approve-user/) command.
 
 ### Create an active admin user
 
@@ -154,9 +154,9 @@ docker exec -it slink slink user:grant:role --email=admin@example.com ROLE_ADMIN
 
 ## Related Commands
 
-- [`user:activate`](/reference/01-approve-user/) - Activate a pending user account
-- [`user:grant:role`](/reference/02-manage-user-permissions/) - Grant roles to users
-- [`user:revoke:role`](/reference/02-manage-user-permissions/) - Revoke roles from users
+- [`user:activate`](/user-management/02-approve-user/) - Activate a pending user account
+- [`user:grant:role`](/user-management/03-manage-user-permissions/) - Grant roles to users
+- [`user:revoke:role`](/user-management/03-manage-user-permissions/) - Revoke roles from users
 
 ## Error Handling
 

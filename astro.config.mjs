@@ -8,7 +8,22 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.slinkapp.io',
-  
+
+  redirects: {
+    '/reference/03-storage-provider/': '/configuration/03-storage-provider/',
+    '/configuration/03-overriding-server-configuration/': '/configuration/04-overriding-server-configuration/',
+    '/reference/03-user-creation/': '/user-management/01-user-creation/',
+    '/reference/01-approve-user/': '/user-management/02-approve-user/',
+    '/reference/02-manage-user-permissions/': '/user-management/03-manage-user-permissions/',
+    '/reference/08-share-management/': '/usage/01-share-management/',
+    '/reference/05-api-key-management/': '/usage/02-api-key-management/',
+    '/reference/06-sharex-integration/': '/usage/03-sharex-integration/',
+    '/reference/07-guest-upload/': '/usage/04-guest-upload/',
+    '/reference/09-localization/': '/usage/05-localization/',
+    '/reference/04-non-root-container-user/': '/security/02-non-root-container-user/',
+    '/security/': '/security/01-overview/',
+  },
+
   integrations: [starlight({
     title: 'Slink Docs',
     description: 'Self-hosted image sharing service with privacy-first approach. Complete documentation for installation, configuration, and usage.',
@@ -112,16 +127,20 @@ export default defineConfig({
         items: [{ autogenerate: { directory: 'configuration' } }],
       },
       {
-        label: 'Reference',
-        items: [{ autogenerate: { directory: 'reference' } }],
+        label: 'User Management',
+        items: [{ autogenerate: { directory: 'user-management' } }],
+      },
+      {
+        label: 'Usage',
+        items: [{ autogenerate: { directory: 'usage' } }],
+      },
+      {
+        label: 'Security',
+        items: [{ autogenerate: { directory: 'security' } }],
       },
       {
         label: 'Contributing',
         slug: 'contributing',
-      },
-      {
-        label: 'Security',
-        slug: 'security',
       },
     ],
     customCss: ['./src/tailwind.css'],
@@ -134,19 +153,15 @@ export default defineConfig({
     priority: 0.7,
     lastmod: new Date(),
     filter: (page) => {
-      // Exclude any pages you don't want indexed
-      return !page.includes('/404') && !page.includes('/search');
+      // Exclude non-indexable pages and legacy redirect stubs
+      return (
+        !page.includes('/404') &&
+        !page.includes('/search') &&
+        !page.includes('/reference/') &&
+        !page.includes('/configuration/03-overriding-server-configuration/') &&
+        page !== 'https://docs.slinkapp.io/security/'
+      );
     },
-    customPages: [
-      'https://docs.slinkapp.io/',
-      'https://docs.slinkapp.io/getting-started/01-introduction/',
-      'https://docs.slinkapp.io/installation/01-docker-compose/',
-      'https://docs.slinkapp.io/installation/02-reverse-proxy/',
-      'https://docs.slinkapp.io/configuration/',
-      'https://docs.slinkapp.io/reference/',
-      'https://docs.slinkapp.io/contributing/',
-      'https://docs.slinkapp.io/security/'
-    ]
   })],
 
   vite: {

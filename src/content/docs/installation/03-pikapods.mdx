@@ -63,24 +63,13 @@ Click the button below to deploy Slink on PikaPods:
 ## Configuration
 
 <Aside type="caution" title="Important">
-  When deploying on PikaPods, you should configure the admin user environment
-  variables to automatically create your first admin account. This is the
-  easiest way to get started with your Slink instance.
+  Set the admin user environment variables during deployment so Slink creates
+  your first admin account automatically — the easiest way to get started.
 </Aside>
 
-### Admin User Setup
+In the PikaPods environment configuration, set `ADMIN_EMAIL` and `ADMIN_PASSWORD` (and optionally `ADMIN_USERNAME`) before launching. On first startup, Slink creates and activates the admin account for you.
 
-During deployment, configure the following environment variables to automatically create your admin user:
-
-- `ADMIN_EMAIL` - Email address for the admin account (e.g., `admin@example.com`)
-- `ADMIN_PASSWORD` - Password for the admin account (must meet password requirements)
-- `ADMIN_USERNAME` - Username for the admin account (optional, defaults to `admin`)
-
-<Aside type="tip">
-  For a complete list of available environment variables and configuration
-  options, see the [Environment
-  Variables](/configuration/01-environment-variables/) reference page.
-</Aside>
+See [First User Setup](/getting-started/03-first-user-setup/) for how automatic admin creation works, and the [Environment Variables](/configuration/01-environment-variables/) reference for all available options.
 
 ## After Deployment
 

@@ -1,5 +1,5 @@
 ---
-title: Security Guide - Securing Your Slink Installation
+title: Security Guide
 description: Comprehensive security guide for Slink deployments. Learn about authentication, SSL setup, security best practices, and recommendations for securing your self-hosted image sharing platform.
 head:
   - tag: meta
@@ -17,7 +17,7 @@ head:
   - tag: link
     attrs:
       rel: canonical
-      href: https://docs.slinkapp.io/security/
+      href: https://docs.slinkapp.io/security/01-overview/
 ---
 
 import { Aside } from '@astrojs/starlight/components';
@@ -43,7 +43,7 @@ to add additional security features like SSL, rate limiting, etc.
 
 Slink uses a privacy-first share model: every share is **fully private by default** and only becomes accessible to whoever holds its link. There is no global "public by URL" mode; access is granted per share.
 
-Each share supports the following access controls, configurable from the [Share Management](/reference/08-share-management) page:
+Each share supports the following access controls, configurable from the [Share Management](/usage/01-share-management) page:
 
 - **Publication state** — A share must be explicitly published to be reachable. Unpublished shares return a 404 to anyone holding the link.
 - **Password protection** — Optionally require a password to view the shared image. Passwords are hashed at rest, and unlocking issues a short-lived cookie.
@@ -53,8 +53,4 @@ Legacy shares from earlier releases are migrated automatically. Shares that carr
 
 ## Non-Root Container User
 
-By default, the application runs as the `root` user inside the container. However, it's recommended to run the application as a [non-root user](/reference/04-non-root-container-user) for security reasons.
-
-## Hardened Runtime
-
-The production image strips all Linux capabilities from the FrankenPHP binary at build time (`setcap -r`). Combined with running as a non-root user, this minimizes what the process can do if it is ever compromised. No additional compose configuration is required.
+By default, the application runs as the `root` user inside the container. However, it's recommended to run the application as a [non-root user](/security/02-non-root-container-user) for security reasons.
