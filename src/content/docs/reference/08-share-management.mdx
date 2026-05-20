@@ -36,7 +36,7 @@ Navigate to `/shares` while logged in. The page lists every share you own across
 
 ## Per-Share Controls
 
-Each row exposes inline controls that map directly to the [Shares API](/api/06-shares):
+Each row exposes inline controls:
 
 - **Publish / Unpublish** — Toggles whether the link is reachable. Unpublished shares return 404 to anyone who tries the URL.
 - **Password** — Sets, updates, or clears a password on the share. Hashed at rest; unlocking issues a short-lived cookie so the viewer is not re-prompted on every request.
@@ -46,7 +46,7 @@ Each row exposes inline controls that map directly to the [Shares API](/api/06-s
 
 From an image's detail page, use the **Copy Link** action to create and copy a share. The share is considered **published the moment its link is copied** from the UI: Slink creates (or reuses) the underlying share record and immediately publishes it in a single step before placing the URL on your clipboard.
 
-If you create a share programmatically via the [API](/api/03-images#create-or-get-share-for-an-image), it starts **unpublished** so you can set a password or expiration before exposing the link, then publish it explicitly via [`PUT /api/share/{id}/publish`](/api/06-shares#publish-share).
+If you create a share programmatically, it starts **unpublished** so you can set a password or expiration before exposing the link, then publish it explicitly.
 
 Collection shares behave slightly differently: they are auto-published on creation, since most collection-share workflows expect the link to work immediately.
 

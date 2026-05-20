@@ -116,10 +116,6 @@ export default defineConfig({
         items: [{ autogenerate: { directory: 'reference' } }],
       },
       {
-        label: 'API Reference',
-        items: [{ autogenerate: { directory: 'api' } }],
-      },
-      {
         label: 'Contributing',
         slug: 'contributing',
       },
@@ -148,7 +144,6 @@ export default defineConfig({
       'https://docs.slinkapp.io/installation/02-reverse-proxy/',
       'https://docs.slinkapp.io/configuration/',
       'https://docs.slinkapp.io/reference/',
-      'https://docs.slinkapp.io/api/',
       'https://docs.slinkapp.io/contributing/',
       'https://docs.slinkapp.io/security/'
     ]
