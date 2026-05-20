@@ -101,23 +101,23 @@ export default defineConfig({
     sidebar: [
       {
         label: 'Getting Started',
-        autogenerate: { directory: 'getting-started' },
+        items: [{ autogenerate: { directory: 'getting-started' } }],
       },
       {
         label: 'Installation',
-        autogenerate: { directory: 'installation' },
+        items: [{ autogenerate: { directory: 'installation' } }],
       },
       {
         label: 'Configuration',
-        autogenerate: { directory: 'configuration' },
+        items: [{ autogenerate: { directory: 'configuration' } }],
       },
       {
         label: 'Reference',
-        autogenerate: { directory: 'reference' },
+        items: [{ autogenerate: { directory: 'reference' } }],
       },
       {
         label: 'API Reference',
-        autogenerate: { directory: 'api' },
+        items: [{ autogenerate: { directory: 'api' } }],
       },
       {
         label: 'Contributing',
