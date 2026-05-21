@@ -173,6 +173,100 @@ body::before {
   }
 }
 
+.sl-markdown-content :is(ul, ol):not(:where(.not-content *, .sl-steps, .sl-steps *)) {
+  padding-inline-start: 1.35rem;
+  margin-block: 1.1rem;
+}
+
+.sl-markdown-content ul:not(:where(.not-content *, .sl-steps, .sl-steps *)) {
+  list-style: disc;
+}
+
+.sl-markdown-content ol:not(:where(.not-content *, .sl-steps, .sl-steps *)) {
+  list-style: decimal;
+}
+
+.sl-markdown-content :is(ul, ol):not(:where(.not-content *, .sl-steps, .sl-steps *)) li {
+  margin-block: 0.45rem;
+  padding-inline-start: 0.4rem;
+  line-height: 1.65;
+}
+
+.sl-markdown-content :is(ul, ol):not(:where(.not-content *, .sl-steps, .sl-steps *)) li::marker {
+  color: var(--sl-color-gray-3);
+}
+
+.sl-markdown-content ul ul:not(:where(.not-content *, .sl-steps, .sl-steps *)) {
+  list-style: circle;
+}
+
+.sl-markdown-content table:not(:where(.not-content *)) {
+  display: table;
+  width: 100%;
+}
+
+.sl-markdown-content .hero-shot img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  border: 1px solid var(--theme-border);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.expressive-code .frame.is-terminal .header {
+  padding-block: 0.7rem;
+}
+
+.expressive-code .frame.is-terminal .copy {
+  inset-block-start: 0.45rem;
+}
+
+.expressive-code .frame.is-terminal .header::before {
+  mask-image: none;
+  -webkit-mask-image: none;
+  opacity: 1;
+  top: 50%;
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 50%;
+  background-color: #ff5f57;
+  box-shadow: 1.05rem 0 0 #febc2e, 2.1rem 0 0 #28c840;
+  transform: translateY(-50%);
+}
+
+.expressive-code {
+  counter-reset: ec-line;
+}
+
+.expressive-code .ec-line {
+  counter-increment: ec-line;
+}
+
+.expressive-code .ec-line::before {
+  content: counter(ec-line);
+  display: inline-block;
+  width: 1.4rem;
+  margin-right: 1.15rem;
+  text-align: right;
+  color: #5b5b66;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.expressive-code .ec-line:only-child::before {
+  content: none;
+}
+
+.sl-markdown-content table .note {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8em;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--sl-color-gray-4);
+}
+
 .social-icons a svg {
   width: 1.5rem;
   height: 1.5rem;

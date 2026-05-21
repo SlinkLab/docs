@@ -29,16 +29,20 @@ The application has two user roles: **User** and **Admin**. By default, all user
 To promote a user to the **Admin** role, you can use the following CLI command:
 
 ```bash
-docker exec -it slink slink user:grant:role --email=<user-email> ROLE_ADMIN
+docker exec -it slink slink user:grant:role \
+  --email=<user-email> ROLE_ADMIN
 ```
 
 To demote a user from the **Admin** role, you can use the following CLI command:
 
 ```bash
-docker exec -it slink slink user:revoke:role --email=<user-email> ROLE_ADMIN
+docker exec -it slink slink user:revoke:role \
+  --email=<user-email> ROLE_ADMIN
 ```
 
-Alternatively, you can change the user role directly from the admin dashboard.
+## Admin Dashboard
+
+You can also change user roles directly from the admin dashboard.
 
 ![admin-users](../../screens/8ee48c30-edc4-458e-88e3-259bed6de967.png)
 

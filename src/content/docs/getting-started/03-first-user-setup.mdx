@@ -1,6 +1,6 @@
 ---
 title: First User Setup
-description: Guide for setting up the first admin user in Slink. Learn about automatic admin creation via environment variables and manual user activation methods.
+description: Guide for setting up the first admin user in Slink. Manual setup via CLI commands and automatic admin creation via environment variables.
 head:
   - tag: meta
     attrs:
@@ -22,7 +22,38 @@ head:
 
 import { Aside } from '@astrojs/starlight/components';
 
-After installing Slink, you need to create your first admin user. There are two approaches: automatic creation via environment variables (recommended for new installations) or manual setup using CLI commands.
+After installing Slink, you need to create your first admin user. You can either set one up manually using CLI commands, or have one created automatically via environment variables on first startup (recommended for new installations).
+
+## Manual User Setup
+
+If you prefer to set up your first user manually, or if you didn't configure the admin environment variables during installation, follow these steps:
+
+### Step 1: Create a User Account
+
+1. Open your browser and navigate to the signup page: `https://your-domain.com/profile/signup`
+2. Fill in the registration form with your details
+3. Submit the form to create your account
+
+### Step 2: Activate Your Account
+
+If you have `USER_APPROVAL_REQUIRED=true` in your configuration, your account needs to be activated before you can log in:
+
+```bash
+docker exec -it slink slink user:activate --email=<your-email>
+```
+
+### Step 3: Grant Admin Role
+
+Grant yourself admin privileges:
+
+```bash
+docker exec -it slink slink user:grant:role \
+  --email=<your-email> ROLE_ADMIN
+```
+
+### Step 4: Log In
+
+Navigate to the login page and use your credentials to access the application as an admin user.
 
 ## Automatic Admin User Creation
 
@@ -50,11 +81,7 @@ environment:
   - ADMIN_PASSWORD=YourSecurePassword123
 ```
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `ADMIN_EMAIL` | Email address for the admin user. This triggers automatic admin creation. | `null` | Yes |
-| `ADMIN_USERNAME` | Username for the admin user. | `admin` | No |
-| `ADMIN_PASSWORD` | Password for the admin user. | `null` | Yes |
+For the full list of admin variables and their requirements, see [Admin User (First-Run Setup)](/configuration/01-environment-variables/#admin-user-first-run-setup) in the Environment Variables reference.
 
 ### Complete Docker Compose Example
 
@@ -85,33 +112,3 @@ services:
 <Aside type="caution">
   After the initial setup is complete, it's recommended to remove the admin credentials from your environment configuration for security purposes.
 </Aside>
-
-## Manual User Setup
-
-If you prefer to set up your first user manually, or if you didn't configure the admin environment variables during installation, follow these steps:
-
-### Step 1: Create a User Account
-
-1. Open your browser and navigate to the signup page: `https://your-domain.com/profile/signup`
-2. Fill in the registration form with your details
-3. Submit the form to create your account
-
-### Step 2: Activate Your Account
-
-If you have `USER_APPROVAL_REQUIRED=true` in your configuration, your account needs to be activated before you can log in:
-
-```bash
-docker exec -it slink slink user:activate --email=<your-email>
-```
-
-### Step 3: Grant Admin Role
-
-Grant yourself admin privileges:
-
-```bash
-docker exec -it slink slink user:grant:role --email=<your-email> ROLE_ADMIN
-```
-
-### Step 4: Log In
-
-Navigate to the login page and use your credentials to access the application as an admin user.

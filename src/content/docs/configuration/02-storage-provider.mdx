@@ -1,0 +1,134 @@
+---
+title: Storage Providers
+description: Storage provider configuration reference for Slink. Local storage, SMB/CIFS network shares, and Amazon S3 setup.
+head:
+  - tag: meta
+    attrs:
+      name: keywords
+      content: slink storage providers, slink local storage, slink smb storage, slink s3 storage, slink storage configuration, cloud storage, network storage, storage options, file storage
+  - tag: meta
+    attrs:
+      property: og:type
+      content: article
+  - tag: meta
+    attrs:
+      name: robots
+      content: index, follow, max-image-preview:large
+  - tag: link
+    attrs:
+      rel: canonical
+      href: https://docs.slinkapp.io/configuration/02-storage-provider/
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Slink stores images on the local filesystem by default. Set the `STORAGE_PROVIDER` [environment variable](/configuration/01-environment-variables) to `local`, `smb`, or `s3` to choose a backend.
+
+| Provider | Best for | Key variables |
+| --- | --- | --- |
+| **Local** (`local`) | Single-host deployments (default) | None |
+| **SMB / CIFS** (`smb`) | Shared network or NAS storage | `SMB_HOST`, `SMB_SHARE`, `SMB_USERNAME`, `SMB_PASSWORD` |
+| **Amazon S3** (`s3`) | Cloud / scalable object storage | `AMAZON_S3_REGION`, `AMAZON_S3_BUCKET`, `AMAZON_S3_ACCESS_KEY_ID`, `AMAZON_S3_SECRET_ACCESS_KEY` |
+
+## Local Storage
+
+The default provider. Stores images on the container's local filesystem and needs no configuration beyond `STORAGE_PROVIDER=local`.
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `STORAGE_PROVIDER` | Yes | Set to `local` (default). |
+
+<Aside type="caution">
+  To persist images when using Docker, mount the `/app/slink/images` directory to the host filesystem.
+</Aside>
+
+## SMB (Samba)
+
+Stores images on a network share over the SMB/CIFS protocol. Useful for centralized storage in enterprise environments.
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `STORAGE_PROVIDER` | Yes | Set to `smb`. |
+| `SMB_HOST` | Yes | Hostname or IP address of the SMB server. |
+| `SMB_SHARE` | Yes | Name of the SMB share to use. |
+| `SMB_USERNAME` | Yes | Username for authentication. |
+| `SMB_PASSWORD` | Yes | Password for authentication. |
+| `SMB_WORKGROUP` | No | SMB workgroup (defaults to `workgroup`). |
+
+```yaml
+environment:
+  STORAGE_PROVIDER: smb
+  SMB_HOST: 192.168.1.100
+  SMB_SHARE: slink-storage
+  SMB_USERNAME: slink-user
+  SMB_PASSWORD: your-secure-password
+  SMB_WORKGROUP: workgroup
+```
+
+<Aside type="note">
+  The SMB provider automatically creates the required directory structure (`slink/images` and `slink/cache`) on the remote share.
+</Aside>
+
+## Amazon S3 & Compatible
+
+Stores images in an Amazon S3 bucket (or any S3-compatible service). Ideal for cloud deployments and scalable object storage.
+
+| Variable | Required | Description |
+| --- | --- | --- |
+| `STORAGE_PROVIDER` | Yes | Set to `s3`. |
+| `AMAZON_S3_BUCKET` | Yes | Name of your S3 bucket. |
+| `AMAZON_S3_REGION` | Amazon S3 only | AWS region of your bucket (e.g. `us-east-1`). Optional for custom S3-compatible providers, where it defaults to `auto`. |
+| `AMAZON_S3_ACCESS_KEY_ID` | Unless IAM role | AWS access key ID. Not needed when `AMAZON_S3_USE_IAM_ROLE` is `true`. |
+| `AMAZON_S3_SECRET_ACCESS_KEY` | Unless IAM role | AWS secret access key. Not needed when `AMAZON_S3_USE_IAM_ROLE` is `true`. |
+| `AMAZON_S3_USE_IAM_ROLE` | No | Authenticate with the instance's IAM role / instance profile instead of static keys. Amazon S3 only; ignored when a custom endpoint or provider is used. Default `false`. |
+| `AMAZON_S3_ENDPOINT` | No | Custom endpoint URL for S3-compatible services (e.g. `http://localhost:9000`). Setting this enables custom-provider mode. |
+| `AMAZON_S3_USE_CUSTOM_PROVIDER` | No | Enable for S3-compatible services. Default `false` (auto-enabled when an endpoint is set). |
+| `AMAZON_S3_FORCE_PATH_STYLE` | No | Force path-style URLs for S3-compatible services. Default `false`. |
+
+```yaml
+environment:
+  STORAGE_PROVIDER: s3
+  AMAZON_S3_REGION: us-east-1
+  AMAZON_S3_BUCKET: my-slink-bucket
+  AMAZON_S3_ACCESS_KEY_ID: EXAMPLEKEYID
+  AMAZON_S3_SECRET_ACCESS_KEY: exampleSecretKey
+```
+
+When running on AWS with an attached IAM role (e.g. EC2 or ECS), omit the keys and enable the role instead:
+
+```yaml
+environment:
+  STORAGE_PROVIDER: s3
+  AMAZON_S3_REGION: us-east-1
+  AMAZON_S3_BUCKET: my-slink-bucket
+  AMAZON_S3_USE_IAM_ROLE: true
+```
+
+For an S3-compatible service:
+
+```yaml
+environment:
+  STORAGE_PROVIDER: s3
+  AMAZON_S3_REGION: us-east-1
+  AMAZON_S3_BUCKET: my-slink-bucket
+  AMAZON_S3_ACCESS_KEY_ID: your-access-key
+  AMAZON_S3_SECRET_ACCESS_KEY: your-secret-key
+  AMAZON_S3_ENDPOINT: http://your-s3-host:9000
+  AMAZON_S3_USE_CUSTOM_PROVIDER: true
+  AMAZON_S3_FORCE_PATH_STYLE: true
+```
+
+<Aside type="tip">
+  For better security on AWS, set `AMAZON_S3_USE_IAM_ROLE=true` to authenticate with the instance's IAM role instead of static access keys.
+</Aside>
+
+<Aside type="note">
+  The S3 provider stores original images in the bucket root (`{filename}`) and transformed images under `cache/{filename}`.
+</Aside>
+
+## Directory Structure
+
+The local and SMB providers store files using the same layout:
+
+- `slink/images/`: original uploaded images
+- `slink/cache/`: transformed/cached images

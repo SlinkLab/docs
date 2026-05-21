@@ -5,13 +5,71 @@ import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
+const slinkCodeTheme = {
+  name: 'slink-terminal',
+  type: 'dark',
+  colors: {
+    'editor.background': '#121212',
+    'editor.foreground': '#bdbbbb',
+  },
+  tokenColors: [
+    {
+      scope: ['comment', 'punctuation.definition.comment'],
+      settings: { foreground: '#657b83', fontStyle: 'italic' },
+    },
+    {
+      scope: ['keyword', 'keyword.control', 'storage', 'storage.type', 'storage.modifier'],
+      settings: { foreground: '#a52aff' },
+    },
+    {
+      scope: ['entity.name.function', 'support.function', 'meta.function-call'],
+      settings: { foreground: '#2883ff' },
+    },
+    {
+      scope: ['string.quoted', 'string.template', 'punctuation.definition.string', 'string.unquoted.argument', 'string.unquoted.plain'],
+      settings: { foreground: '#5ac8ff' },
+    },
+    {
+      scope: ['constant.numeric', 'constant.language', 'constant.character'],
+      settings: { foreground: '#905aff' },
+    },
+    {
+      scope: ['constant.other.option'],
+      settings: { foreground: '#a52aff' },
+    },
+    {
+      scope: ['constant.character.escape.line-continuation', 'punctuation.separator.continuation'],
+      settings: { foreground: '#657b83' },
+    },
+    {
+      scope: ['support.type', 'entity.name.type', 'entity.name.class', 'support.class'],
+      settings: { foreground: '#5c78ff' },
+    },
+    {
+      scope: ['entity.name.tag'],
+      settings: { foreground: '#a52aff' },
+    },
+    {
+      scope: ['entity.other.attribute-name', 'meta.property-name', 'support.type.property-name'],
+      settings: { foreground: '#5ea2ff' },
+    },
+    {
+      scope: ['variable', 'variable.parameter', 'variable.other', 'keyword.operator', 'punctuation'],
+      settings: { foreground: '#bdbbbb' },
+    },
+  ],
+};
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.slinkapp.io',
 
   redirects: {
-    '/reference/03-storage-provider/': '/configuration/03-storage-provider/',
-    '/configuration/03-overriding-server-configuration/': '/configuration/04-overriding-server-configuration/',
+    '/reference/03-storage-provider/': '/configuration/02-storage-provider/',
+    '/configuration/03-storage-provider/': '/configuration/02-storage-provider/',
+    '/configuration/02-admin-settings-page/': '/configuration/01-environment-variables/',
+    '/configuration/03-overriding-server-configuration/': '/configuration/01-environment-variables/',
+    '/configuration/04-overriding-server-configuration/': '/configuration/01-environment-variables/',
     '/reference/03-user-creation/': '/user-management/01-user-creation/',
     '/reference/01-approve-user/': '/user-management/02-approve-user/',
     '/reference/02-manage-user-permissions/': '/user-management/03-manage-user-permissions/',
@@ -144,6 +202,25 @@ export default defineConfig({
       },
     ],
     customCss: ['./src/tailwind.css'],
+    expressiveCode: {
+      themes: [slinkCodeTheme],
+      styleOverrides: {
+        borderRadius: '0.75rem',
+        borderColor: 'var(--theme-border)',
+        codeFontSize: '0.9rem',
+        codeLineHeight: '1.65',
+        codePaddingBlock: '1rem',
+        codePaddingInline: '1.25rem',
+        frames: {
+          frameBoxShadowCssValue: '0 14px 34px rgba(0, 0, 0, 0.35)',
+          terminalBackground: '#121212',
+          terminalTitlebarBackground: '#121212',
+          terminalTitlebarBorderBottomColor: 'rgba(255, 255, 255, 0.05)',
+          terminalTitlebarForeground: '#bdbbbb',
+          terminalTitlebarDotsForeground: '#3f3f46',
+        },
+      },
+    },
     components: {
       ThemeSelect: './src/components/ThemeToggle.astro',
       Hero: './src/components/Hero.astro',
@@ -158,7 +235,10 @@ export default defineConfig({
         !page.includes('/404') &&
         !page.includes('/search') &&
         !page.includes('/reference/') &&
+        !page.includes('/configuration/02-admin-settings-page/') &&
+        !page.includes('/configuration/03-storage-provider/') &&
         !page.includes('/configuration/03-overriding-server-configuration/') &&
+        !page.includes('/configuration/04-overriding-server-configuration/') &&
         page !== 'https://docs.slinkapp.io/security/'
       );
     },

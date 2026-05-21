@@ -23,50 +23,98 @@ head:
 import { Aside } from '@astrojs/starlight/components';
 
 <Aside type="tip">
-  Most of the environment variables on this page could be accessed via the
-  application's [settings](/configuration/02-admin-settings-page) page.
+  Many of these settings (image, storage, and security/user options) can also be
+  changed at runtime from the in-app **Settings** page by an admin user. Values
+  saved there take precedence over the corresponding environment variables.
 </Aside>
 
-The application can be configured using environment variables.
-Simply set the environment variables when starting the Docker container or in your `docker-compose.yml` when using Docker Compose.
+The application can be configured using environment variables. Set them when starting the Docker container or in your `docker-compose.yml` when using Docker Compose.
 
-| Variable                            | Description                                                                                                                                | Default Value           |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
-| `TZ`                                | Timezone to use for the application.                                                                                                       | `UTC`                   |
-| `ORIGIN`                            | The hostname of your application. This is required for cookies to work properly.                                                           | `http://localhost:3000` |
-| `PORT`                              | The port on which the application will listen.                                                                                             | `3000`                  |
-| `USER_ALLOW_REGISTRATION`           | Whether to allow new users to register. When disabled, only existing users can log in. Available options are `true` and `false`           | `true`                  |
-| `USER_APPROVAL_REQUIRED`            | Whether to require user approval before they can upload images. Available options are `true` and `false`                                   | `true`                  |
-| `USER_ALLOW_GUEST_UPLOADS`          | Whether to allow unauthenticated users to upload images without creating accounts. Available options are `true` and `false`                | `false`                 |
-| `USER_ALLOW_UNAUTHENTICATED_ACCESS` | Whether to allow unauthenticated users to access public routes. Available options are `true` and `false`                                   | `true`                  |
-| `USER_REQUIRE_AUTH_FOR_MEDIA_SHARES` | Require visitors to be signed in to open shared images, even when the share itself is public. Available options are `true` and `false`     | `false`                 |
-| `USER_REQUIRE_AUTH_FOR_COLLECTION_SHARES` | Require visitors to be signed in to open shared collections, even when the share itself is public. Available options are `true` and `false` | `false`                 |
-| `USER_PASSWORD_MIN_LENGTH`          | Minimum password length required for users.                                                                                                | `6`                     |
-| `USER_PASSWORD_REQUIREMENTS`        | Bitmask of password requirements. Sum of the following options: `1` (numbers), `2` (lowercase), `4` (uppercase), `8` (special characters). | `15`                    |
-| `IMAGE_MAX_SIZE`                    | Maximum image size allowed to be uploaded (no more than 50M).                                                                              | `15M`                   |
-| `IMAGE_STRIP_EXIF_METADATA`         | Whether to strip EXIF metadata from the uploaded images. Available options are `true` and `false`                                          | `true`                  |
-| `IMAGE_ALLOW_ONLY_PUBLIC_IMAGES`    | When enabled, all images are automatically set to public and visibility cannot be changed. Available options are `true` and `false`       | `false`                 |
-| `IMAGE_COMPRESSION_QUALITY`         | JPEG compression quality for uploaded images (1-100, where 100 is highest quality).                                                      | `80`                    |
-| `IMAGE_ENABLE_DEDUPLICATION`        | Enable automatic detection and handling of duplicate images during upload. Available options are `true` and `false`                       | `true`                  |
-| `IMAGE_FORCE_FORMAT_CONVERSION`     | When enabled, all uploaded images will be automatically converted to the format specified in `IMAGE_TARGET_FORMAT`. Available options are `true` and `false` | `false`                 |
-| `IMAGE_TARGET_FORMAT`               | Target format for automatic image conversion when `IMAGE_FORCE_FORMAT_CONVERSION` is enabled. Available options are `webp`, `avif`, `jpeg` | `webp`                  |
-| `IMAGE_CONVERT_ANIMATED_IMAGES`     | When enabled with format conversion, animated images (GIFs) will also be converted to the target format. Available options are `true` and `false` | `false`                 |
-| `SHARE_ENABLE_URL_SHORTENING`       | Enable URL shortening feature for shared images. When enabled, short URLs will be generated for easier sharing. Available options are `true` and `false` | `true`                  |
-| `STORAGE_PROVIDER`                  | Storage provider to use. Available options are `local`, `smb`, `s3`                                                                        | `local`                 |
-| `SMB_HOST`                          | SMB host to connect to. Required if Samba provider is used.                                                                                | `null`                  |
-| `SMB_SHARE`                         | SMB share to use. Required if Samba provider is used.                                                                                      | `null`                  |
-| `SMB_WORKGROUP`                     | SMB workgroup to use. Optional for Samba provider.                                                                                         | `workgroup`             |
-| `SMB_USERNAME`                      | SMB username to use. Required if Samba provider is used.                                                                                   | `null`                  |
-| `SMB_PASSWORD`                      | SMB password to use. Required if Samba provider is used.                                                                                   | `null`                  |
-| `AMAZON_S3_REGION`                  | AWS region to use for S3 storage. Required if an Amazon S3 provider is used.                                                               | `null`                  |
-| `AMAZON_S3_BUCKET`                  | AWS bucket name to use for S3 storage. Required if an Amazon S3 provider is used.                                                          | `null`                  |
-| `AMAZON_S3_ACCESS_KEY_ID`           | AWS access key ID to use for S3 storage. Required if an Amazon S3 provider is used.                                                        | `null`                  |
-| `AMAZON_S3_SECRET_ACCESS_KEY`       | AWS secret access key to use for S3 storage. Required if an Amazon S3 provider is used.                                                    | `null`                  |
-| `AMAZON_S3_ENDPOINT`                | Custom endpoint URL for S3-compatible services like MinIO. Optional for AWS S3.                                                            | `null`                  |
-| `AMAZON_S3_USE_CUSTOM_PROVIDER`     | Enable this when using MinIO or other S3-compatible services. Available options are `true` and `false`                                     | `false`                 |
-| `AMAZON_S3_FORCE_PATH_STYLE`        | Force path-style URLs for S3-compatible services. Available options are `true` and `false`                                                 | `false`                 |
-| `REQUIRE_SSL`                       | Whether to require SSL/HTTPS connections. When enabled, affects authentication. Available options are `true` and `false` | `false`                 |
-| `OAUTH_VERIFY_SSL`                  | Whether to verify SSL certificates for OAuth/OIDC provider endpoints. Set to `false` for development with self-signed certs. Available options are `true` and `false` | `true`                  |
-| `ADMIN_USERNAME`                    | Username for the first admin user. Only used if `ADMIN_EMAIL` is set during initial startup. See [First User Setup](/getting-started/03-first-user-setup). | `admin`                 |
-| `ADMIN_EMAIL`                       | Email address for the first admin user. When set on first startup, an admin user will be automatically created. See [First User Setup](/getting-started/03-first-user-setup). | `null`                  |
-| `ADMIN_PASSWORD`                    | Password for the first admin user. Required if `ADMIN_EMAIL` is set. See [First User Setup](/getting-started/03-first-user-setup). | `null`                  |
+## General
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `ORIGIN` | Public hostname of your application.<span class="note">Required for cookies to work correctly.</span> | `http://localhost:3000` |
+| `TZ` | Timezone for the application. | `UTC` |
+| `PORT` | Port the application listens on. | `3000` |
+
+## Users & Access
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `USER_ALLOW_REGISTRATION` | Allow new users to register.<span class="note">When disabled, only existing users can log in.</span> | `true` |
+| `USER_APPROVAL_REQUIRED` | Require admin approval before a user can sign in. | `true` |
+| `USER_ALLOW_GUEST_UPLOADS` | Allow unauthenticated users to upload images without an account. | `false` |
+| `USER_ALLOW_UNAUTHENTICATED_ACCESS` | Allow unauthenticated users to access public routes such as the explore page. | `true` |
+| `USER_REQUIRE_AUTH_FOR_MEDIA_SHARES` | Require visitors to be signed in to open shared images. | `false` |
+| `USER_REQUIRE_AUTH_FOR_COLLECTION_SHARES` | Require visitors to be signed in to open shared collections. | `false` |
+| `USER_PASSWORD_MIN_LENGTH` | Minimum password length for user accounts. | `6` |
+| `USER_PASSWORD_REQUIREMENTS` | Bitmask of password requirements: `1` (numbers), `2` (lowercase), `4` (uppercase), `8` (special characters).<span class="note">Sum the values to combine.</span> | `15` |
+
+## Image Processing
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `IMAGE_MAX_SIZE` | Maximum upload size.<span class="note">Use a k or M suffix</span> | `15M` |
+| `IMAGE_STRIP_EXIF_METADATA` | Strip EXIF metadata from uploaded images. | `true` |
+| `IMAGE_ALLOW_ONLY_PUBLIC_IMAGES` | Force all uploaded images to public.<span class="note">Visibility cannot be changed.</span> | `false` |
+| `IMAGE_COMPRESSION_QUALITY` | JPEG compression quality for uploaded images.<span class="note">1 to 100, where higher is better quality</span> | `80` |
+| `IMAGE_ENABLE_DEDUPLICATION` | Detect and handle duplicate images during upload. | `true` |
+| `IMAGE_FORCE_FORMAT_CONVERSION` | Convert all uploaded images to a single format.<span class="note">Uses the format set in IMAGE_TARGET_FORMAT.</span> | `false` |
+| `IMAGE_TARGET_FORMAT` | Target format for conversion: `webp`, `avif`, `jpeg`.<span class="note">Applies when IMAGE_FORCE_FORMAT_CONVERSION is enabled.</span> | `webp` |
+| `IMAGE_CONVERT_ANIMATED_IMAGES` | Also convert animated images (GIFs) to the target format.<span class="note">Applies when format conversion is enabled.</span> | `false` |
+
+## Sharing
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `SHARE_ENABLE_URL_SHORTENING` | Generate short URLs for shared images. | `true` |
+| `SHARE_SHORT_URL_LENGTH` | Number of characters in generated short codes.<span class="note">Clamped between 4 and 32.</span> | `8` |
+
+## Storage
+
+See the [Storage Providers](/configuration/02-storage-provider) reference for full setup details.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `STORAGE_PROVIDER` | Storage backend to use: `local`, `smb`, `s3`. | `local` |
+
+### SMB (Samba)
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `SMB_HOST` | SMB host to connect to.<span class="note">Required for SMB.</span> | `null` |
+| `SMB_SHARE` | SMB share to use.<span class="note">Required for SMB.</span> | `null` |
+| `SMB_WORKGROUP` | SMB workgroup. | `workgroup` |
+| `SMB_USERNAME` | SMB username.<span class="note">Required for SMB.</span> | `null` |
+| `SMB_PASSWORD` | SMB password.<span class="note">Required for SMB.</span> | `null` |
+
+### Amazon S3 & Compatible
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `AMAZON_S3_REGION` | AWS region of your bucket.<span class="note">Required for Amazon S3, optional for custom providers (defaults to auto)</span> | `null` |
+| `AMAZON_S3_BUCKET` | Name of your S3 bucket.<span class="note">Required for S3.</span> | `null` |
+| `AMAZON_S3_ACCESS_KEY_ID` | AWS access key ID.<span class="note">Required unless IAM role is used.</span> | `null` |
+| `AMAZON_S3_SECRET_ACCESS_KEY` | AWS secret access key.<span class="note">Required unless IAM role is used.</span> | `null` |
+| `AMAZON_S3_USE_IAM_ROLE` | Authenticate with the instance's IAM role instead of static keys.<span class="note">Amazon S3 only, ignored when a custom endpoint is set</span> | `false` |
+| `AMAZON_S3_ENDPOINT` | Custom endpoint URL for S3-compatible services.<span class="note">Optional, enables custom-provider mode when set</span> | `null` |
+| `AMAZON_S3_USE_CUSTOM_PROVIDER` | Enable for S3-compatible services. | `false` |
+| `AMAZON_S3_FORCE_PATH_STYLE` | Force path-style URLs.<span class="note">For S3-compatible services.</span> | `false` |
+
+## Security & SSL
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `REQUIRE_SSL` | Require SSL/HTTPS connections.<span class="note">Affects authentication when enabled.</span> | `false` |
+| `OAUTH_VERIFY_SSL` | Verify SSL certificates for OAuth/OIDC provider endpoints.<span class="note">Set to false for development with self-signed certs.</span> | `true` |
+
+## Admin User (First-Run Setup)
+
+These variables create the first admin user automatically on initial startup. See [First User Setup](/getting-started/03-first-user-setup) for details.
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `ADMIN_USERNAME` | Username for the first admin user.<span class="note">Used only when ADMIN_EMAIL is set.</span> | `admin` |
+| `ADMIN_EMAIL` | Email for the first admin user.<span class="note">Triggers admin creation on first startup.</span> | `null` |
+| `ADMIN_PASSWORD` | Password for the first admin user.<span class="note">Required when ADMIN_EMAIL is set.</span> | `null` |

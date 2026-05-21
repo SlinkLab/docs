@@ -48,6 +48,12 @@ import { Steps, Aside } from '@astrojs/starlight/components';
 
 That's it! ShareX will now automatically upload all screenshots to your Slink instance.
 
+## Making uploads shareable
+
+By default, uploads are private and a shared link only works once the image is published. To make ShareX uploads shareable immediately, open your account **Preferences** (a per-user setting in your own account, not the admin settings) and, under **Image Uploads**, enable **Auto-publish API uploads** (or set **Default Visibility** to Public).
+
+![Auto-publish API uploads preference](../../screens/62f0bbfc-5150-483d-9b85-99940a36bf69.png)
+
 ## Manual Configuration
 
 If you prefer to set up ShareX manually or need to customize the configuration:
@@ -87,24 +93,6 @@ If you prefer to set up ShareX manually or need to customize the configuration:
    - **Deletion URL**: `$json:deleteUrl$`
 
 </Steps>
-
-## Configuration Options
-
-### Upload Settings
-
-**Request URL Format:**
-```
-https://your-slink-instance.com/api/external/upload
-```
-
-**Required Headers:**
-```
-Authorization: Bearer sk_your_api_key_here
-```
-
-**Form Data:**
-- **Field Name**: `image`
-- **Field Type**: File
 
 ## Using ShareX with Slink
 

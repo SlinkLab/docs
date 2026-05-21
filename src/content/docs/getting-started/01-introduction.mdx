@@ -1,6 +1,6 @@
 ---
 title: Introduction to Slink
-description: Overview of Slink, a self-hosted image sharing platform. Learn about its architecture, features, and use cases.
+description: Open-source, self-hosted image sharing. Run Slink on your own infrastructure with control over images, share links, storage (S3/SMB), and OIDC/SSO access.
 head:
   - tag: meta
     attrs:
@@ -23,7 +23,11 @@ head:
 import { Aside, CardGrid } from '@astrojs/starlight/components';
 import Card from '@components/Card.astro';
 
+<div class="hero-shot">
+
 ![Slink Screenshot](../../screens/9e8b1f68-43f1-4488-99d1-7fdcd8642a65.png)
+
+</div>
 
 <div class="flex flex-wrap gap-2 items-center">
   <a>
@@ -52,15 +56,15 @@ import Card from '@components/Card.astro';
   </a>
 </div>
 
-Welcome to **Slink**, a self-hosted image sharing platform designed to give users complete control over their media sharing experience. Built with [Symfony](https://symfony.com/) and [SvelteKit](https://kit.svelte.dev/), Slink enables secure image sharing without relying on third-party services.
+**Slink** is an open-source, self-hosted image-sharing application that keeps your images and their share links fully under your control, including each link's visibility, optional password, and how long it remains active. It supports local, SMB, S3, and S3-compatible storage, with authentication through email and password or an OIDC/SSO provider.
 
-## Why Slink?
+## Why self-host Slink?
 
-Slink solves the problem of sharing images with friends, family, and colleagues in a private, self-hosted environment. It's also ideal for:
+Running your own instance keeps full control over your images and who can access them. Nothing is stored on services you don't own, and you decide retention, visibility, and access.
 
-- **Artists**: Showcase artwork in a community-focused platform.
-- **Developers**: Host and share screenshots for GitHub, portfolios, blogs, and more.
-- **Anyone**: Take control of image privacy and hosting.
+- Private image sharing for friends, family, or a team
+- Hosting screenshots for GitHub issues, portfolios, and blogs
+- A self-hosted alternative to public image hosts
 
 ---
 
@@ -69,16 +73,16 @@ Slink solves the problem of sharing images with friends, family, and colleagues 
 ### Sharing
 
 <CardGrid>
-  <Card title="Privacy-First Shares" badge="New">
+  <Card title="Privacy-First Shares">
     Shares are private by default and reachable only via the generated link. <a href="/usage/01-share-management/">Learn&nbsp;more&nbsp;→</a>
   </Card>
-  <Card title="Password-Protected Shares" badge="New">
+  <Card title="Password-Protected Shares">
     Optional password gate per share. <a href="/usage/01-share-management/#per-share-controls">Learn&nbsp;more&nbsp;→</a>
   </Card>
-  <Card title="Expiring Shares" badge="New">
+  <Card title="Expiring Shares">
     Set an expiration date so a share auto-revokes after a chosen time. <a href="/usage/01-share-management/#per-share-controls">Learn&nbsp;more&nbsp;→</a>
   </Card>
-  <Card title="Share Management" badge="New">
+  <Card title="Share Management">
     Dedicated page to list, edit, publish, or revoke your shares. <a href="/usage/01-share-management/">Learn&nbsp;more&nbsp;→</a>
   </Card>
   <Card title="URL Shortening">
@@ -146,7 +150,7 @@ Slink solves the problem of sharing images with friends, family, and colleagues 
 ### Personalization
 
 <CardGrid>
-  <Card title="Multi-Language UI" badge="New">
+  <Card title="Multi-Language UI">
     Interface available in English, German, Spanish, French, Italian, Japanese, Polish, Ukrainian, and Chinese. <a href="/usage/05-localization/">Learn&nbsp;more&nbsp;→</a>
   </Card>
   <Card title="Dark Mode">
@@ -158,7 +162,7 @@ Slink solves the problem of sharing images with friends, family, and colleagues 
 
 <CardGrid>
   <Card title="Storage Providers">
-    Support for local, SMB, and AWS S3 backends. <a href="/configuration/03-storage-provider/">Learn&nbsp;more&nbsp;→</a>
+    Support for local, SMB, and AWS S3 backends. <a href="/configuration/02-storage-provider/">Learn&nbsp;more&nbsp;→</a>
   </Card>
   <Card title="Storage Usage Tracking">
     Monitor and display storage consumption metrics.
@@ -179,22 +183,6 @@ Slink solves the problem of sharing images with friends, family, and colleagues 
     Statistics and analytics for admin users.
   </Card>
   <Card title="Settings Management">
-    Manage users, storage, and other platform settings. <a href="/configuration/02-admin-settings-page/">Learn&nbsp;more&nbsp;→</a>
+    Manage users, storage, and other platform settings. <a href="/configuration/01-environment-variables/">Learn&nbsp;more&nbsp;→</a>
   </Card>
 </CardGrid>
-
----
-
-## Upcoming Features
-
-<Aside type="caution" title="Important">
-  Those might be changed or removed in the future according to the community
-  feedback and priorities.
-</Aside>
-
-- **CDN Support**: Support for _CDN_ _providers_ to reduce the load on the self-hosted server.
-- **Storage Providers**: Extend the support for additional storage providers.
-- **Password Recovery**: Password recovery for users who forgot their password.
-- **Email Notifications**: Email notifications for user approval, password reset, etc.
-- **(Optional) GPU acceleration**: Use GPU acceleration for image processing to improve performance.
-- **(Experimental) Short Video Support**: Allow users to upload short videos and perform basic editing.
