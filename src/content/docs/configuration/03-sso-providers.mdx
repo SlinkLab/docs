@@ -126,7 +126,7 @@ Authelia works with Slink, but unlike most providers it does **not** include the
 
 Add a claims policy and reference it from the Slink client:
 
-```yaml
+```yaml ins={3-7,13}
 identity_providers:
   oidc:
     claims_policies:
@@ -159,7 +159,7 @@ In the Slink admin form, set the **Issuer URL** to your Authelia base URL (for e
   LLDAP does not expose an `email_verified` attribute, so Authelia cannot pass
   it through. Define a custom claim that forces it to `true`:
 
-  ```yaml
+  ```yaml ins={1-4,12-14}
   definitions:
     user_attributes:
       always_true:
