@@ -30,5 +30,16 @@
     "@tailwindcss/postcss": "^4.3.0",
     "astro-icon": "^1.1.5",
     "prettier": "^3.8.3"
+  },
+  "resolutions": {
+    "axios": "^1.15.2",
+    "devalue": "^5.8.1",
+    "follow-redirects": "^1.16.0",
+    "form-data": "^4.0.4",
+    "mdast-util-to-hast": "^13.2.1",
+    "postcss": "^8.5.10",
+    "undici": "^6.24.0",
+    "yaml": "^2.8.3",
+    "tar": "^7.5.11"
   }
 }
