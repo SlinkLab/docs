@@ -76,6 +76,21 @@ Slink ships with presets for the most common providers, plus a **Custom** option
 | **Client Secret** | Yes | OAuth client secret from your provider. Stored encrypted. |
 | **Enabled** | No | Whether the provider appears on the login page. |
 
+### Registration
+
+The **Registration** section of the provider form controls what happens when someone signs in through this provider for the first time. Both settings default to **Inherit**, which follows your instance-wide configuration, so existing providers keep their current behavior.
+
+| Setting | Options | Description |
+| --- | --- | --- |
+| **New User Registration** | **Inherit**, **Allowed**, **Blocked** | Whether a first-time sign-in can create a new account. **Inherit** follows [`USER_ALLOW_REGISTRATION`](/configuration/01-environment-variables/#users--access). **Allowed** creates accounts through this provider even when public registration is disabled. **Blocked** restricts the provider to existing users, even when registration is enabled. |
+| **Admin Approval** | **Inherit**, **Required**, **Auto-approve** | Whether accounts created through this provider need admin approval. **Inherit** follows [`USER_APPROVAL_REQUIRED`](/configuration/01-environment-variables/#users--access). **Required** keeps new accounts pending until an admin approves them. **Auto-approve** activates them immediately. |
+
+<Aside type="note">
+  These settings only apply when a new account is created. Existing users,
+  whether already linked or matched by verified email, are never affected by
+  them.
+</Aside>
+
 ### Callback URL
 
 Slink uses a single fixed callback path for every provider:
@@ -104,7 +119,7 @@ Slink reads user details from the provider's ID token. For a sign-in to succeed,
   verified at your provider before signing in.
 </Aside>
 
-When someone signs in, Slink links the external account by `sub`, falls back to matching an existing user by `email`, and otherwise creates a new account. New accounts still respect your [`USER_ALLOW_REGISTRATION` and `USER_APPROVAL_REQUIRED`](/configuration/01-environment-variables/#users--access) settings, so a first-time SSO user may need admin approval before they can sign in.
+When someone signs in, Slink links the external account by `sub`, falls back to matching an existing user by `email`, and otherwise creates a new account. By default, new accounts follow your global [`USER_ALLOW_REGISTRATION` and `USER_APPROVAL_REQUIRED`](/configuration/01-environment-variables/#users--access) settings, so a first-time SSO user may need admin approval before they can sign in. Each provider can override both through its [Registration settings](#registration).
 
 <Aside type="note">
   Slink requests the `openid email profile` scopes and always uses PKCE

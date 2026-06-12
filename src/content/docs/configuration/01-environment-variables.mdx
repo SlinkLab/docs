@@ -42,7 +42,7 @@ The application can be configured using environment variables. Set them when sta
 
 | Variable | Description | Default |
 | --- | --- | --- |
-| `USER_ALLOW_REGISTRATION` | Allow new users to register.<span class="note">When disabled, only existing users can log in.</span> | `true` |
+| `USER_ALLOW_REGISTRATION` | Allow new users to register.<span class="note">When disabled, only existing users can log in unless an SSO provider overrides it.</span> | `true` |
 | `USER_APPROVAL_REQUIRED` | Require admin approval before a user can sign in. | `true` |
 | `USER_ALLOW_GUEST_UPLOADS` | Allow unauthenticated users to upload images without an account. | `false` |
 | `USER_ALLOW_UNAUTHENTICATED_ACCESS` | Allow unauthenticated users to access public routes such as the explore page. | `true` |
@@ -56,6 +56,7 @@ The application can be configured using environment variables. Set them when sta
 | Variable | Description | Default |
 | --- | --- | --- |
 | `IMAGE_MAX_SIZE` | Maximum upload size.<span class="note">Use a k or M suffix</span> | `15M` |
+| `IMAGE_CHUNK_SIZE` | Chunk size for chunked uploads.<span class="note">Use a k or M suffix, between 1M and 25M</span> | `2M` |
 | `IMAGE_STRIP_EXIF_METADATA` | Strip EXIF metadata from uploaded images. | `true` |
 | `IMAGE_ALLOW_ONLY_PUBLIC_IMAGES` | Force all uploaded images to public.<span class="note">Visibility cannot be changed.</span> | `false` |
 | `IMAGE_COMPRESSION_QUALITY` | JPEG compression quality for uploaded images.<span class="note">1 to 100, where higher is better quality</span> | `80` |
