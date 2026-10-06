@@ -85,12 +85,21 @@ export default defineConfig({
   integrations: [starlight({
     title: 'Slink Docs',
     description: 'Self-hosted image sharing service with privacy-first approach. Complete documentation for installation, configuration, and usage.',
-    favicon: './favicon.png',
+    favicon: './favicon.svg',
     logo: {
-      src: './src/assets/slink.png',
+      src: './src/assets/slink.svg',
       replacesTitle: true,
     },
     head: [
+      {
+        tag: 'link',
+        attrs: {
+          rel: 'icon',
+          type: 'image/png',
+          href: '/favicon.png',
+          sizes: '768x768'
+        }
+      },
       {
         tag: 'meta',
         attrs: {
