@@ -24,44 +24,17 @@ head:
       href: https://docs.slinkapp.io/
 ---
 
-import { CardGrid } from '@astrojs/starlight/components';
-import Card from '@components/Card.astro';
-import Stats from '@components/Stats.astro';
+import HomeContent from '@components/HomeContent.astro';
 import CallToAction from '@components/CallToAction.astro';
 
-## Why Choose Slink?
-
-Slink is a self-hosted image sharing platform that allows you to maintain control over your data. Upload, share, and manage images through your own instance without relying on third-party services.
-
-<div class="mt-8!">
-  <CardGrid>
-    <Card title="Privacy-First Shares" badge="New">
-      Shares are private by default. Add a password or expiration per share. <a href="/getting-started/01-introduction/#sharing">More&nbsp;→</a>
-    </Card>
-    <Card title="Multi-Language UI" badge="New">
-      Available in English, German, Spanish, French, Italian, Japanese, Polish, Ukrainian, and Chinese. <a href="/usage/05-localization/">More&nbsp;→</a>
-    </Card>
-    <Card title="Self-Hosted Storage">
-      Bring your own backend: local, SMB, or AWS S3. <a href="/configuration/02-storage-provider/">More&nbsp;→</a>
-    </Card>
-    <Card title="SSO & Authentication">
-      Email/password plus Google, Authentik, Keycloak, Authelia, Pocket ID, and custom OIDC.
-    </Card>
-    <Card title="Public API & Automation">
-      Personal API keys and ShareX integration for screenshot uploads. <a href="/usage/02-api-key-management/">More&nbsp;→</a>
-    </Card>
-    <Card title="Admin & Moderation">
-      User management, image moderation, storage analytics, and platform settings. <a href="/configuration/01-environment-variables/">More&nbsp;→</a>
-    </Card>
-  </CardGrid>
-</div>
+<HomeContent />
 
 <CallToAction
   title="Ready to Get Started?"
   description="Follow the installation guide to set up your own Slink instance."
   primaryAction={{
     text: "Installation Guide",
-    href: "/installation/01-docker-compose",
+    href: "/installation/01-docker-compose/",
   }}
   secondaryAction={{
     text: "Source Code",

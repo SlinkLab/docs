@@ -1,0 +1,256 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const guides = [
+  {
+    number: '01',
+    title: 'Install Slink',
+    description: 'Deploy Slink with Docker Compose and upload your first image.',
+    label: 'Installation guide',
+    href: '/installation/01-docker-compose/',
+    icon: 'mdi:docker',
+  },
+  {
+    number: '02',
+    title: 'Configure your instance',
+    description: 'Set up storage, authentication, and the defaults for your instance.',
+    label: 'Configuration',
+    href: '/configuration/01-environment-variables/',
+    icon: 'mdi:tune-variant',
+  },
+  {
+    number: '03',
+    title: 'Manage shares',
+    description: 'Set share visibility, passwords, and expiration dates.',
+    label: 'Sharing guide',
+    href: '/usage/01-share-management/',
+    icon: 'mdi:link-variant',
+  },
+];
+
+const capabilities = [
+  {
+    title: 'Storage providers',
+    description: 'Configure local, SMB, or S3-compatible image storage.',
+    href: '/configuration/02-storage-provider/',
+  },
+  {
+    title: 'Share permissions',
+    description: 'Shares are private by default, with optional passwords and expiration dates.',
+    href: '/usage/01-share-management/',
+  },
+  {
+    title: 'API and integrations',
+    description: 'Automate uploads with personal API keys and ShareX.',
+    href: '/usage/02-api-key-management/',
+  },
+  {
+    title: 'SSO and authentication',
+    description: 'Configure OpenID Connect providers and account registration.',
+    href: '/configuration/03-sso-providers/',
+  },
+];
+---
+
+<div class="home-content not-content">
+  <section aria-labelledby="find-your-way">
+    <div class="section-heading">
+      <div>
+        <p class="home-eyebrow">Guides</p>
+        <h2 id="find-your-way">Getting started</h2>
+      </div>
+    </div>
+    <div class="guide-grid">
+      {guides.map((guide) => (
+        <a class="guide" href={guide.href}>
+          <div class="guide-heading">
+            <Icon name={guide.icon} size="1.5rem" aria-hidden="true" />
+            <span class="guide-number">{guide.number}</span>
+          </div>
+          <h3>{guide.title}</h3>
+          <p>{guide.description}</p>
+          <span class="guide-link">{guide.label}<span aria-hidden="true">→</span></span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="capabilities" aria-labelledby="keep-control">
+    <div class="capability-intro">
+      <p class="home-eyebrow">Reference</p>
+      <h2 id="keep-control">Features and<br />configuration</h2>
+      <p>Documentation for storage backends, share permissions, integrations, and user access.</p>
+    </div>
+    <div class="capability-list">
+      {capabilities.map((capability) => (
+        <a class="capability" href={capability.href}>
+          <div>
+            <h3>{capability.title}</h3>
+            <p>{capability.description}</p>
+          </div>
+          <span aria-hidden="true">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</div>
+
+<style>
+  .home-content {
+    color: var(--home-ink);
+  }
+
+  .section-heading {
+    margin-block-end: 1.5rem;
+  }
+
+  h2 {
+    margin-block: 0.75rem 0;
+    color: var(--home-ink);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+  }
+
+  .capability-intro > p:last-child {
+    color: var(--home-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .guide {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid var(--home-line);
+    border-radius: 0.75rem;
+    background: var(--home-mist);
+    color: var(--home-ink);
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+
+  .guide:hover {
+    background: var(--home-hover);
+    border-color: var(--home-accent);
+  }
+  .guide:active {
+    background: var(--home-pressed);
+  }
+
+  .guide-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--home-accent);
+  }
+  .guide-number {
+    font-family: var(--sl-font-mono);
+    font-size: 0.8125rem;
+    color: var(--home-muted);
+  }
+
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+  }
+  .guide h3 {
+    margin-block: 1.5rem 0.5rem;
+  }
+  .guide p,
+  .capability p {
+    color: var(--home-muted);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+  .guide p {
+    flex: 1;
+    margin-block: 0 1.5rem;
+  }
+  .guide-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--home-accent);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .capabilities {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: 5rem;
+    padding-block: 4.5rem;
+  }
+
+  .capability-intro {
+    padding-block-start: 1.25rem;
+  }
+  .capability-intro > p:last-child {
+    margin-block-start: 1.25rem;
+    max-width: 22rem;
+  }
+  .capability {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 0.75rem;
+    border-block-end: 1px solid var(--home-line);
+    color: var(--home-ink);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 150ms ease;
+  }
+  .capability:first-child {
+    border-block-start: 1px solid var(--home-line);
+  }
+  .capability h3 {
+    margin: 0;
+  }
+  .capability p {
+    margin-block: 0.25rem 0;
+  }
+  .capability > span {
+    color: var(--home-accent);
+  }
+  .capability:hover {
+    background: var(--home-mist);
+  }
+  .capability:active {
+    background: var(--home-pressed);
+  }
+
+  @media (max-width: 50rem) {
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+    .guide {
+      padding: 1.5rem;
+    }
+    .guide h3 {
+      margin-block-start: 1rem;
+    }
+    .capabilities {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding-block: 3rem;
+    }
+    .capability-intro {
+      padding: 0;
+    }
+    .capability-intro > p:last-child {
+      max-width: 38rem;
+    }
+  }
+</style>

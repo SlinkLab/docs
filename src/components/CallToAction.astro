@@ -19,41 +19,86 @@ interface Props {
 const { title, description, primaryAction, secondaryAction } = Astro.props;
 ---
 
-<section class="py-20 sm:py-24 flex justify-center">
-  <div class="max-w-3xl mx-auto px-6 sm:px-8 text-center">
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-2">
-        <h2 class="text-3xl sm:text-4xl font-extralight text-gray-900 dark:text-white">
-          {title}
-        </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-          {description}
-        </p>
-      </div>
-      <div class="flex flex-col sm:flex-row gap-3 justify-center items-center max-w-sm sm:max-w-none mx-auto">
-        <Button
-          variant="primary"
-          href={primaryAction.href}
-          icon={primaryAction.icon}
-          size="lg"
-          class="w-full sm:w-auto px-6 py-3 font-medium"
-        >
-          {primaryAction.text}
-        </Button>
-        {secondaryAction && (
-          <Button
-            variant="secondary"
-            href={secondaryAction.href}
-            icon={secondaryAction.icon}
-            external={true}
-            size="lg"
-            class="w-full sm:w-auto px-6 py-3 font-medium"
-          >
-            {secondaryAction.text}
-          </Button>
-        )}
-      </div>
-    </div>
+<section class="home-cta not-content" aria-labelledby="ready-to-host">
+  <div class="cta-copy">
+    <h2 id="ready-to-host">{title}</h2>
+    <p>{description}</p>
+  </div>
+  <div class="cta-actions">
+    <Button
+      variant="primary"
+      href={primaryAction.href}
+      icon={primaryAction.icon}
+      size="lg"
+      class="w-full sm:w-auto px-6 py-3 font-medium"
+    >
+      {primaryAction.text}
+    </Button>
+    {secondaryAction && (
+      <Button
+        variant="secondary"
+        href={secondaryAction.href}
+        icon={secondaryAction.icon}
+        external={true}
+        size="lg"
+        class="w-full sm:w-auto px-6 py-3 font-medium"
+      >
+        {secondaryAction.text}
+      </Button>
+    )}
   </div>
 </section>
 
+<style>
+  .home-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2.5rem 2rem;
+    margin-block-end: 2rem;
+    border: 1px solid var(--home-line);
+    border-radius: 0.75rem;
+    background: var(--home-mist);
+    text-align: center;
+  }
+
+  .cta-copy {
+    max-width: 40rem;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--home-ink);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-block: 0.75rem 0;
+    color: var(--home-muted);
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 40rem) {
+    .home-cta {
+      padding: 2rem 1.5rem;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      width: 100%;
+      max-width: 22rem;
+    }
+  }
+</style>

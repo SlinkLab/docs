@@ -1,94 +1,216 @@
 ---
-import { Image } from 'astro:assets';
-import Button from './Button.astro';
-import slinkImage from '../assets/slink.svg';
+import { getImage } from 'astro:assets';
+import { cva } from 'class-variance-authority';
 import { Icon } from 'astro-icon/components';
+import Button from './Button.astro';
+import uploadHistory from '../assets/slink-upload-history.png';
+
+const galleryImage = await getImage({ src: uploadHistory, width: 1400, format: 'webp' });
+const galleryColumns = [
+  [
+    { viewBox: '28 394 418 414', shape: 'square' },
+    { viewBox: '928 394 418 414', shape: 'landscape' },
+  ],
+  [
+    { viewBox: '478 394 418 414', shape: 'landscape' },
+    { viewBox: '1378 394 418 414', shape: 'square' },
+  ],
+] as const;
+
+const galleryTile = cva('gallery-tile', {
+  variants: {
+    shape: {
+      square: 'gallery-tile-square',
+      landscape: 'gallery-tile-landscape',
+    },
+  },
+});
 ---
 
-<section class="relative flex items-center justify-center">
-  <div class="pt-8 pb-20">
-    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-      
-      <div class="text-center lg:text-left flex flex-col gap-12">
-        <div class="flex justify-center lg:justify-start">
-          <div class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-700">
-            <span class="text-sm font-medium text-indigo-700 dark:text-indigo-300">🚀 Self-hosted & Open Source</span>
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-8">
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-            <span class="text-gray-900 dark:text-white">Image Sharing</span>
-            <span class="block bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
-              Made Simple
-            </span>
-          </h1>
-          
-          <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-            A powerful, self-hosted image hosting platform designed for teams, developers, and enthusiasts who value privacy and control.
-          </p>
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          <Button
-            href="/getting-started/01-introduction"
-            variant="primary"
-            size="lg"
-            class="px-8 py-3 text-base"
-          >
-            Get Started
-          </Button>
-          <Button
-            href="https://github.com/andrii-kryvoviaz/slink"
-            variant="secondary"
-            size="lg"
-            external={true}
-            class="px-8 py-3 text-base"
-          >
-            <Icon name="mdi:github" class="w-5 h-5 mr-2" />
-            View on GitHub
-          </Button>
-        </div>
-
-        <div class="flex flex-wrap gap-8 justify-center lg:justify-start text-sm text-gray-600 dark:text-gray-400">
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-            </svg>
-            <span>Docker Ready</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-            </svg>
-            <span>Instant Sharing</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-            </svg>
-            <span>Multi-User Support</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="relative flex justify-center lg:justify-end">
-        <div class="relative">
-          <div class="relative overflow-hidden p-2">
-            <div class="overflow-hidden rounded-lg">
-              <Image
-                src={slinkImage}
-                alt="Slink - Self-hosted image sharing service interface"
-                class="w-full h-auto object-cover"
-                loading="eager"
-                decoding="async"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+<section class="docs-hero not-content" aria-labelledby="_top">
+  <div class="hero-copy">
+    <p class="home-eyebrow">Slink documentation</p>
+    <h1 id="_top">Image Sharing<br /><span>Made Simple</span></h1>
+    <p class="hero-description">
+      A powerful, self-hosted image hosting platform designed for teams, developers, and enthusiasts who value privacy and control.
+    </p>
+    <div class="home-actions">
+      <Button href="/getting-started/01-introduction/" size="lg" class="px-8 py-3 text-base">
+        Get Started
+      </Button>
+      <Button
+        href="https://github.com/andrii-kryvoviaz/slink"
+        variant="secondary"
+        size="lg"
+        icon="mdi:github"
+        external={true}
+        class="px-8 py-3 text-base"
+      >
+        View on GitHub
+      </Button>
     </div>
+    <ul class="hero-meta" aria-label="Capabilities">
+      {['Docker Ready', 'Instant Sharing', 'Multi-User Support'].map((capability) => (
+        <li>
+          <Icon name="mdi:check" size="1rem" aria-hidden="true" />
+          {capability}
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="hero-preview" role="img" aria-label="Masonry gallery of city, ocean, forest, and foliage photos">
+    {galleryColumns.map((column) => (
+      <div class="gallery-column">
+        {column.map((photo) => (
+          <svg
+            class={galleryTile({ shape: photo.shape })}
+            viewBox={photo.viewBox}
+            preserveAspectRatio="xMidYMid slice"
+            aria-hidden="true"
+          >
+            <image href={galleryImage.src} width={uploadHistory.width} height={uploadHistory.height} />
+          </svg>
+        ))}
+      </div>
+    ))}
   </div>
 </section>
 
+<style>
+  .docs-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    align-items: center;
+    gap: 4rem;
+    padding-block: 2.5rem 3.5rem;
+  }
 
+  .hero-copy h1 {
+    margin-block: 1.25rem 1.5rem;
+    color: var(--home-ink);
+    font-size: clamp(2.75rem, 4.5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+  }
+
+  .hero-copy h1 span {
+    color: transparent;
+    background-image: linear-gradient(90deg, #4f46e5, #9333ea, #4f46e5);
+    background-clip: text;
+  }
+
+  @media (forced-colors: active) {
+    .hero-copy h1 span {
+      color: CanvasText;
+      background-image: none;
+    }
+  }
+
+  .hero-description {
+    max-width: 30rem;
+    color: var(--home-muted);
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
+
+  .home-actions {
+    margin-block-start: 2rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-block-start: 1.5rem;
+    padding: 0;
+    list-style: none;
+    color: var(--home-muted);
+    font-size: 0.8125rem;
+  }
+
+  .hero-meta li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hero-meta :global(svg) {
+    color: #15803d;
+  }
+
+  :global([data-theme='dark']) .hero-meta :global(svg) {
+    color: #22c55e;
+  }
+
+  .hero-preview {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 1rem;
+    aspect-ratio: 6 / 5;
+    overflow: hidden;
+    mask-image:
+      linear-gradient(to right, transparent, #000 12%, #000 88%, transparent),
+      linear-gradient(to bottom, transparent, #000 12%, #000 82%, transparent);
+    mask-composite: intersect;
+  }
+
+  :global([data-theme='light']) .hero-preview {
+    mask-image:
+      linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
+      linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .gallery-column:nth-child(2) {
+    padding-block-start: 2rem;
+  }
+
+  .gallery-tile {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .gallery-tile-square {
+    aspect-ratio: 1;
+  }
+
+  .gallery-tile-landscape {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (max-width: 64rem) {
+    .docs-hero {
+      gap: 2rem;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+    }
+  }
+
+  @media (max-width: 50rem) {
+    .docs-hero {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding-block: 1.5rem 2.5rem;
+    }
+    .hero-copy h1 {
+      font-size: clamp(2.75rem, 8vw, 4rem);
+    }
+    .hero-description {
+      max-width: 38rem;
+    }
+    .hero-preview {
+      max-width: 38rem;
+      width: 100%;
+    }
+  }
+</style>
